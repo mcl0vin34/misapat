@@ -6,7 +6,7 @@ import "./App.scss";
 
 const App: React.FC = () => {
   return (
-    <Router basename="/simatest">
+    <Router basename="/misapat">
       <AppRouter />
     </Router>
   );
