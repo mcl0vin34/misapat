@@ -1,0 +1,29 @@
+/* SharedContainer.scss */
+
+.main-page {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 100vh;
+}
+
+.container {
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0px 2px 0px 0px #e2ba68 inset;
+  border-top: 3px solid #e2ba68;
+  height: 90%;
+  padding: 20px;
+  border-radius: 20px;
+  border-top-left-radius: 62px;
+  border-top-right-radius: 62px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(180deg, #2d3236 0%, #000000 100%);
+}
+
+.inner_container {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  height: 88%;
+}

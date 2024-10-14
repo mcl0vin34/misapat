@@ -1,0 +1,57 @@
+.shopPage {
+  height: 100vh; /* Высота страницы равна высоте окна */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Скрываем переполнение, чтобы контент оставался внутри */
+}
+
+.scrollContainer {
+  flex: 1;
+  overflow-y: auto; /* Включаем вертикальный скролл */
+  -webkit-overflow-scrolling: touch; /* Поддержка плавного скролла на iOS */
+  margin-bottom: 40px;
+}
+
+.shop_title {
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  color: #f1f1f1;
+  margin-bottom: 10px;
+}
+
+.tabNavigation {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 8px;
+  background: #2d3236;
+  height: 50px;
+  border-radius: 10px;
+}
+
+.tabContent {
+  padding-top: 15px;
+}
+
+.tabButton {
+  flex: 1;
+  padding: 8px 16px;
+  background-color: transparent;
+  border: none;
+  color: #f1f1f1;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 30px;
+  text-align: center;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &.active {
+    background-color: #1f1f1f;
+  }
+
+  &:not(.active):hover {
+    background-color: #3e3e3e;
+  }
+}

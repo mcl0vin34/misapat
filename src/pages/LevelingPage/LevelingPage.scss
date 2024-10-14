@@ -1,0 +1,33 @@
+.leveling-page {
+  padding: 20px;
+  text-align: center;
+
+  .upgrades {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    .upgrade-item {
+      background-color: #f0f0f0;
+      padding: 15px;
+      margin: 10px;
+      border-radius: 8px;
+      width: 200px;
+      text-align: left;
+
+      h2 {
+        margin-bottom: 10px;
+        text-align: center;
+      }
+
+      p {
+        margin: 5px 0;
+      }
+
+      button {
+        margin-top: 10px;
+        width: 100%;
+      }
+    }
+  }
+}

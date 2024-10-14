@@ -1,0 +1,45 @@
+// src/components/EnergyIndicator/EnergyIndicator.scss
+.energy-indicator {
+  display: flex;
+  align-items: center; /* Центрируем иконку и текст по вертикали */
+}
+
+.energy-icon {
+  width: 30px; /* Ширина иконки */
+  height: 30px; /* Высота иконки */
+  margin-right: 8px; /* Отступ справа от иконки */
+  fill: linear-gradient(180deg, #ffe269 0%, #f4bc4c 100%),
+    linear-gradient(140.39deg, #deb565 10.72%, #edc871 45.29%, #ffffa8 109.99%);
+}
+
+.energy-text {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 21px;
+  color: rgb(201, 200, 200);
+}
+
+.energy-bar-container {
+  width: 100%;
+  max-width: 300px; /* Максимальная ширина прогресс-бара */
+  height: 20px; /* Высота прогресс-бара */
+  background-color: #ddd; /* Цвет фона прогресс-бара */
+  border-radius: 10px; /* Скругление краев */
+  overflow: hidden; /* Обрезаем содержимое */
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.energy-bar {
+  height: 100%;
+  background-color: #4caf50; /* Цвет прогресс-бара */
+  border-radius: 10px; /* Скругление краев */
+  transition: width 0.3s ease; /* Плавная анимация изменения ширины */
+}
+
+.energy-text {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 21px;
+  color: #d9d9d9;
+}

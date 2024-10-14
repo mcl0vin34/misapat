@@ -1,0 +1,167 @@
+/* src/pages/FriendsInvite/FriendsInvitePage.module.scss */
+
+.friendsInvite {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  color: #ffffff;
+  padding: 20px;
+  padding-bottom: 0;
+}
+
+.header {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+
+  &_title {
+    font-size: 40px;
+    font-weight: 650;
+    text-align: center;
+  }
+}
+
+.rewardBlock {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background: #2d3236;
+  border-radius: 10px;
+  padding: 15px;
+  width: 100%;
+  box-sizing: border-box;
+  height: 90px;
+  justify-content: center;
+  margin-bottom: 20px;
+
+  &_top {
+    display: flex;
+  }
+
+  &_description {
+    font-size: 32px;
+    font-weight: 700;
+  }
+
+  &_description_mini {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 30px;
+    text-align: right;
+  }
+}
+
+.scrollContainer {
+  width: 100%;
+  max-height: 300px; /* Установите максимальную высоту для списка */
+  overflow-y: auto;
+  scrollbar-width: none; /* Для Firefox */
+  -ms-overflow-style: none; /* Для Internet Explorer и Edge */
+
+  /* Скрываем скролл для Webkit (Chrome, Safari) */
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+}
+
+.friendsList {
+  width: 100%;
+
+  &_count {
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 21px;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+}
+
+.friendItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+
+  &_text {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &_name,
+  &_coins {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 30px;
+    text-align: left;
+    color: #f1f1f1;
+  }
+}
+
+.friendCoinIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.inviteButtons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.inviteFriend {
+  background: linear-gradient(
+    140.39deg,
+    #deb565 10.72%,
+    #edc871 45.29%,
+    #ffffa8 109.99%
+  );
+  color: #000;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-weight: bold;
+  height: 60px;
+  box-sizing: border-box;
+  color: #2d3236;
+  cursor: pointer;
+  flex: 1;
+  margin-right: 10px;
+}
+
+.copyLink {
+  background: linear-gradient(
+    140.39deg,
+    #deb565 10.72%,
+    #edc871 45.29%,
+    #ffffa8 109.99%
+  );
+  border: none;
+  width: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  padding: 13px 8px;
+  cursor: pointer;
+}
+
+.inviteText {
+  font-size: 14px;
+  color: #aaa;
+  text-align: center;
+}
+
+.noFriendsMessage {
+  font-size: 16px;
+  color: #bbb;
+  text-align: center;
+  margin: 20px 0;
+}

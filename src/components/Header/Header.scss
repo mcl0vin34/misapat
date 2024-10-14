@@ -1,0 +1,116 @@
+/* src/components/Header/Header.scss */
+.header {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  cursor: pointer;
+  position: absolute;
+  width: 100%;
+  justify-content: flex-end;
+  gap: 10px;
+
+  &__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    margin-right: 10px;
+  }
+
+  &__nickname {
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 21px;
+    text-align: right;
+    color: #d9d9d9;
+  }
+}
+
+.header-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+
+  &__avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+
+  &__nickname {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 30px;
+    text-align: center;
+    color: #d9d9d9;
+    margin-bottom: 10px;
+  }
+
+  &__id {
+    margin-bottom: 33px;
+  }
+
+  &__id,
+  &__registration {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: center;
+    color: #888888;
+  }
+
+  &__sections {
+    width: 100%;
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+
+    .header-modal__link {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 20px;
+      text-align: center;
+      color: #888888;
+      margin-bottom: 20px;
+    }
+  }
+
+  &__share-button,
+  &__close-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+  }
+
+  &__share-button {
+    padding: 10px 20px;
+    border: none;
+    width: 100%;
+    border-radius: 10px;
+    background: linear-gradient(
+      140.39deg,
+      #deb565 10.72%,
+      #edc871 45.29%,
+      #ffffa8 109.99%
+    );
+    height: 60px;
+    box-sizing: border-box;
+    color: #2d3236;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  &__close-button {
+    background-color: #dc3545;
+    color: #ffffff;
+
+    &:hover {
+      background-color: #c82333;
+    }
+  }
+}

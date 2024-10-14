@@ -1,0 +1,21 @@
+.itemsShop {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Контейнер для столбцов */
+.flexContainer {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  justify-content: space-between;
+}
+
+/* Столбец карточек */
+.column {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 16px; /* Отступ между карточками в столбце */
+}

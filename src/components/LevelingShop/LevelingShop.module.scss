@@ -1,0 +1,39 @@
+.levelingShop {
+  h1,
+  p {
+    text-align: center;
+  }
+}
+
+.upgrades {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.upgradeItem {
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin: 10px;
+  width: 250px;
+  text-align: center;
+
+  h2 {
+    margin-bottom: 10px;
+  }
+
+  button {
+    margin-top: 10px;
+    padding: 10px;
+    width: 100%;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  }
+}
