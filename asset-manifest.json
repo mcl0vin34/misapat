@@ -1,0 +1,34 @@
+{
+  "files": {
+    "main.css": "/misapat/static/css/main.d9b829f8.css",
+    "main.js": "/misapat/static/js/main.ec07cc1f.js",
+    "static/media/image-2.png": "/misapat/static/media/image-2.efbab1c1bdf71cef43d4.png",
+    "static/media/lion.png": "/misapat/static/media/lion.b631b4d3b2c729f61388.png",
+    "static/media/image-1.png": "/misapat/static/media/image-1.cfa5b298137d0050f884.png",
+    "static/media/image-4.png": "/misapat/static/media/image-4.d3ad3b471f073aa2954d.png",
+    "static/media/image-3.png": "/misapat/static/media/image-3.311c86691cc772ae8a3b.png",
+    "static/media/vaynera.png": "/misapat/static/media/vaynera.681ab1fdb7b2675c1963.png",
+    "static/media/third-place.png": "/misapat/static/media/third-place.57f3f05799fab6457212.png",
+    "static/media/second-place.png": "/misapat/static/media/second-place.bedb285730de116773b9.png",
+    "static/media/first-place.png": "/misapat/static/media/first-place.56ee8598103f466a6382.png",
+    "static/media/rocket.png": "/misapat/static/media/rocket.1fd57c08351c13ee93a5.png",
+    "static/media/avatar.png": "/misapat/static/media/avatar.f2585b08daac916a3cc1.png",
+    "static/media/coin.svg": "/misapat/static/media/coin.4ee43b064d3242fd8de3880163cebfd2.svg",
+    "static/media/ruble.svg": "/misapat/static/media/ruble.898f52f476cd30c9c74c2e346e152795.svg",
+    "static/media/tasklist.svg": "/misapat/static/media/tasklist.30b796b0c70d6a901cb283917728572f.svg",
+    "static/media/friends.svg": "/misapat/static/media/friends.28a6a053798a845ee2dfb18757c95fb1.svg",
+    "static/media/booster.svg": "/misapat/static/media/booster.46af332e71f7be51c9eddccb50a97465.svg",
+    "static/media/home.svg": "/misapat/static/media/home.c44f6e912992cdf8fd8cefd1af383506.svg",
+    "static/media/energy.svg": "/misapat/static/media/energy.f9138d68978e3478932b98d6d84d703f.svg",
+    "static/media/leaderboard.svg": "/misapat/static/media/leaderboard.2b047b53ff526c7e3309a0e3ed6c1483.svg",
+    "index.html": "/misapat/index.html",
+    "static/media/copy.svg": "/misapat/static/media/copy.bde699810b788156e27a6af2fe1e7837.svg",
+    "static/media/close.svg": "/misapat/static/media/close.29cc823f760c384aa141abf3354f1bf5.svg",
+    "main.d9b829f8.css.map": "/misapat/static/css/main.d9b829f8.css.map",
+    "main.ec07cc1f.js.map": "/misapat/static/js/main.ec07cc1f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d9b829f8.css",
+    "static/js/main.ec07cc1f.js"
+  ]
+}
