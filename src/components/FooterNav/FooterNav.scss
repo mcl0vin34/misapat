@@ -197,3 +197,26 @@
     }
   }
 }
+
+/* Для экранов до 600px */
+@media (max-width: 600px) {
+  .footer {
+    padding: 8px 10px;
+    height: 12%; /* Немного уменьшили высоту */
+    width: 100%; /* Убедились, что меню занимает всю ширину */
+  }
+
+  .footer_menu__item a {
+    width: 60px;
+    height: 60px;
+  }
+
+  .footer_menu__item a .nav-label {
+    font-size: 11px; /* Сделаем текст меньше */
+  }
+
+  .footer_menu__item a svg {
+    width: 28px;
+    height: 28px;
+  }
+}

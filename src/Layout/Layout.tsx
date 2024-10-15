@@ -1,4 +1,3 @@
-// src/layouts/Layout.tsx
 import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import FooterNav from "../components/FooterNav/FooterNav";
@@ -6,6 +5,7 @@ import Header from "../components/Header/Header"; // Импортируем Head
 import useModalStore from "../store/useModalStore";
 import Modal from "../components/UI/Modal/Modal"; // Импортируем компонент Modal
 import useCoinStore from "../store/useCoinStore"; // Импортируем useCoinStore
+import { useUserStore } from "../store/useUserStore"; // Импортируем стор для пользователя
 import "./Layout.scss";
 
 const Layout = () => {
@@ -22,6 +22,12 @@ const Layout = () => {
     coins,
     incrementCoins,
   } = useCoinStore();
+
+  const { initializeUser } = useUserStore(); // Достаем функцию инициализации пользователя
+
+  useEffect(() => {
+    initializeUser(); // Инициализация пользователя при запуске приложения
+  }, [initializeUser]);
 
   useEffect(() => {
     calculateOfflineIncome();

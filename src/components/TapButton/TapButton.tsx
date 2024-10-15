@@ -42,11 +42,11 @@ const TapButton: React.FC<TapButtonProps> = ({ onIncrement, lionImage }) => {
       setCoinAmountEffect((prevTexts) => [...prevTexts, newText]);
 
       // Генерируем множество монет
-      const numCoins = 20; // Количество монет
+      const numCoins = 10; // Уменьшили количество монет до 10
       const newCoins = Array.from({ length: numCoins }).map(() => {
         const id = nanoid();
         const angle = Math.random() * 360; // Случайный угол в градусах
-        const distance = 100 + Math.random() * 100; // Случайное расстояние от 100 до 200 пикселей
+        const distance = 100 + Math.random() * 50; // Случайное расстояние от 100 до 150 пикселей
         const radians = (angle * Math.PI) / 180;
         const xOffset = Math.cos(radians) * distance;
         const yOffset = Math.sin(radians) * distance;

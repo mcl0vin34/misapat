@@ -1,20 +1,24 @@
-// src/components/Header/Header.tsx
 import React from "react";
 import "./Header.scss";
-import avatar from "../../assets/images/avatar.png"; // Замените на путь к вашей аватарке
 import useModalStore from "../../store/useModalStore";
+import { useUserStore } from "../../store/useUserStore"; // Импортируем стор пользователя
 
 const Header: React.FC = () => {
   const { openModal } = useModalStore();
+  const { user } = useUserStore(); // Получаем данные пользователя из стора
 
   const handleClick = () => {
-    openModal(<HeaderModalContent />);
+    openModal(<HeaderModalContent user={user} />);
   };
 
   return (
     <header className="header" onClick={handleClick}>
-      <span className="header__nickname">muamee4ever</span>
-      <img src={avatar} alt="Avatar" className="header__avatar" />
+      <span className="header__nickname">{user?.username || "Гость"}</span>
+      <img
+        src={user?.photo_url || "path/to/default/avatar.png"}
+        alt="Avatar"
+        className="header__avatar"
+      />
     </header>
   );
 };
@@ -22,14 +26,18 @@ const Header: React.FC = () => {
 export default Header;
 
 // Компонент содержимого модального окна
-const HeaderModalContent: React.FC = () => {
+const HeaderModalContent: React.FC<{ user: any }> = ({ user }) => {
   const { closeModal } = useModalStore();
 
   return (
     <div className="header-modal">
-      <img src={avatar} alt="Avatar" className="header-modal__avatar" />
-      <h2 className="header-modal__nickname">muamee4ever</h2>
-      <p className="header-modal__id">Wvtqtk8o5q</p>
+      <img
+        src={user?.photo_url || "path/to/default/avatar.png"}
+        alt="Avatar"
+        className="header-modal__avatar"
+      />
+      <h2 className="header-modal__nickname">{user?.username || "Гость"}</h2>
+      <p className="header-modal__id">{user?.id}</p>
 
       <p className="header-modal__registration">
         Дата регистрации в приложении: <br /> 01.01.2024

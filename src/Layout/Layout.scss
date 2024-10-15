@@ -1,4 +1,3 @@
-/* src/layouts/Layout.scss */
 .layout {
   display: flex;
   flex-direction: column;
@@ -8,6 +7,7 @@
   position: relative;
   margin: 0 auto;
   background-color: #272727;
+  overflow: hidden; /* Отключаем скроллинг */
 }
 
 main {
@@ -16,7 +16,5 @@ main {
   align-items: center;
   max-width: 100vw;
   height: 100%;
-  overflow: auto;
+  overflow-y: auto; /* Если нужно, чтобы основной контент был прокручиваемым */
 }
-
-/* Удаляем все стили, связанные с модалкой */
