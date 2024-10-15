@@ -1,10 +1,7 @@
-// store/useUserStore.ts
-
 import { create } from "zustand";
-import { retrieveLaunchParams } from "@telegram-apps/sdk";
+import { retrieveLaunchParams } from "@telegram-apps/sdk"; // предполагаемый путь к SDK
 import photoUrl from "../assets/images/avatar.png";
 import { User as AppUser } from "../types/User";
-import tg from "../utils/tg"; // Убедитесь, что путь корректный
 
 // Интерфейс состояния пользователя
 interface UserState {
@@ -66,13 +63,32 @@ export const useUserStore = create<UserState>((set) => ({
 
     console.log("initializeUser вызван");
     console.log("NODE_ENV:", process.env.NODE_ENV);
-    console.log("tg:", tg);
-    console.log("tg.initDataUnsafe:", tg?.initDataUnsafe);
 
-    // Проверяем, доступен ли Telegram WebApp и содержит ли initDataUnsafe данные пользователя
-    if (tg?.initDataUnsafe?.user) {
-      console.log("Telegram WebApp обнаружен с данными пользователя");
-      const tgUser = tg.initDataUnsafe.user;
+    // Проверяем доступность Telegram WebApp
+    const tg = (window as any).Telegram?.WebApp;
+
+    if (!tg) {
+      console.warn("Telegram WebApp недоступен, используем дефолтные данные.");
+      set({ user: defaultUser, isLoading: false });
+      return;
+    }
+
+    // Убедимся, что WebApp инициализировался
+    tg.ready();
+    tg.expand();
+    console.log("Telegram WebApp обнаружен.");
+
+    // Получаем параметры запуска (initDataRaw)
+    const launchParams = retrieveLaunchParams(); // Теперь это объект
+    const { initDataRaw } = launchParams; // Получаем initDataRaw
+    const initDataUnsafe = (launchParams as any).initDataUnsafe; // Получаем initDataUnsafe через приведение типа
+
+    console.log("initDataRaw:", initDataRaw);
+    console.log("initDataUnsafe:", initDataUnsafe);
+
+    // Если данные пользователя присутствуют в initDataUnsafe
+    if (initDataUnsafe?.user) {
+      const tgUser = initDataUnsafe.user;
 
       // Создаём объект AppUser из данных Telegram
       const appUser: AppUser = {
@@ -85,47 +101,38 @@ export const useUserStore = create<UserState>((set) => ({
         photo_url: tgUser.photo_url || photoUrl,
       };
 
-      // Получаем initDataRaw для отправки на сервер
-      const { initDataRaw } = retrieveLaunchParams();
-
-      console.log("initDataRaw:", initDataRaw);
-
+      // Если initDataRaw доступен, отправляем его на сервер для валидации
       if (initDataRaw) {
-        // Отправляем initDataRaw на сервер для валидации
-        const verifiedUser = await verifyInitData(initDataRaw);
-
-        if (verifiedUser) {
-          // Если валидация успешна, используем данные с сервера
-          set({ user: verifiedUser, isLoading: false });
-          console.log(
-            "Пользователь успешно инициализирован и валидация прошла."
-          );
-        } else {
-          // Если валидация не прошла, используем данные из initDataUnsafe
-          console.warn(
-            "Валидация init данных не прошла, используем данные из initDataUnsafe."
-          );
-          set({ user: appUser, isLoading: false });
+        try {
+          const verifiedUser = await verifyInitData(initDataRaw);
+          if (verifiedUser) {
+            set({ user: verifiedUser, isLoading: false });
+            console.log(
+              "Пользователь успешно инициализирован и валидация прошла."
+            );
+            return;
+          } else {
+            console.warn(
+              "Валидация init данных не прошла. Используем данные из initDataUnsafe."
+            );
+          }
+        } catch (error) {
+          console.error("Ошибка при отправке initDataRaw на сервер:", error);
         }
       } else {
-        // Если initDataRaw отсутствует, используем данные из initDataUnsafe
         console.warn(
           "initDataRaw отсутствуют, используем данные из initDataUnsafe."
         );
-        set({ user: appUser, isLoading: false });
       }
-    } else if (process.env.NODE_ENV === "development") {
-      // Если Telegram WebApp недоступен и режим разработки, используем defaultUser
-      console.log("Используются дефолтные данные пользователя (разработка).");
-      set({ user: defaultUser, isLoading: false });
+
+      // Устанавливаем пользователя из initDataUnsafe, если серверная валидация не прошла
+      set({ user: appUser, isLoading: false });
     } else {
-      // Если Telegram WebApp недоступен и режим продакшена, можно установить ошибку или перенаправить пользователя
+      // Если данные пользователя отсутствуют
       console.warn(
-        "Telegram WebApp недоступен. Используем дефолтные данные пользователя."
+        "Данные пользователя отсутствуют в initDataUnsafe. Используем дефолтные данные."
       );
       set({ user: defaultUser, isLoading: false });
-      // Опционально:
-      // set({ error: "Telegram WebApp недоступен." });
     }
   },
 }));
