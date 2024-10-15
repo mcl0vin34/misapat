@@ -1,6 +1,7 @@
 interface Window {
   Telegram: {
     WebApp: {
+      initDataUnsafe: any;
       expand: () => void;
       close: () => void;
       MainButton: {

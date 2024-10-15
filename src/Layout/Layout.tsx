@@ -61,12 +61,13 @@ const Layout = () => {
     if (offlineIncome > 0) {
       // Открываем модальное окно через глобальный store
       useModalStore.getState().openModal(
-        <>
-          <h2>Вы вернулись!</h2>
-          <p>
+        <div>
+          <h2 style={{ color: "#fff", marginBottom: "20px" }}>Вы вернулись!</h2>
+          <p style={{ color: "#fff", marginBottom: "20px" }}>
             Пока вас не было, вы заработали {Math.floor(offlineIncome)} монет.
           </p>
           <button
+            style={{ background: "#fff", color: "black" }}
             onClick={() => {
               useModalStore.getState().closeModal();
               setOfflineIncome(0);
@@ -74,7 +75,7 @@ const Layout = () => {
           >
             Забрать награду
           </button>
-        </>
+        </div>
       );
     }
   }, [offlineIncome, setOfflineIncome]);
