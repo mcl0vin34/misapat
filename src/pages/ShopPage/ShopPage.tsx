@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import SharedContainer from "../../components/UI/SharedContainer/SharedContainer";
 import styles from "./ShopPage.module.scss";
 import ItemsShop from "../../components/ItemsShop/ItemsShop";
-import LevelingShop from "../../components/LevelingShop/LevelingShop";
+import LevelingShop from "../../components/BustersShop/BustersShop";
 
 const ShopPage = () => {
   const [activeTab, setActiveTab] = useState<"items" | "leveling">("items");

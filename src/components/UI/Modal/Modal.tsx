@@ -1,4 +1,3 @@
-// src/components/UI/Modal/Modal.tsx
 import React, { useEffect, useRef, useState } from "react";
 import "./Modal.scss";
 import closeIcon from "../../../assets/icons/close.svg";
@@ -24,7 +23,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
       setIsClosing(false);
       setAnimate(false);
 
-      // Добавляем слушателя клика вне модального окна
       const handleClickOutside = (event: MouseEvent) => {
         if (overlayRef.current && event.target === overlayRef.current) {
           handleClose();
@@ -32,7 +30,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
       };
       document.addEventListener("mousedown", handleClickOutside);
 
-      // Добавляем класс анимации после небольшой задержки
       setTimeout(() => {
         setAnimate(true);
       }, 10);
@@ -49,7 +46,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
     setTimeout(() => {
       setIsClosing(false);
       onClose();
-    }, 300); // Длительность анимации закрытия
+    }, 300);
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -59,8 +56,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   const handleTouchMove = (e: React.TouchEvent) => {
     if (startYRef.current !== null) {
       const currentY = e.touches[0].clientY;
-      if (currentY - startYRef.current > 100) {
-        // Порог для свайпа вниз
+      if (currentY - startYRef.current > 50) {
+        // Порог уменьшен для чувствительности свайпа
         handleClose();
       }
     }

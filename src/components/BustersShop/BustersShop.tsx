@@ -1,13 +1,13 @@
 import React from "react";
 import useCoinStore from "../../store/useCoinStore";
-import styles from "./LevelingShop.module.scss";
+import styles from "./BustersShop.module.scss";
 
-const LevelingShop = () => {
+const BustersShop = () => {
   const { upgrades, purchaseUpgrade, coins, passiveIncomeRate } =
     useCoinStore();
 
   return (
-    <div className={styles.levelingShop}>
+    <div className={styles.bustersShop}>
       <h1>Прокачка пассивного дохода</h1>
       <p>
         Ваш текущий пассивный доход: {Math.round(passiveIncomeRate)} монет/час
@@ -42,4 +42,4 @@ const LevelingShop = () => {
   );
 };
 
-export default LevelingShop;
+export default BustersShop;

@@ -38,23 +38,6 @@ const FriendsInvite = () => {
   return (
     <SharedContainer>
       <div className={styles.friendsInvite}>
-        <header>
-          <div className={styles.header}>
-            <h1 className={styles.header_title}>Друзья</h1>
-          </div>
-
-          <div className={styles.rewardBlock}>
-            <div className={styles.rewardBlock_top}>
-              <img src={coinIcon} alt="Coin" className={styles.coinIcon} />
-              <p className={styles.rewardBlock_description}>+50 000</p>
-            </div>
-
-            <span className={styles.rewardBlock_description_mini}>
-              тебе и другу!
-            </span>
-          </div>
-        </header>
-
         <div className={styles.scrollContainer}>
           {loading ? (
             <p>Загрузка...</p>
@@ -62,6 +45,27 @@ const FriendsInvite = () => {
             <p className={styles.errorMessage}>{error}</p>
           ) : friends.length > 0 ? (
             <div className={styles.friendsList}>
+              <header>
+                <div className={styles.header}>
+                  <h1 className={styles.header_title}>Друзья</h1>
+                </div>
+
+                <div className={styles.rewardBlock}>
+                  <div className={styles.rewardBlock_top}>
+                    <img
+                      src={coinIcon}
+                      alt="Coin"
+                      className={styles.coinIcon}
+                    />
+                    <p className={styles.rewardBlock_description}>+50 000</p>
+                  </div>
+
+                  <span className={styles.rewardBlock_description_mini}>
+                    тебе и другу!
+                  </span>
+                </div>
+              </header>
+
               <p className={styles.friendsList_count}>
                 У тебя {friends.length} друзей
               </p>
@@ -85,6 +89,19 @@ const FriendsInvite = () => {
                   </li>
                 ))}
               </ul>
+
+              <div className={styles.inviteButtons}>
+                <button className={styles.inviteFriend}>
+                  Пригласить друга
+                </button>
+                <button className={styles.copyLink}>
+                  <CopyIcon />
+                </button>
+              </div>
+
+              <p className={styles.inviteText}>
+                Приглашай друга и получайте совместную награду!
+              </p>
             </div>
           ) : (
             <p className={styles.noFriendsMessage}>
@@ -92,17 +109,6 @@ const FriendsInvite = () => {
             </p>
           )}
         </div>
-
-        <div className={styles.inviteButtons}>
-          <button className={styles.inviteFriend}>Пригласить друга</button>
-          <button className={styles.copyLink}>
-            <CopyIcon />
-          </button>
-        </div>
-
-        <p className={styles.inviteText}>
-          Приглашай друга и получайте совместную награду!
-        </p>
       </div>
     </SharedContainer>
   );

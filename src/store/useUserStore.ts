@@ -10,17 +10,6 @@ interface UserState {
   initializeUser: () => void;
 }
 
-// Дефолтные данные пользователя для режима разработки
-//const defaultUser: AppUser = {
-//  id: 2281337,
-//  first_name: "Muamee",
-//  last_name: "4ever",
-//  username: "test_user",
-//  language_code: "ru",
-//  is_premium: false,
-//  photo_url: photoUrl, // Путь к дефолтной аватарке
-//};
-
 // Моковые данные для разработки
 const mockTelegramUser: AppUser = {
   id: 123456789,

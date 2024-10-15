@@ -114,3 +114,26 @@
     }
   }
 }
+
+.modal_wrapper {
+  padding-top: 100px;
+  height: 100vh;
+  overflow: auto;
+}
+
+.modal-title {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 30px;
+  text-align: center;
+  color: #f1f1f1;
+  margin-bottom: 33px;
+}
+
+.modal-descr {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: left;
+  color: #888888;
+}

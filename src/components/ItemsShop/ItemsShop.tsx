@@ -1,4 +1,3 @@
-// src/components/ItemsShop/ItemsShop.tsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ShopCard from "../ShopCard/ShopCard";
@@ -12,7 +11,11 @@ const ItemsShop = () => {
   const [shopItems, setShopItems] = useState<ShopItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
-  const { openModal, isModalOpen, modalContent } = useModalStore();
+  const { openModal, modalStack } = useModalStore(); // Используем modalStack вместо modalContent и isModalOpen
+
+  // Определяем, открыта ли модалка (если стек не пуст)
+  const isModalOpen = modalStack.length > 0;
+  const modalContent = modalStack[modalStack.length - 1]; // Последняя модалка в стеке
 
   useEffect(() => {
     axios

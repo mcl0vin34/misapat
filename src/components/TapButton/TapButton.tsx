@@ -1,20 +1,22 @@
 import React, { useState, useEffect, useRef } from "react";
-import coinIcon from "../../assets/icons/coin.svg"; // Путь к иконке монеты
-import { nanoid } from "nanoid"; // Для генерации уникальных ID
-import "./TapButton.scss"; // Подключаем стили для этого компонента
+import coinIcon from "../../assets/icons/coin.svg";
+import { nanoid } from "nanoid";
+import "./TapButton.scss";
+import useCoinStore from "../../store/useCoinStore"; // Импортируем стор
 
 interface TapButtonProps {
   onIncrement: () => void;
-  lionImage: string; // Путь к изображению льва
+  lionImage: string;
 }
 
 const TapButton: React.FC<TapButtonProps> = ({ onIncrement, lionImage }) => {
+  const { coinsPerClick, energy } = useCoinStore(); // Получаем количество монет за клик и энергию из стора
   const [tapEffects, setTapEffects] = useState<
     { id: string; x: number; y: number }[]
   >([]);
   const [coinAmountEffect, setCoinAmountEffect] = useState<
     { id: string; x: number; y: number; amount: number }[]
-  >([]); // Для отображения монет
+  >([]);
   const [isPressed, setIsPressed] = useState(false);
   const [pressTransform, setPressTransform] = useState<{
     x: number;
@@ -27,26 +29,30 @@ const TapButton: React.FC<TapButtonProps> = ({ onIncrement, lionImage }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const handleInteractionStart = (e: React.PointerEvent<HTMLButtonElement>) => {
+    // Проверяем, достаточно ли энергии
+    if (energy < coinsPerClick) {
+      return; // Если энергии недостаточно, выходим из функции
+    }
+
     const touchX = e.clientX;
     const touchY = e.clientY;
 
-    onIncrement();
+    onIncrement(); // Вызываем функцию увеличения монет
 
     if (wrapperRef.current) {
       const rect = wrapperRef.current.getBoundingClientRect();
-      const x = touchX - rect.left; // Относительное положение внутри кнопки
+      const x = touchX - rect.left;
       const y = touchY - rect.top;
 
-      // Добавляем новый текст монет
-      const newText = { id: nanoid(), x, y, amount: 1 };
+      // Используем текущее количество монет за клик из стора
+      const newText = { id: nanoid(), x, y, amount: coinsPerClick };
       setCoinAmountEffect((prevTexts) => [...prevTexts, newText]);
 
-      // Генерируем множество монет
-      const numCoins = 10; // Уменьшили количество монет до 10
+      const numCoins = 10;
       const newCoins = Array.from({ length: numCoins }).map(() => {
         const id = nanoid();
-        const angle = Math.random() * 360; // Случайный угол в градусах
-        const distance = 100 + Math.random() * 50; // Случайное расстояние от 100 до 150 пикселей
+        const angle = Math.random() * 360;
+        const distance = 100 + Math.random() * 50;
         const radians = (angle * Math.PI) / 180;
         const xOffset = Math.cos(radians) * distance;
         const yOffset = Math.sin(radians) * distance;
@@ -56,8 +62,7 @@ const TapButton: React.FC<TapButtonProps> = ({ onIncrement, lionImage }) => {
 
       setTapEffects((prevEffects) => [...prevEffects, ...newCoins]);
 
-      // Определяем направление клика и применяем соответствующий сдвиг
-      const offsetX = (x / rect.width - 0.5) * 20; // Максимальный сдвиг 10px в каждую сторону
+      const offsetX = (x / rect.width - 0.5) * 20;
       const offsetY = (y / rect.height - 0.5) * 20;
 
       setPressTransform({ x: offsetX, y: offsetY });
@@ -70,10 +75,9 @@ const TapButton: React.FC<TapButtonProps> = ({ onIncrement, lionImage }) => {
   };
 
   useEffect(() => {
-    // Удаляем старые эффекты через 1 секунду
     const timeout = setTimeout(() => {
       setTapEffects([]);
-      setCoinAmountEffect([]); // Убираем отображение монет
+      setCoinAmountEffect([]);
     }, 1000);
 
     return () => clearTimeout(timeout);
@@ -95,9 +99,9 @@ const TapButton: React.FC<TapButtonProps> = ({ onIncrement, lionImage }) => {
         onPointerDown={handleInteractionStart}
         onPointerUp={handleInteractionEnd}
         onPointerCancel={handleInteractionEnd}
+        disabled={energy < coinsPerClick} // Блокируем кнопку при недостатке энергии
       >
         <img src={lionImage} alt="Lion" className="lion-image" />
-        {/* Эффекты разлетающихся монет */}
         <div className="coin-animation">
           {tapEffects.map((effect) => (
             <img
@@ -114,7 +118,6 @@ const TapButton: React.FC<TapButtonProps> = ({ onIncrement, lionImage }) => {
             />
           ))}
         </div>
-        {/* Отображение количества полученных монет */}
         {coinAmountEffect.map((effect) => (
           <div
             key={effect.id}

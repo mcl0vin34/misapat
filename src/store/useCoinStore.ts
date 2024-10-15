@@ -1,5 +1,3 @@
-// src/store/useCoinStore.ts
-
 import { create } from "zustand";
 
 interface Upgrade {
@@ -23,6 +21,7 @@ interface Booster {
 
 interface CoinStoreState {
   coins: number;
+  coinsPerClick: number;
   passiveIncomeRate: number;
   energy: number;
   maxEnergy: number;
@@ -34,9 +33,10 @@ interface CoinStoreState {
   offlineIncome: number;
   setOfflineIncome: (amount: number) => void;
   incrementCoins: (amount: number) => void;
-  decrementEnergy: () => void;
+  decrementEnergy: (amount: number) => void;
   restoreEnergy: () => void;
   restoreMaxEnergy: () => void;
+  setCoinsPerClick: (amount: number) => void;
   activateBooster: () => void;
   purchaseUpgrade: (id: number) => void;
   setPassiveIncomeRate: (rate: number) => void;
@@ -48,6 +48,7 @@ interface CoinStoreState {
   stopEnergyRecovery: () => void;
   setLastActiveTime: (timestamp: number) => void;
   calculateOfflineIncome: () => void;
+  calculateEnergyRestoration: () => void; // Добавляем метод восстановления энергии
 }
 
 const useCoinStore = create<CoinStoreState>((set, get) => {
@@ -90,11 +91,12 @@ const useCoinStore = create<CoinStoreState>((set, get) => {
 
   return {
     coins: savedCoins ? Number(savedCoins) : 0,
+    coinsPerClick: 13, // Начальное количество монет за клик
     passiveIncomeRate: savedPassiveIncomeRate
       ? Number(savedPassiveIncomeRate)
       : 0,
-    energy: 500,
-    maxEnergy: 500,
+    energy: 2000,
+    maxEnergy: 2000,
     availableBoosters: 6,
     totalBoosters: 6,
     activeBoosters: [],
@@ -114,12 +116,12 @@ const useCoinStore = create<CoinStoreState>((set, get) => {
       });
     },
 
-    decrementEnergy: () => {
+    decrementEnergy: (amount: number) => {
       set((state) => {
-        if (state.energy > 0) {
-          return { energy: state.energy - 1 };
+        if (state.energy >= amount) {
+          return { energy: state.energy - amount };
         }
-        return state;
+        return state; // Если энергии недостаточно, возвращаем текущее состояние без изменений
       });
     },
 
@@ -134,6 +136,10 @@ const useCoinStore = create<CoinStoreState>((set, get) => {
       set((state) => {
         return { energy: state.maxEnergy };
       });
+    },
+
+    setCoinsPerClick: (amount: number) => {
+      set(() => ({ coinsPerClick: amount }));
     },
 
     activateBooster: () => {
@@ -277,6 +283,25 @@ const useCoinStore = create<CoinStoreState>((set, get) => {
 
         incrementCoins(offlineIncome);
         setOfflineIncome(offlineIncome);
+      }
+    },
+
+    calculateEnergyRestoration: () => {
+      const {
+        lastActiveTime,
+        maxEnergy,
+        energy,
+        restoreMaxEnergy,
+        setLastActiveTime,
+      } = get();
+      if (lastActiveTime !== null) {
+        const currentTime = Date.now();
+        const timeDifference = (currentTime - lastActiveTime) / 1000; // в секундах
+        const restoredEnergy = Math.floor(timeDifference * 2); // 2 энергии в секунду
+        const newEnergy = Math.min(energy + restoredEnergy, maxEnergy); // Не превышаем maxEnergy
+
+        set({ energy: newEnergy });
+        setLastActiveTime(currentTime); // Обновляем время последнего активного входа
       }
     },
   };
