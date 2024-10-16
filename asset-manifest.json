@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/misapat/static/css/main.f4c1a527.css",
-    "main.js": "/misapat/static/js/main.13a8106a.js",
+    "main.js": "/misapat/static/js/main.92732e01.js",
     "static/media/lion.png": "/misapat/static/media/lion.b631b4d3b2c729f61388.png",
     "static/media/vaynera.webp": "/misapat/static/media/vaynera.28968d8ecd06e77b44b0.webp",
     "static/media/image-10.webp": "/misapat/static/media/image-10.6e185c5aad89fa67ab03.webp",
@@ -44,10 +44,10 @@
     "static/media/close.svg": "/misapat/static/media/close.29cc823f760c384aa141abf3354f1bf5.svg",
     "static/media/heart.svg": "/misapat/static/media/heart.c794475b2afa94d38723ed73be7e7b2f.svg",
     "main.f4c1a527.css.map": "/misapat/static/css/main.f4c1a527.css.map",
-    "main.13a8106a.js.map": "/misapat/static/js/main.13a8106a.js.map"
+    "main.92732e01.js.map": "/misapat/static/js/main.92732e01.js.map"
   },
   "entrypoints": [
     "static/css/main.f4c1a527.css",
-    "static/js/main.13a8106a.js"
+    "static/js/main.92732e01.js"
   ]
 }
