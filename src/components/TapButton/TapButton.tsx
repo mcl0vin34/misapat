@@ -29,16 +29,27 @@ const TapButton: React.FC<TapButtonProps> = ({ lionImage }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const handleInteractionStart = async (
-    e: React.PointerEvent<HTMLButtonElement>
+    e: React.MouseEvent<HTMLButtonElement> | React.TouchEvent<HTMLButtonElement>
   ) => {
-    e.preventDefault(); // Предотвращаем стандартное действие
+    // Удаляем или комментируем эту строку
+    // e.preventDefault();
     if (energy < coinsPerClick) {
       console.warn("Недостаточно энергии для добавления монет.");
       return;
     }
 
-    const touchX = e.clientX;
-    const touchY = e.clientY;
+    let touchX: number;
+    let touchY: number;
+
+    if ("touches" in e && e.touches.length > 0) {
+      touchX = e.touches[0].clientX;
+      touchY = e.touches[0].clientY;
+    } else if ("clientX" in e) {
+      touchX = e.clientX;
+      touchY = e.clientY;
+    } else {
+      return;
+    }
 
     await addCoins();
 
@@ -93,8 +104,11 @@ const TapButton: React.FC<TapButtonProps> = ({ lionImage }) => {
     }
   };
 
-  const handleInteractionEnd = (e: React.PointerEvent<HTMLButtonElement>) => {
-    e.preventDefault(); // Предотвращаем стандартное действие
+  const handleInteractionEnd = (
+    e: React.MouseEvent<HTMLButtonElement> | React.TouchEvent<HTMLButtonElement>
+  ) => {
+    // Удаляем или комментируем эту строку
+    // e.preventDefault();
     setIsPressed(false);
   };
 
@@ -119,8 +133,10 @@ const TapButton: React.FC<TapButtonProps> = ({ lionImage }) => {
       <div className="button-border"></div>
       <button
         className="lion-button"
-        onPointerDown={handleInteractionStart}
-        onPointerUp={handleInteractionEnd}
+        onMouseDown={handleInteractionStart}
+        onMouseUp={handleInteractionEnd}
+        onTouchStart={handleInteractionStart}
+        onTouchEnd={handleInteractionEnd}
         onPointerCancel={handleInteractionEnd}
         disabled={energy < coinsPerClick}
       >
