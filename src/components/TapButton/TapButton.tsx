@@ -1,12 +1,11 @@
-// components/TapButton/TapButton.tsx
 import React, { useState, useRef, useEffect } from "react";
 import TapIcons from "../TapIcons/TapIcons";
 import { nanoid } from "nanoid";
 import "./TapButton.scss";
 import useCoinStore from "../../store/useCoinStore";
-import tg from "../../utils/tg"; // Импортируем tg как экспорт по умолчанию
+import tg from "../../utils/tg";
 
-const MAX_ICONS = 50; // Максимальное количество иконок
+const MAX_ICONS = 50;
 
 interface TapButtonProps {
   lionImage: string;
@@ -32,6 +31,7 @@ const TapButton: React.FC<TapButtonProps> = ({ lionImage }) => {
   const handleInteractionStart = async (
     e: React.PointerEvent<HTMLButtonElement>
   ) => {
+    e.preventDefault(); // Предотвращаем стандартное действие
     if (energy < coinsPerClick) {
       console.warn("Недостаточно энергии для добавления монет.");
       return;
@@ -48,7 +48,7 @@ const TapButton: React.FC<TapButtonProps> = ({ lionImage }) => {
       const y = touchY - rect.top;
 
       // Генерируем иконки
-      const numIcons = 10; // Количество иконок за клик
+      const numIcons = 10;
       const newIcons: IconEffect[] = [];
       for (let i = 0; i < numIcons; i++) {
         const id = nanoid();
@@ -83,7 +83,7 @@ const TapButton: React.FC<TapButtonProps> = ({ lionImage }) => {
       setIsPressed(true);
     }
 
-    // Добавляем вибрацию только в продакшене
+    // Добавляем вибрацию (если нужно)
     const isProduction = process.env.NODE_ENV === "production";
 
     if (isProduction && (tg as any)?.HapticFeedback) {
@@ -93,7 +93,8 @@ const TapButton: React.FC<TapButtonProps> = ({ lionImage }) => {
     }
   };
 
-  const handleInteractionEnd = () => {
+  const handleInteractionEnd = (e: React.PointerEvent<HTMLButtonElement>) => {
+    e.preventDefault(); // Предотвращаем стандартное действие
     setIsPressed(false);
   };
 
@@ -120,7 +121,6 @@ const TapButton: React.FC<TapButtonProps> = ({ lionImage }) => {
         className="lion-button"
         onPointerDown={handleInteractionStart}
         onPointerUp={handleInteractionEnd}
-        onTouchMove={(e) => e.preventDefault()} // Предотвращаем прокрутку при тач-событиях
         onPointerCancel={handleInteractionEnd}
         disabled={energy < coinsPerClick}
       >

@@ -15,8 +15,20 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   const startYRef = useRef<number | null>(null);
   const [isClosing, setIsClosing] = useState(false);
   const [animate, setAnimate] = useState(false);
+  const [isAtTop, setIsAtTop] = useState(true);
 
   const { modalBackgroundColor } = useModalStore();
+
+  useEffect(() => {
+    if (isOpen || isClosing) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen, isClosing]);
 
   useEffect(() => {
     if (isOpen) {
@@ -51,13 +63,17 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
 
   const handleTouchStart = (e: React.TouchEvent) => {
     startYRef.current = e.touches[0].clientY;
+    if (modalRef.current) {
+      setIsAtTop(modalRef.current.scrollTop === 0);
+    }
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isAtTop) return;
     if (startYRef.current !== null) {
       const currentY = e.touches[0].clientY;
-      if (currentY - startYRef.current > 50) {
-        // Порог уменьшен для чувствительности свайпа
+      const deltaY = currentY - startYRef.current;
+      if (deltaY > 50) {
         handleClose();
       }
     }
@@ -73,9 +89,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
     <div
       className={`modal-overlay ${isClosing ? "fade-out" : "fade-in"}`}
       ref={overlayRef}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
     >
       <div
         className={`modal-content ${
@@ -85,6 +98,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
         style={{
           background: modalBackgroundColor || "#2d3236",
         }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       >
         <img
           src={closeIcon}
