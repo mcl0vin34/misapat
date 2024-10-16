@@ -1,3 +1,4 @@
+// src/pages/MainPage/MainPage.tsx
 import React, { useEffect, useState } from "react";
 import lionImage from "../../assets/images/lion.png";
 import coinIcon from "../../assets/icons/coin.svg";
@@ -11,20 +12,9 @@ import AnimatedDigit from "../../components/UI/AnimatedDigit/AnimatedDigit";
 import SharedContainer from "../../components/UI/SharedContainer/SharedContainer";
 
 const MainPage = () => {
-  const {
-    decrementEnergy,
-    coins,
-    incrementCoins,
-    coinsPerClick,
-    passiveIncomeRate,
-  } = useCoinStore(); // добавляем passiveIncomeRate
+  const { coins, passiveIncomeRate } = useCoinStore(); // Вы можете удалить неиспользуемые методы
 
   const [prevCoins, setPrevCoins] = useState(coins);
-
-  const handleIncrement = () => {
-    decrementEnergy(coinsPerClick); // Уменьшаем энергию на количество монет за клик
-    incrementCoins(coinsPerClick); // Добавляем монеты за клик
-  };
 
   useEffect(() => {
     if (coins !== prevCoins) {
@@ -59,7 +49,7 @@ const MainPage = () => {
       </div>
 
       <div className="button__wrapper">
-        <TapButton onIncrement={handleIncrement} lionImage={lionImage} />
+        <TapButton lionImage={lionImage} /> {/* Убрали onIncrement */}
       </div>
 
       <div className="bottom_actions">

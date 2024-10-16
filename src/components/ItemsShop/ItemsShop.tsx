@@ -55,14 +55,20 @@ const ItemsShop = () => {
 
   const leftColumn = [
     cardsWithImage[0],
-    cardsWithoutImage[0],
-    cardsWithImage[1],
+    cardsWithImage[2],
+    cardsWithImage[4],
+    cardsWithImage[6],
+    cardsWithImage[8],
+    cardsWithImage[10],
   ];
 
   const rightColumn = [
-    cardsWithoutImage[1],
-    cardsWithImage[2],
+    cardsWithImage[1],
     cardsWithImage[3],
+    cardsWithImage[5],
+    cardsWithImage[7],
+    cardsWithImage[9],
+    cardsWithImage[11],
   ];
 
   return (

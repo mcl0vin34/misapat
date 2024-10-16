@@ -1,16 +1,15 @@
-/* src/components/FooterNav/FooterNav.scss */
 .footer {
   position: fixed;
   bottom: 0;
-  width: 100%; /* Задаем ширину 90% */
+  width: 100%;
   height: 13%;
   border-radius: 20px;
   background-color: #2d3236;
   display: flex;
-  justify-content: center; /* Центрируем содержимое */
+  justify-content: center;
   align-items: center;
-  padding: 10px 0; /* Добавили вертикальные отступы */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Добавили тень для улучшения видимости */
+  padding: 10px 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .footer_menu {
@@ -27,16 +26,16 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column; /* Изменили направление на колонку */
+    flex-direction: column;
   }
 
   a {
     display: flex;
-    flex-direction: column; /* Располагаем иконку и метку вертикально */
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 60px; /* Увеличили ширину для метки */
-    height: 60px; /* Увеличили высоту для метки */
+    width: 60px;
+    height: 60px;
     border-radius: 12px;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -47,17 +46,11 @@
       background-color: #000;
 
       svg path {
-        fill: #fff !important;
         stroke: #fff;
       }
 
       .nav-label {
         color: #fff;
-      }
-
-      /* Исключаем Leaderboard иконку из общего правила */
-      &:has(svg.leaderboard-icon) svg path {
-        fill: initial !important;
       }
     }
 
@@ -77,6 +70,14 @@
     }
   }
 
+  .leaderboard__link {
+    &.active {
+      svg path {
+        fill: none !important;
+      }
+    }
+  }
+
   svg {
     width: 30px;
     height: 30px;
@@ -88,13 +89,21 @@
       transition: fill 0.3s ease, stroke 0.3s ease;
     }
   }
-
-  /* Исключаем Leaderboard иконку из правила fill: #fff при активном состоянии */
-  //a.active .leaderboard-icon path {
-  //  fill: #000 !important; /* Устанавливаем другой цвет, например, черный */
-  //  stroke: #000 !important;
-  //}
 }
+
+.active_shop_link {
+  background-color: #000;
+}
+
+///* Переопределение активных стилей для иконки магазина */
+//.footer_menu__item a.active .shop-icon path {
+//  fill: rgb(117, 117, 117) !important;
+//  stroke: rgb(117, 117, 117) !important;
+//}
+
+//.footer_menu__item a.active .shop-icon + .nav-label {
+//  color: rgb(117, 117, 117) !important;
+//}
 
 /* Адаптивные стили для мобильных устройств */
 @media (max-width: 600px) {
@@ -117,93 +126,11 @@
   }
 }
 
-.footer_menu {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  list-style: none;
-  width: 100%;
-  padding: 0;
-  margin: 0;
-
-  .footer_menu__item {
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
-
-  a {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 74px;
-    height: 74px;
-    border-radius: 12px;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    position: relative;
-    text-decoration: none;
-
-    &.active {
-      background-color: #000;
-
-      svg path {
-        fill: #fff !important;
-        stroke: #fff;
-      }
-
-      .nav-label {
-        color: #fff;
-      }
-
-      /* Исключаем иконку магазина из общего правила */
-      &:has(svg.nav-icon.shop-icon) svg path {
-        fill: initial !important;
-      }
-    }
-
-    &:hover {
-      background-color: #000;
-
-      .nav-label {
-        color: #fff;
-      }
-    }
-
-    .nav-label {
-      margin-top: 5px;
-      font-size: 12px;
-      color: rgb(117, 117, 117);
-      transition: color 0.3s ease;
-    }
-  }
-
-  svg {
-    width: 30px;
-    height: 30px;
-  }
-
-  .nav-icon {
-    svg path {
-      fill: rgb(117, 117, 117);
-      transition: fill 0.3s ease, stroke 0.3s ease;
-    }
-
-    &.shop-icon {
-      /* Дополнительные стили для иконки магазина, если нужно */
-    }
-  }
-}
-
-/* Для экранов до 600px */
 @media (max-width: 600px) {
   .footer {
     padding: 8px 10px;
-    height: 12%; /* Немного уменьшили высоту */
-    width: 100%; /* Убедились, что меню занимает всю ширину */
+    height: 12%;
+    width: 100%;
   }
 
   .footer_menu__item a {
@@ -212,7 +139,7 @@
   }
 
   .footer_menu__item a .nav-label {
-    font-size: 11px; /* Сделаем текст меньше */
+    font-size: 11px;
   }
 
   .footer_menu__item a svg {

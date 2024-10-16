@@ -1,3 +1,5 @@
+// src/store/useModalStore.ts
+
 import { create } from "zustand";
 
 interface ModalState {

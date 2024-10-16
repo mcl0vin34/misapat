@@ -1,0 +1,23 @@
+/* components/TapIcons/TapIcons.scss */
+.icon {
+  position: absolute;
+  will-change: transform, opacity;
+  animation: flyIcon 0.7s forwards ease-out;
+}
+
+.icon img {
+  width: 20px;
+  height: 20px;
+}
+
+@keyframes flyIcon {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) translate(0, 0) scale(1) rotate(0deg);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) translate(var(--move-x), var(--move-y))
+      scale(0.5) rotate(720deg);
+  }
+}

@@ -25,7 +25,9 @@
 }
 
 .modal-content {
-  height: 694px;
+  min-height: 300px;
+
+  height: 70%;
   background-color: #1c1c1e;
   box-shadow: 0px 2px 0px 0px #e2ba68 inset;
   border-top: 2px solid #e2ba68;

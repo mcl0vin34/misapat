@@ -3,7 +3,6 @@ import React from "react";
 import { ReactComponent as CoinIcon } from "../../assets/icons/coin.svg";
 import styles from "./ShopCardModalContent.module.scss";
 import { ShopItem } from "../../types/ShopItem";
-import imageMap from "../../assets/imageMap";
 
 interface ShopCardModalContentProps {
   card: ShopItem;
@@ -15,7 +14,7 @@ const ShopCardModalContent: React.FC<ShopCardModalContentProps> = ({
   const modalClassName =
     card.type === "cardWithoutImage" ? styles.cardWithoutImage : styles.default;
 
-  console.log(card);
+  const imageSrc = `${process.env.PUBLIC_URL}/images/${card.image}`;
 
   return (
     <div className={styles.modal_wrapper}>
@@ -26,11 +25,7 @@ const ShopCardModalContent: React.FC<ShopCardModalContentProps> = ({
 
       <div className={`${styles.modalContent} ${modalClassName}`}>
         {card.image && (
-          <img
-            src={imageMap[card.image]} // Достаем путь из imageMap
-            alt={card.title}
-            className={styles.image}
-          />
+          <img src={imageSrc} alt={card.title} className={styles.image} />
         )}
 
         <h3 className={styles.title}>{card.title}</h3>

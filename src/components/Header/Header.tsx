@@ -2,6 +2,7 @@ import React from "react";
 import "./Header.scss";
 import useModalStore from "../../store/useModalStore";
 import { useUserStore } from "../../store/useUserStore"; // Импортируем стор пользователя
+import photoUrl from "../../assets/images/avatar.png";
 
 const Header: React.FC = () => {
   const { openModal } = useModalStore();
@@ -14,11 +15,7 @@ const Header: React.FC = () => {
   return (
     <header className="header" onClick={handleClick}>
       <span className="header__nickname">{user?.username || "Гость"}</span>
-      <img
-        src={user?.photo_url || "path/to/default/avatar.png"}
-        alt="Avatar"
-        className="header__avatar"
-      />
+      <img src={photoUrl} alt="Avatar" className="header__avatar" />
     </header>
   );
 };
@@ -39,11 +36,7 @@ const HeaderModalContent: React.FC<{ user: any }> = ({ user }) => {
 
   return (
     <div className="header-modal">
-      <img
-        src={user?.photo_url || "path/to/default/avatar.png"}
-        alt="Avatar"
-        className="header-modal__avatar"
-      />
+      <img src={photoUrl} alt="Avatar" className="header-modal__avatar" />
       <h2 className="header-modal__nickname">{user?.username || "Гость"}</h2>
       <p className="header-modal__id">{user?.id}</p>
 
