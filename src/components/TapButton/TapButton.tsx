@@ -29,27 +29,15 @@ const TapButton: React.FC<TapButtonProps> = ({ lionImage }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const handleInteractionStart = async (
-    e: React.MouseEvent<HTMLButtonElement> | React.TouchEvent<HTMLButtonElement>
+    e: React.PointerEvent<HTMLButtonElement>
   ) => {
-    // Удаляем или комментируем эту строку
-    // e.preventDefault();
     if (energy < coinsPerClick) {
       console.warn("Недостаточно энергии для добавления монет.");
       return;
     }
 
-    let touchX: number;
-    let touchY: number;
-
-    if ("touches" in e && e.touches.length > 0) {
-      touchX = e.touches[0].clientX;
-      touchY = e.touches[0].clientY;
-    } else if ("clientX" in e) {
-      touchX = e.clientX;
-      touchY = e.clientY;
-    } else {
-      return;
-    }
+    const touchX = e.clientX;
+    const touchY = e.clientY;
 
     await addCoins();
 
@@ -94,7 +82,7 @@ const TapButton: React.FC<TapButtonProps> = ({ lionImage }) => {
       setIsPressed(true);
     }
 
-    // Добавляем вибрацию (если нужно)
+    // Вибрация (если необходимо)
     const isProduction = process.env.NODE_ENV === "production";
 
     if (isProduction && (tg as any)?.HapticFeedback) {
@@ -104,11 +92,7 @@ const TapButton: React.FC<TapButtonProps> = ({ lionImage }) => {
     }
   };
 
-  const handleInteractionEnd = (
-    e: React.MouseEvent<HTMLButtonElement> | React.TouchEvent<HTMLButtonElement>
-  ) => {
-    // Удаляем или комментируем эту строку
-    // e.preventDefault();
+  const handleInteractionEnd = (e: React.PointerEvent<HTMLButtonElement>) => {
     setIsPressed(false);
   };
 
@@ -133,10 +117,8 @@ const TapButton: React.FC<TapButtonProps> = ({ lionImage }) => {
       <div className="button-border"></div>
       <button
         className="lion-button"
-        onMouseDown={handleInteractionStart}
-        onMouseUp={handleInteractionEnd}
-        onTouchStart={handleInteractionStart}
-        onTouchEnd={handleInteractionEnd}
+        onPointerDown={handleInteractionStart}
+        onPointerUp={handleInteractionEnd}
         onPointerCancel={handleInteractionEnd}
         disabled={energy < coinsPerClick}
       >

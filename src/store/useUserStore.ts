@@ -81,10 +81,68 @@ export const useUserStore = create<UserState>()(
             };
           }
 
-          // Далее отправляем запросы на сервер как обычно
-          // ...
+          // POST запрос для создания или обновления пользователя
+          const postResponse = await axios.post(
+            `${process.env.REACT_APP_API_URL}api/users`,
+            {},
+            {
+              params: {
+                id: userData.id,
+                username: userData.username,
+                first_name: userData.first_name,
+                last_name: userData.last_name || "",
+              },
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
 
-          set({ user: userData, isLoading: false });
+          if (postResponse.status !== 200) {
+            throw new Error(
+              `Ошибка при отправке POST запроса: ${postResponse.statusText}`
+            );
+          }
+
+          // GET запрос для получения обновлённых данных пользователя
+          const getResponse = await axios.get<AppUser>(
+            `${process.env.REACT_APP_API_URL}api/users/${userData.id}`
+          );
+
+          if (getResponse.status !== 200) {
+            throw new Error(
+              `Ошибка при отправке GET запроса: ${getResponse.statusText}`
+            );
+          }
+
+          const fetchedUserData = getResponse.data;
+
+          // Проверяем, что энергия получена с бэкенда
+          if (fetchedUserData.energy_left === undefined) {
+            throw new Error("Данные об энергии не получены с бэкенда.");
+          }
+
+          // Теперь получаем количество монет
+          const coinsResponse = await axios.get(
+            `${process.env.REACT_APP_API_URL}api/totalCoins/${userData.id}`
+          );
+
+          if (coinsResponse.status !== 200) {
+            throw new Error(
+              `Ошибка при получении количества монет: ${coinsResponse.statusText}`
+            );
+          }
+
+          const coinsData = coinsResponse.data;
+          const totalCoins = coinsData.coins || 0;
+
+          // Обновляем данные пользователя с количеством монет
+          const userWithCoins: AppUser = {
+            ...fetchedUserData,
+            coins: totalCoins,
+          };
+
+          set({ user: userWithCoins, isLoading: false });
         } catch (error: any) {
           console.error("Ошибка при инициализации пользователя:", error);
           toast.error(
@@ -95,7 +153,7 @@ export const useUserStore = create<UserState>()(
           set({
             error: error.message || "Неизвестная ошибка",
             isLoading: false,
-            user: null,
+            user: null, // Не используем mock user при ошибке
           });
         }
       },
