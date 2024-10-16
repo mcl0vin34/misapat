@@ -9,9 +9,7 @@ const BustersShop = () => {
   return (
     <div className={styles.bustersShop}>
       <h1>Прокачка пассивного дохода</h1>
-      <p>
-        Ваш текущий пассивный доход: {Math.round(passiveIncomeRate)} монет/час
-      </p>
+      <p>Текущий пассивный доход: {Math.round(passiveIncomeRate)} монет/час</p>
       <p>Ваши монеты: {Math.floor(coins)}</p>
       <div className={styles.upgrades}>
         {upgrades.map((upgrade) => (

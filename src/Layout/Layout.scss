@@ -1,20 +1,21 @@
 .layout {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  max-width: 100vw;
-  height: 100vh;
-  position: relative;
-  margin: 0 auto;
+  min-height: 100vh;
   background-color: #272727;
-  overflow: hidden; /* Отключаем скроллинг */
+}
+
+.content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 main {
-  flex-grow: 1;
-  justify-content: center;
-  align-items: center;
-  max-width: 100vw;
-  height: 100%;
-  overflow-y: auto; /* Если нужно, чтобы основной контент был прокручиваемым */
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  /* Удаляем overflow: hidden */
+  padding-bottom: 80px; /* Добавляем отступ снизу, равный высоте футера */
+  overflow-y: auto; /* Разрешаем вертикальную прокрутку */
 }

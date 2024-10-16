@@ -59,7 +59,12 @@ const ItemsShop = () => {
     cardsWithImage[4],
     cardsWithImage[6],
     cardsWithImage[8],
-    cardsWithImage[10],
+    cardsWithImage[12],
+    cardsWithImage[14],
+    cardsWithImage[16],
+    cardsWithImage[18],
+    cardsWithImage[20],
+    cardsWithImage[22],
   ];
 
   const rightColumn = [
@@ -69,6 +74,11 @@ const ItemsShop = () => {
     cardsWithImage[7],
     cardsWithImage[9],
     cardsWithImage[11],
+    cardsWithImage[13],
+    cardsWithImage[15],
+    cardsWithImage[17],
+    cardsWithImage[19],
+    cardsWithImage[21],
   ];
 
   return (

@@ -1,7 +1,8 @@
 import React from "react";
+import SharedContainer from "../../components/UI/SharedContainer/SharedContainer";
 
 const QuestsPage = () => {
-  return <div>Это страница 3</div>;
+  return <SharedContainer>Это страница 3</SharedContainer>;
 };
 
 export default QuestsPage;

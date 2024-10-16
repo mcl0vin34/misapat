@@ -1,29 +1,30 @@
-/* SharedContainer.scss */
-
 .main-page {
   display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  height: 100vh;
+  flex-direction: column;
+  flex: 1;
+  /* Удаляем overflow: hidden */
 }
 
 .container {
-  max-width: 480px;
-  width: 100%;
-  box-shadow: 0px 2px 0px 0px #e2ba68 inset;
-  border-top: 3px solid #e2ba68;
-  height: 90%;
-  padding: 20px;
-  border-radius: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #2d3236 0%, #000000 100%);
   border-top-left-radius: 62px;
   border-top-right-radius: 62px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   background: linear-gradient(180deg, #2d3236 0%, #000000 100%);
+  box-shadow: 0px 2px 0px 0px #e2ba68 inset, 0 4px 20px rgba(0, 0, 0, 0.2);
+  border-top: 3px solid #e2ba68;
+  margin-top: 80px;
+  /* Удаляем overflow: hidden */
+  /* Остальные стили */
 }
 
 .inner_container {
+  flex: 1;
   display: flex;
-  justify-content: space-between;
   flex-direction: column;
-  height: 88%;
+  padding: 20px;
+  justify-content: space-between;
+  /* Удаляем overflow: hidden */
 }

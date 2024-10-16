@@ -1,15 +1,16 @@
 .shopPage {
-  height: 100vh; /* Высота страницы равна высоте окна */
+  /* min-height: 100vh; Удаляем это свойство */
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* Скрываем переполнение, чтобы контент оставался внутри */
+  flex: 1; /* Добавляем flex: 1 для заполнения доступного пространства */
 }
 
 .scrollContainer {
   flex: 1;
-  overflow-y: auto; /* Включаем вертикальный скролл */
-  -webkit-overflow-scrolling: touch; /* Поддержка плавного скролла на iOS */
-  margin-bottom: 40px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  /* Если padding-bottom не нужен, можно его убрать */
+  /* padding-bottom: 80px; */
 }
 
 .shop_title {

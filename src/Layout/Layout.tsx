@@ -85,13 +85,16 @@ const Layout = () => {
     }
   }, [offlineIncome, setOfflineIncome]);
 
+  // Layout.tsx
   return (
     <div className="layout">
       <Header />
-      <main>
-        <Outlet />
-      </main>
-      <FooterNav />
+      <div className="content-wrapper">
+        <main>
+          <Outlet />
+        </main>
+        <FooterNav />
+      </div>
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         {modalContent}
       </Modal>

@@ -120,6 +120,7 @@ const TapButton: React.FC<TapButtonProps> = ({ lionImage }) => {
         className="lion-button"
         onPointerDown={handleInteractionStart}
         onPointerUp={handleInteractionEnd}
+        onTouchMove={(e) => e.preventDefault()} // Предотвращаем прокрутку при тач-событиях
         onPointerCancel={handleInteractionEnd}
         disabled={energy < coinsPerClick}
       >

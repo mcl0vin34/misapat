@@ -1,15 +1,16 @@
+/* FooterNav.scss */
+
+/* FooterNav.scss */
+
+/* FooterNav.scss */
+
 .footer {
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 13%;
-  border-radius: 20px;
+  height: 80px; /* Высота футера */
   background-color: #2d3236;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 0;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  /* Остальные стили */
 }
 
 .footer_menu {
@@ -18,6 +19,7 @@
   align-items: center;
   list-style: none;
   width: 100%;
+  height: 100%;
   padding: 0;
   margin: 0;
 

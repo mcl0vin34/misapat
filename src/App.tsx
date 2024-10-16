@@ -7,6 +7,7 @@ import "./index.css";
 import "./App.scss";
 import { useUserStore } from "./store/useUserStore";
 import useCoinStore from "./store/useCoinStore";
+import tg from "./utils/tg"; // Импортируем tg
 
 const App: React.FC = () => {
   const { initializeUser, user } = useUserStore();
@@ -21,6 +22,14 @@ const App: React.FC = () => {
       }
     };
     initUserAndStore();
+
+    // Разворачиваем приложение в полный экран
+    if (tg?.expand) {
+      tg.expand();
+    }
+
+    // Проверяем значение process.env.NODE_ENV
+    console.log("process.env.NODE_ENV:", process.env.NODE_ENV);
   }, []);
 
   return (
