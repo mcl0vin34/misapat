@@ -19,7 +19,7 @@ const ItemsShop = () => {
 
   useEffect(() => {
     axios
-      .get("https://a4429e27fbaa3135.mokky.dev/shop-items")
+      .get("https://stabledissfusion.sima-land.local:7860/api/market-items")
       .then((response) => {
         setShopItems(response.data);
         setLoading(false);
@@ -35,7 +35,11 @@ const ItemsShop = () => {
   }
 
   if (error) {
-    return <p>Ошибка: {error.message}</p>;
+    return (
+      <p style={{ color: "#fff", textAlign: "center" }}>
+        Ошибка: {error.message}
+      </p>
+    );
   }
 
   const handleCardClick = (card: ShopItem) => {
@@ -62,9 +66,6 @@ const ItemsShop = () => {
     cardsWithImage[12],
     cardsWithImage[14],
     cardsWithImage[16],
-    cardsWithImage[18],
-    cardsWithImage[20],
-    cardsWithImage[22],
   ];
 
   const rightColumn = [
@@ -76,9 +77,6 @@ const ItemsShop = () => {
     cardsWithImage[11],
     cardsWithImage[13],
     cardsWithImage[15],
-    cardsWithImage[17],
-    cardsWithImage[19],
-    cardsWithImage[21],
   ];
 
   return (

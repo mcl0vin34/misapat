@@ -16,65 +16,64 @@ import { ReactComponent as RubleIcon } from "../../assets/icons/ruble.svg";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
+// Импортируем хук для доступа к пользователю из стора
+import { useUserStore } from "../../store/useUserStore";
+
 // Определяем типы данных
-interface UserInfo {
-  user_id: string;
-  username: string; // Новое поле
-  leaderboard_position: number;
-  coins_count: number;
-}
-
 interface LeaderboardUser {
-  user_id: string;
-  username: string; // Новое поле
-  leaderboard_position: number;
-  coins_count: number;
+  rank: number;
+  username: string;
+  coins: number;
+  isCurrentUser: boolean;
 }
 
-interface Pagination {
-  current_page: number;
-  total_pages: number;
-  per_page: number;
-  total_users: number;
-}
-
-interface LeaderboardData {
-  user_info: UserInfo;
-  leaderboard: LeaderboardUser[];
-  pagination: Pagination;
+interface CurrentUser {
+  rank: number;
+  username: string;
+  coins: number;
+  isTop50: boolean;
 }
 
 interface ApiResponse {
-  meta: {
-    total_items: number;
-    total_pages: number;
-    current_page: number;
-    per_page: number;
-    remaining_count: number;
-  };
-  items: LeaderboardData[];
+  top50: LeaderboardUser[];
+  currentUser: CurrentUser;
 }
 
 const LeaderBoardPage: React.FC = () => {
-  const [data, setData] = useState<LeaderboardData | null>(null);
+  // Получаем текущего пользователя из стора
+  const { user, isLoading: userLoading } = useUserStore();
+  const userId = user?.id;
+
+  const [top50, setTop50] = useState<LeaderboardUser[]>([]);
+  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const fetchLeaderboard = async (page: number) => {
+  // Функция для получения данных лидерборда
+  const fetchLeaderboard = async () => {
+    if (!userId) {
+      setError("Пользователь не авторизован.");
+      setLoading(false);
+      return;
+    }
+
     setLoading(true);
     setError(null);
     try {
       const response = await axios.get<ApiResponse>(
-        `https://a4429e27fbaa3135.mokky.dev/leaderboard?page=${page}`
+        `https://stabledissfusion.sima-land.local:7860/api/users/leaders`,
+        {
+          params: {
+            userId: userId,
+          },
+        }
       );
 
-      if (response.data.items.length > 0) {
-        setData(response.data.items[0]); // Данные внутри "items", берем первый элемент
-      } else {
-        setError("Данные отсутствуют.");
-      }
-    } catch (err) {
+      const data = response.data;
+      setTop50(data.top50);
+      setCurrentUser(data.currentUser);
+    } catch (err: any) {
+      console.error(err);
       setError("Не удалось загрузить данные. Пожалуйста, попробуйте позже.");
     } finally {
       setLoading(false);
@@ -82,22 +81,10 @@ const LeaderBoardPage: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchLeaderboard(currentPage);
-  }, [currentPage]);
+    fetchLeaderboard();
+  }, [userId]);
 
-  const handlePrevPage = () => {
-    if (data && currentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
-    }
-  };
-
-  const handleNextPage = () => {
-    if (data && currentPage < data.pagination.total_pages) {
-      setCurrentPage((prev) => prev + 1);
-    }
-  };
-
-  if (loading) {
+  if (loading || userLoading) {
     return (
       <SharedContainer>
         <div className={styles.leaderboard}>
@@ -179,12 +166,6 @@ const LeaderBoardPage: React.FC = () => {
     );
   }
 
-  if (!data) {
-    return null; // Для предотвращения рендеринга до того, как данные будут получены
-  }
-
-  const { user_info, leaderboard, pagination } = data;
-
   return (
     <SharedContainer>
       <div className={styles.leaderboard}>
@@ -195,112 +176,92 @@ const LeaderBoardPage: React.FC = () => {
             вознаграждение
           </p>
 
+          {/* Размещение медалей: второе слева, первое по центру, третье справа */}
           <div className={styles.rewards}>
-            {/* Топ-3 награды */}
-            <div className={`${styles.reward} ${styles.second_place}`}>
-              <img src={secondPlaceIcon} alt="Second place" />
-              <div className={styles.rewardAmount}>
-                <RubleIcon
-                  className={`${styles.rubleIcon} ${styles.silverRuble}`}
-                />
-                <p className={styles.reward_count}>2500₽</p>
+            {/* Второе место */}
+            {top50[1] && (
+              <div className={`${styles.reward} ${styles.second_place}`}>
+                <img src={secondPlaceIcon} alt="Второе место" />
+                <div className={styles.rewardAmount}>
+                  <RubleIcon className={styles.rubleIcon} />
+                  <p className={styles.reward_count}>2 500₽</p>
+                </div>
               </div>
-            </div>
+            )}
 
-            <div className={`${styles.reward} ${styles.first_place}`}>
-              <img src={firstPlaceIcon} alt="First place" />
-              <div className={styles.rewardAmount}>
-                <RubleIcon className={styles.rubleIcon} />
-                <p className={styles.reward_count}>5000₽</p>
+            {/* Первое место */}
+            {top50[0] && (
+              <div className={`${styles.reward} ${styles.first_place}`}>
+                <img src={firstPlaceIcon} alt="Первое место" />
+                <div className={styles.rewardAmount}>
+                  <RubleIcon className={styles.rubleIcon} />
+                  <p className={styles.reward_count}>5 000₽</p>
+                </div>
               </div>
-            </div>
+            )}
 
-            <div className={`${styles.reward} ${styles.third_place}`}>
-              <img src={thirdPlaceIcon} alt="Third place" />
-              <div className={styles.rewardAmount}>
-                <RubleIcon
-                  className={`${styles.rubleIcon} ${styles.bronzeRuble}`}
-                />
-                <p className={styles.reward_count}>1000₽</p>
+            {/* Третье место */}
+            {top50[2] && (
+              <div className={`${styles.reward} ${styles.third_place}`}>
+                <img src={thirdPlaceIcon} alt="Третье место" />
+                <div className={styles.rewardAmount}>
+                  <RubleIcon className={styles.rubleIcon} />
+                  <p className={styles.reward_count}>1 000₽</p>
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
+          {/* Список топ-50 пользователей */}
           <div className={styles.leaderboardList}>
-            {leaderboard.map((user, index) => {
-              // Определяем, является ли пользователь топ-3
-              const isTop3 = index < 3;
-              // Определяем, является ли пользователь текущим пользователем
-              const isCurrentUser = user.user_id === user_info.user_id;
+            {top50.map((user) => {
+              const isTop3 = user.rank <= 3;
+              const isCurrentUser = user.isCurrentUser;
 
               return (
                 <div
-                  key={user.user_id}
+                  key={user.rank}
                   className={`${styles.leaderboardItem} ${
                     isTop3 ? styles.top3 : ""
                   } ${isCurrentUser ? styles.currentUser : ""}`}
                 >
-                  <span className={styles.rank}>
-                    #{user.leaderboard_position}
-                  </span>
-                  <span className={styles.name}>{user.username}</span>{" "}
-                  {/* Используем username */}
+                  <span className={styles.rank}>#{user.rank}</span>
+                  <span className={styles.name}>{user.username}</span>
                   <div className={styles.rewardAmount}>
                     {/* Рендерим RubleIcon только для топ-3 */}
                     {isTop3 && (
                       <RubleIcon
                         className={`${styles.rubleIcon} ${
-                          index === 0
-                            ? ""
-                            : index === 1
+                          user.rank === 2
                             ? styles.silverRuble
-                            : styles.bronzeRuble
+                            : user.rank === 3
+                            ? styles.bronzeRuble
+                            : ""
                         }`}
                       />
                     )}
                     <span className={styles.score}>
-                      {user.coins_count.toLocaleString()}₽
+                      {user.coins.toLocaleString()}₽
                     </span>
                   </div>
                 </div>
               );
             })}
 
-            {/* Отображаем текущего пользователя отдельно, если он не в топ-100 */}
-            {user_info.leaderboard_position > leaderboard.length && (
+            {/* Отображаем текущего пользователя отдельно, если он не в топ-50 */}
+            {currentUser && !currentUser.isTop50 && (
               <div className={styles.currentUser}>
-                <span className={styles.rank}>
-                  #{user_info.leaderboard_position}
-                </span>
-                <span className={styles.name}>{user_info.username}</span>{" "}
-                {/* Используем username */}
-                <span className={styles.score}>
-                  {user_info.coins_count.toLocaleString()}₽
-                </span>
+                <span className={styles.rank}>#{currentUser.rank}</span>
+                <span className={styles.name}>{currentUser.username}</span>
+                <div className={styles.rewardAmount}>
+                  <RubleIcon className={styles.rubleIcon} />
+                  <span className={styles.score}>
+                    {currentUser.coins.toLocaleString()}
+                  </span>
+                </div>
               </div>
             )}
           </div>
-
-          {/* Пагинация */}
-          {/*<div className={styles.pagination}>
-            <button
-              disabled={pagination.current_page === 1}
-              onClick={handlePrevPage}
-              className={styles.navButton}
-            >
-              Назад
-            </button>
-            <span>
-              Страница {pagination.current_page} из {pagination.total_pages}
-            </span>
-            <button
-              disabled={pagination.current_page === pagination.total_pages}
-              onClick={handleNextPage}
-              className={styles.navButton}
-            >
-              Вперёд
-            </button>
-          </div>*/}
         </main>
       </div>
     </SharedContainer>

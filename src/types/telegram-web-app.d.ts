@@ -1,31 +1,25 @@
-// src/telegram-web-app.d.ts
+// src/types/telegram-web-app.d.ts
 
-interface HapticFeedback {
-  impactOccurred(style: "light" | "medium" | "heavy"): void;
-  notificationOccurred(type: "error" | "success" | "warning"): void;
-  selectionChanged(): void;
-}
+export {};
 
-interface MainButton {
-  text: string;
-  show(): void;
-  hide(): void;
-  setText(text: string): void;
-  onClick(callback: () => void): void;
-}
+declare global {
+  interface TelegramWebApp {
+    initDataUnsafe: any;
+    expand: () => void;
+    close: () => void;
+    MainButton: {
+      text: string;
+      show: () => void;
+      onClick: (callback: () => void) => void;
+    };
+    openTelegramLink?: (url: string) => void; // Ensure this line is present
+  }
 
-interface TelegramWebApp {
-  initDataUnsafe: any;
-  expand(): void;
-  close(): void;
-  MainButton: MainButton;
-  HapticFeedback?: HapticFeedback;
-}
+  interface Telegram {
+    WebApp: TelegramWebApp;
+  }
 
-interface Telegram {
-  WebApp: TelegramWebApp;
-}
-
-interface Window {
-  Telegram?: Telegram;
+  interface Window {
+    Telegram?: Telegram;
+  }
 }

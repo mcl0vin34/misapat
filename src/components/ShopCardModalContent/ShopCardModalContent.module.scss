@@ -2,6 +2,7 @@
 
 .modal_wrapper {
   padding: 0 5px;
+  height: 100%;
 }
 
 .price {
@@ -17,7 +18,8 @@
   flex-direction: column;
   align-items: center;
   color: #ffffff;
-  padding-top: 60px;
+  height: 90%;
+  padding-top: 30px;
 }
 
 .image {
@@ -58,4 +60,33 @@
 
 .coinIcon {
   margin-right: 5px;
+}
+
+.buyButton {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(
+    140.39deg,
+    #deb565 10.72%,
+    #edc871 45.29%,
+    #ffffa8 109.99%
+  );
+  height: 60px;
+  box-sizing: border-box;
+  color: #2d3236;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+  margin-top: auto;
+}
+
+.itemCount {
+  color: #f1f1f1;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: center;
 }

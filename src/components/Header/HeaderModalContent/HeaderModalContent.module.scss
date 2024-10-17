@@ -1,0 +1,165 @@
+/* src/components/Header/HeaderModalContent/HeaderModalContent.module.scss */
+
+.headerModal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: transparent; /* Предполагаемый фон модалки */
+  border-radius: 10px;
+  color: #d9d9d9;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.nickname {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 30px;
+  text-align: center;
+  color: #d9d9d9;
+  margin-bottom: 10px;
+}
+
+.userId {
+  margin-bottom: 33px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: center;
+  color: #888888;
+}
+
+.registrationDate {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: center;
+  color: #888888;
+  margin-bottom: 20px;
+}
+
+.sections {
+  width: 100%;
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.linkButton {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: center;
+  color: #888888;
+  margin-bottom: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  transition: color 0.3s;
+
+  &:hover {
+    color: #ffffff;
+  }
+}
+
+.shareSection {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.shareTelegramButton {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(
+    140.39deg,
+    #deb565 10.72%,
+    #edc871 45.29%,
+    #ffffa8 109.99%
+  );
+  height: 60px;
+  box-sizing: border-box;
+  color: #2d3236;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.copyLinkButton {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  background-color: #28a745;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #218838;
+  }
+}
+
+.modalWrapper {
+  padding-top: 100px;
+  height: 100vh;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5); /* Прозрачный фон для модалки */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalTitle {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 30px;
+  text-align: center;
+  color: #f1f1f1;
+  margin-bottom: 33px;
+}
+
+.modalDescription {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: left;
+  color: #888888;
+  margin-bottom: 20px;
+}
+
+.closeButton {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #dc3545;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #c82333;
+  }
+}
+
+/* Дополнительные стили для специфических модалок */
+.rulesModal {
+  /* Специфические стили для RulesModal, если необходимы */
+}
+
+.licenseModal {
+  /* Специфические стили для LicenseModal, если необходимы */
+}

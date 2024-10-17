@@ -25,10 +25,11 @@
 }
 
 .modal-content {
+  overflow: auto;
   min-height: 300px;
   z-index: 10001;
 
-  height: 70%;
+  height: 75%;
   background-color: #1c1c1e;
   box-shadow: 0px 2px 0px 0px #e2ba68 inset;
   border-top: 2px solid #e2ba68;
@@ -54,7 +55,7 @@
 
 .close-icon {
   position: absolute;
-  top: 41px;
+  top: 34px;
   right: 34px;
   width: 34px;
   height: 34px;

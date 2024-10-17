@@ -14,7 +14,18 @@ const ShopCardModalContent: React.FC<ShopCardModalContentProps> = ({
   const modalClassName =
     card.type === "cardWithoutImage" ? styles.cardWithoutImage : styles.default;
 
-  const imageSrc = `${process.env.PUBLIC_URL}/images/${card.image}`;
+  // Используем require для динамической загрузки изображения
+  let imageSrc;
+
+  console.log(card);
+  if (card.image) {
+    try {
+      imageSrc = require(`../../assets/images/${card.image}`);
+    } catch (error) {
+      console.error(`Изображение не найдено: ${card.image}`);
+      imageSrc = ""; // Можно установить изображение по умолчанию
+    }
+  }
 
   return (
     <div className={styles.modal_wrapper}>
@@ -24,15 +35,20 @@ const ShopCardModalContent: React.FC<ShopCardModalContentProps> = ({
       </div>
 
       <div className={`${styles.modalContent} ${modalClassName}`}>
-        {card.image && (
+        {imageSrc && (
           <img src={imageSrc} alt={card.title} className={styles.image} />
         )}
 
         <h3 className={styles.title}>{card.title}</h3>
         <p className={styles.detailedDescription}>{card.detailedDescription}</p>
+
+        <p className={styles.itemCount}>Осталось {card.count} шт.</p>
+        {/*
         <p className={styles.detailedMiniDescription}>
           {card.detailedMiniDescription}
-        </p>
+        </p>*/}
+
+        <button className={styles.buyButton}>Приобрести</button>
       </div>
     </div>
   );
