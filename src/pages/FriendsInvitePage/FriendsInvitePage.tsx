@@ -86,7 +86,7 @@ const FriendsInvite = () => {
     const fetchFriends = async () => {
       try {
         const response = await axios.get<Friend[]>(
-          `https://stabledissfusion.sima-land.local:7860/api/users/${userId}/referrals`
+          `https://dev.simatap.ru/api/users/${userId}/referrals`
         );
         setFriends(response.data);
       } catch (error) {

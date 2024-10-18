@@ -12,10 +12,8 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
-  const startYRef = useRef<number | null>(null);
   const [isClosing, setIsClosing] = useState(false);
   const [animate, setAnimate] = useState(false);
-  const [isAtTop, setIsAtTop] = useState(true);
 
   const { modalBackgroundColor } = useModalStore();
 
@@ -61,28 +59,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
     }, 300);
   };
 
-  const handleTouchStart = (e: React.TouchEvent) => {
-    startYRef.current = e.touches[0].clientY;
-    if (modalRef.current) {
-      setIsAtTop(modalRef.current.scrollTop === 0);
-    }
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isAtTop) return;
-    if (startYRef.current !== null) {
-      const currentY = e.touches[0].clientY;
-      const deltaY = currentY - startYRef.current;
-      if (deltaY > 50) {
-        handleClose();
-      }
-    }
-  };
-
-  const handleTouchEnd = () => {
-    startYRef.current = null;
-  };
-
   if (!isOpen && !isClosing) return null;
 
   return (
@@ -98,9 +74,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
         style={{
           background: modalBackgroundColor || "#2d3236",
         }}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
       >
         <img
           src={closeIcon}
