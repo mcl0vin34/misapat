@@ -19,7 +19,7 @@ const ItemsShop = () => {
 
   useEffect(() => {
     axios
-      .get("https://stabledissfusion.sima-land.local:7860/api/market-items")
+      .get("https://dev.simatap.ru/api/market-items")
       .then((response) => {
         setShopItems(response.data);
         setLoading(false);

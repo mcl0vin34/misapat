@@ -60,7 +60,7 @@ const LeaderBoardPage: React.FC = () => {
     setError(null);
     try {
       const response = await axios.get<ApiResponse>(
-        `https://stabledissfusion.sima-land.local:7860/api/users/leaders`,
+        `https://dev.simatap.ru/api/users/leaders`,
         {
           params: {
             userId: userId,

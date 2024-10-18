@@ -1,3 +1,4 @@
+// src/layout/Layout.tsx
 import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import FooterNav from "../components/FooterNav/FooterNav";
@@ -20,7 +21,7 @@ const Layout = () => {
     startEnergyRecovery,
     stopEnergyRecovery,
     calculateOfflineIncome,
-    calculateEnergyRestoration, // добавляем метод для восстановления энергии
+    calculateEnergyRestoration,
     setLastActiveTime,
     offlineIncome,
     setOfflineIncome,
@@ -60,7 +61,7 @@ const Layout = () => {
     stopPassiveIncome,
     stopEnergyRecovery,
     calculateOfflineIncome,
-    calculateEnergyRestoration, // не забудьте добавить сюда зависимость
+    calculateEnergyRestoration,
     setLastActiveTime,
   ]);
 
@@ -86,7 +87,6 @@ const Layout = () => {
     }
   }, [offlineIncome, setOfflineIncome]);
 
-  // Layout.tsx
   return (
     <div className="layout">
       <Header />
@@ -94,8 +94,8 @@ const Layout = () => {
         <SharedContainer>
           <Outlet />
         </SharedContainer>
-        <FooterNav />
       </div>
+      <FooterNav />
       <Modal isOpen={isModalOpen} onClose={closeModal}>
         {modalContent}
       </Modal>

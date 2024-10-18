@@ -16,7 +16,7 @@ const ShopCardModalContent: React.FC<ShopCardModalContentProps> = ({
   let imageSrc = "";
   if (card.image) {
     try {
-      imageSrc = require(`../../assets/images/${card.image}`);
+      imageSrc = require(`../../../assets/images/${card.image}`);
     } catch (error) {
       console.error(`Изображение не найдено: ${card.image}`);
       // Установите изображение по умолчанию, если требуется

@@ -28,9 +28,16 @@ const App: React.FC = () => {
       tg.expand();
     }
 
+    // Настройка поведения свайпа
+    if (tg?.web_app_setup_swipe_behavior) {
+      tg.web_app_setup_swipe_behavior({
+        allow_vertical_swipe: false, // Отключаем все вертикальные свайпы для закрытия
+      });
+    }
+
     // Проверяем значение process.env.NODE_ENV
     console.log("process.env.NODE_ENV:", process.env.NODE_ENV);
-  }, []);
+  }, [initializeUser, initializeStore, storeInitialized]);
 
   return (
     <Router basename="/misapat">
