@@ -1,7 +1,6 @@
 // src/pages/QuestsPage/QuestsPage.tsx
 
 import React, { useState } from "react";
-import SharedContainer from "../../components/UI/SharedContainer/SharedContainer";
 import magImg from "../../assets/images/mag.jpg";
 import styles from "./QuestsPage.module.scss";
 import { ReactComponent as CoinIcon } from "../../assets/icons/coin.svg";
@@ -63,88 +62,78 @@ const QuestsPage: React.FC = () => {
   };
 
   return (
-    <SharedContainer>
-      <div className={styles.questsPage}>
-        <h1 className={styles.title}>Задания</h1>
-        <p className={styles.subtitle}>Выполняй задания и получай награду!</p>
+    <div className={styles.questsPage}>
+      <h1 className={styles.title}>Задания</h1>
+      <p className={styles.subtitle}>Выполняй задания и получай награду!</p>
 
-        {/* Статичный блок с ежедневной наградой */}
-        <div className={styles.dailyReward}>
-          <div className={styles.dailyReward_top}>
-            <div className={styles.dailyRewardContent}>
-              <img
-                src={magImg}
-                alt="Ежедневная награда"
-                className={styles.rewardImage}
-              />
+      {/* Статичный блок с ежедневной наградой */}
+      <div className={styles.dailyReward}>
+        <div className={styles.dailyReward_top}>
+          <div className={styles.dailyRewardContent}>
+            <img
+              src={magImg}
+              alt="Ежедневная награда"
+              className={styles.rewardImage}
+            />
 
-              <div className={styles.rewardDetails}>
-                <h2 className={styles.rewardTitle}>Ежедневная награда</h2>
+            <div className={styles.rewardDetails}>
+              <h2 className={styles.rewardTitle}>Ежедневная награда</h2>
 
-                <div className={styles.rewardAmountWrapper}>
-                  <CoinIcon className={styles.coinIcon} />
-                  <p className={styles.rewardAmount}>+20 000</p>
-                </div>
+              <div className={styles.rewardAmountWrapper}>
+                <CoinIcon className={styles.coinIcon} />
+                <p className={styles.rewardAmount}>+20 000</p>
               </div>
             </div>
-
-            <RightArrow />
           </div>
 
-          {/* Прогресс-бар */}
-          <div className={styles.progressBar}>
-            {Array.from({ length: 13 }).map((_, index) => (
-              <div
-                key={index}
-                className={`${styles.progressItem} ${
-                  index < 3 ? styles.filled : ""
-                }`}
-              />
-            ))}
-          </div>
+          <RightArrow />
         </div>
 
-        {/* Список квестов */}
-        <div className={styles.questsList}>
-          {quests.map((quest) => (
+        {/* Прогресс-бар */}
+        <div className={styles.progressBar}>
+          {Array.from({ length: 13 }).map((_, index) => (
             <div
-              key={quest.id}
-              className={`${styles.questCard} ${
-                quest.completed ? styles.questCompleted : styles.questIncomplete
+              key={index}
+              className={`${styles.progressItem} ${
+                index < 3 ? styles.filled : ""
               }`}
-              onClick={() => handleQuestClick(quest)}
-              style={{ cursor: quest.completed ? "default" : "pointer" }}
-            >
-              <div className={styles.questCard_top}>
-                {/*{quest.icon && (
-                  <img
-                    src={quest.icon}
-                    alt={`${quest.title} icon`}
-                    className={styles.questIcon}
-                  />
-                )}*/}
-
-                <div className={styles.questDetails}>
-                  <div>
-                    <h3 className={styles.questTitle}>{quest.title}</h3>
-                    <div className={styles.rewardAmountWrapper}>
-                      <CoinIcon className={styles.coinIcon} />
-                      <p className={styles.rewardAmount}>{quest.reward}</p>
-                    </div>
-                  </div>
-
-                  {quest.completed ? (
-                    <DoneIcon className={styles.doneIcon} />
-                  ) : (
-                    <RightArrow className={styles.arrowRight} />
-                  )}
-                </div>
-              </div>
-            </div>
+            />
           ))}
         </div>
       </div>
-    </SharedContainer>
+
+      {/* Список квестов */}
+      <div className={styles.questsList}>
+        {quests.map((quest) => (
+          <div
+            key={quest.id}
+            className={`${styles.questCard} ${
+              quest.completed ? styles.questCompleted : styles.questIncomplete
+            }`}
+            onClick={() => handleQuestClick(quest)}
+            style={{ cursor: quest.completed ? "default" : "pointer" }}
+          >
+            <div className={styles.questCard_top}>
+              <div className={styles.questDetails}>
+                <div>
+                  <h3 className={styles.questTitle}>{quest.title}</h3>
+                  <div className={styles.rewardAmountWrapper}>
+                    <CoinIcon className={styles.coinIcon} />
+                    <p className={styles.rewardAmount}>{quest.reward}</p>
+                  </div>
+                </div>
+
+                {quest.completed ? (
+                  <DoneIcon className={styles.doneIcon} />
+                ) : (
+                  <RightArrow className={styles.arrowRight} />
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 

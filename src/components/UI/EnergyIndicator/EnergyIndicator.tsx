@@ -1,7 +1,7 @@
 // src/components/EnergyIndicator/EnergyIndicator.tsx
 import React from "react";
 import useCoinStore from "../../../store/useCoinStore";
-import { ReactComponent as EnergyIcon } from "../../../assets/icons/energy.svg"; // Импортируем SVG как React-компонент
+import { ReactComponent as EnergyIcon } from "../../../assets/icons/energy.svg";
 import "./EnergyIndicator.scss";
 
 const EnergyIndicator: React.FC = () => {
@@ -10,7 +10,6 @@ const EnergyIndicator: React.FC = () => {
   return (
     <div className="energy-indicator">
       <EnergyIcon className="energy-icon" aria-label="Энергия" />{" "}
-      {/* Заменили img на SVG */}
       <p className="energy-text">
         {energy} / {maxEnergy}
       </p>

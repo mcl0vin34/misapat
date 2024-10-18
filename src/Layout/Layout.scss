@@ -1,7 +1,9 @@
+/* src/layout/Layout.scss */
+
 .layout {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 100vh; /* Занимаем всю высоту окна */
   background-color: #272727;
 }
 
@@ -9,13 +11,17 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  padding-bottom: 80px; /* Добавляем отступ снизу, равный высоте футера */
+  overflow-y: auto; /* Разрешаем вертикальную прокрутку, если необходимо */
 }
 
+/* Удаляем блок main, так как он не используется */
+/*
 main {
   flex: 1;
   display: flex;
   flex-direction: column;
-  /* Удаляем overflow: hidden */
-  padding-bottom: 75px; /* Добавляем отступ снизу, равный высоте футера */
-  overflow-y: auto; /* Разрешаем вертикальную прокрутку */
+  padding-bottom: 75px;
+  overflow-y: auto;
 }
+*/

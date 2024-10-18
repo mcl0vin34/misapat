@@ -5,6 +5,7 @@ import Header from "../components/Header/Header";
 import useModalStore from "../store/useModalStore";
 import Modal from "../components/UI/Modal/Modal";
 import useCoinStore from "../store/useCoinStore";
+import SharedContainer from "../components/UI/SharedContainer/SharedContainer";
 import { useUserStore } from "../store/useUserStore";
 import "./Layout.scss";
 
@@ -90,9 +91,9 @@ const Layout = () => {
     <div className="layout">
       <Header />
       <div className="content-wrapper">
-        <main>
+        <SharedContainer>
           <Outlet />
-        </main>
+        </SharedContainer>
         <FooterNav />
       </div>
       <Modal isOpen={isModalOpen} onClose={closeModal}>

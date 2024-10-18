@@ -1,5 +1,4 @@
 // src/pages/MainPage/MainPage.tsx
-
 import React from "react";
 import lionImage from "../../assets/images/lion.png";
 import coinIcon from "../../assets/icons/coin.svg";
@@ -10,13 +9,12 @@ import useCoinStore from "../../store/useCoinStore";
 import EnergyIndicator from "../../components/UI/EnergyIndicator/EnergyIndicator";
 import BoosterIndicator from "../../components/UI/BoosterIndicator/BoosterIndicator";
 import FormattedNumber from "../../components/UI/FormattedNumber/FormattedNumber";
-import SharedContainer from "../../components/UI/SharedContainer/SharedContainer";
 
 const MainPage = () => {
   const { coins, passiveIncomeRate } = useCoinStore();
 
   return (
-    <SharedContainer>
+    <div className="main-page-content">
       <div className="coin-display">
         <div className="coin-display_wrapper">
           <img src={coinIcon} alt="Coin" className="coin-icon" />
@@ -36,7 +34,7 @@ const MainPage = () => {
         <EnergyIndicator />
         <BoosterIndicator />
       </div>
-    </SharedContainer>
+    </div>
   );
 };
 

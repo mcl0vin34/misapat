@@ -1,8 +1,4 @@
-/* FooterNav.scss */
-
-/* FooterNav.scss */
-
-/* FooterNav.scss */
+/* src/components/FooterNav/FooterNav.scss */
 
 .footer {
   position: fixed;
@@ -97,42 +93,11 @@
   background-color: #000;
 }
 
-///* Переопределение активных стилей для иконки магазина */
-//.footer_menu__item a.active .shop-icon path {
-//  fill: rgb(117, 117, 117) !important;
-//  stroke: rgb(117, 117, 117) !important;
-//}
-
-//.footer_menu__item a.active .shop-icon + .nav-label {
-//  color: rgb(117, 117, 117) !important;
-//}
-
 /* Адаптивные стили для мобильных устройств */
 @media (max-width: 600px) {
   .footer {
-    padding: 8px 20px;
-  }
-
-  .footer_menu__item a {
-    width: 74px;
-    height: 74px;
-  }
-
-  .footer_menu__item a .nav-label {
-    font-size: 12px;
-  }
-
-  .footer_menu__item a svg {
-    width: 34px;
-    height: 34px;
-  }
-}
-
-@media (max-width: 600px) {
-  .footer {
     padding: 8px 10px;
-    height: 12%;
-    width: 100%;
+    height: 80px; /* Убедитесь, что высота футера остается постоянной */
   }
 
   .footer_menu__item a {

@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import SharedContainer from "../../components/UI/SharedContainer/SharedContainer";
 import styles from "./FriendsInvitePage.module.scss";
 import getReferralLink from "../../helpers/getReferralLink";
 import tg from "../../utils/tg";
@@ -102,136 +101,126 @@ const FriendsInvite = () => {
   }, [userId]);
 
   return (
-    <SharedContainer>
-      <div className={styles.friendsInvite}>
-        <div className={styles.scrollContainer}>
-          {loading ? (
-            <p>Загрузка...</p>
-          ) : error ? (
-            <p className={styles.errorMessage}>{error}</p>
-          ) : friends.length > 0 ? (
-            <div className={styles.friendsList}>
-              <header>
-                <div className={styles.header}>
-                  <h1 className={styles.header_title}>Друзья</h1>
+    <div className={styles.friendsInvite}>
+      <div className={styles.scrollContainer}>
+        {loading ? (
+          <p></p>
+        ) : error ? (
+          <p className={styles.errorMessage}>{error}</p>
+        ) : friends.length > 0 ? (
+          <div className={styles.friendsList}>
+            <header>
+              <div className={styles.header}>
+                <h1 className={styles.header_title}>Друзья</h1>
+              </div>
+
+              <div className={styles.rewardBlock}>
+                <div className={styles.rewardBlock_top}>
+                  <img src={coinIcon} alt="Coin" className={styles.coinIcon} />
+                  <p className={styles.rewardBlock_description}>+50 000</p>
                 </div>
 
-                <div className={styles.rewardBlock}>
-                  <div className={styles.rewardBlock_top}>
-                    <img
-                      src={coinIcon}
-                      alt="Coin"
-                      className={styles.coinIcon}
-                    />
-                    <p className={styles.rewardBlock_description}>+50 000</p>
-                  </div>
+                <span className={styles.rewardBlock_description_mini}>
+                  тебе и другу!
+                </span>
+              </div>
+            </header>
 
-                  <span className={styles.rewardBlock_description_mini}>
-                    тебе и другу!
-                  </span>
-                </div>
-              </header>
-
-              <p className={styles.friendsList_count}>
-                У тебя {friends.length} друзей
-              </p>
-              <ul>
-                {friends.map((friend, index) => (
-                  <li key={index} className={styles.friendItem}>
-                    <span className={styles.friendItem_name}>
-                      <span className={styles.friendItem_index}>
-                        {index + 1}.
-                      </span>
-                      {friend.username}
+            <p className={styles.friendsList_count}>
+              У тебя {friends.length} друзей
+            </p>
+            <ul>
+              {friends.map((friend, index) => (
+                <li key={index} className={styles.friendItem}>
+                  <span className={styles.friendItem_name}>
+                    <span className={styles.friendItem_index}>
+                      {index + 1}.
                     </span>
+                    {friend.username}
+                  </span>
 
-                    <div className={styles.friendItem_text}>
-                      <img
-                        src={coinIcon}
-                        alt="Coin"
-                        className={styles.friendCoinIcon}
-                      />
-                      <span className={styles.friendItem_coins}>
-                        {friend.coins.toLocaleString()}
-                      </span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-
-              <div className={styles.inviteButtons}>
-                <button
-                  onClick={handleShareButtonClick}
-                  className={styles.inviteFriend}
-                >
-                  Пригласить друга
-                </button>
-                <button
-                  onClick={handleCopyLink} // Добавляем обработчик
-                  className={styles.copyLink}
-                  title="Скопировать реферальную ссылку" // Добавляем подсказку
-                >
-                  <CopyIcon />
-                </button>
-              </div>
-
-              <p className={styles.inviteText}>
-                Приглашай друга и получайте совместную награду!
-              </p>
-            </div>
-          ) : (
-            <div className={styles.friendsList}>
-              <header>
-                <div className={styles.header}>
-                  <h1 className={styles.header_title}>Друзья</h1>
-                </div>
-
-                <div className={styles.rewardBlock}>
-                  <div className={styles.rewardBlock_top}>
+                  <div className={styles.friendItem_text}>
                     <img
                       src={coinIcon}
                       alt="Coin"
-                      className={styles.coinIcon}
+                      className={styles.friendCoinIcon}
                     />
-                    <p className={styles.rewardBlock_description}>+50 000</p>
+                    <span className={styles.friendItem_coins}>
+                      {friend.coins.toLocaleString()}
+                    </span>
                   </div>
+                </li>
+              ))}
+            </ul>
 
-                  <span className={styles.rewardBlock_description_mini}>
-                    тебе и другу!
-                  </span>
-                </div>
-              </header>
+            <div className={styles.inviteButtons}>
+              <button
+                onClick={handleShareButtonClick}
+                className={styles.inviteFriend}
+              >
+                Пригласить друга
+              </button>
+              <button
+                onClick={handleCopyLink} // Добавляем обработчик
+                className={styles.copyLink}
+                title="Скопировать реферальную ссылку" // Добавляем подсказку
+              >
+                <CopyIcon />
+              </button>
+            </div>
 
-              <p className={styles.friendsList_count}>У тебя 0 друзей</p>
-
-              <p className={styles.noFriendsMessage}>
-                У тебя пока нет друзей. Пригласи друга и получи награду!
-              </p>
-
-              <div className={styles.inviteButtons}>
-                <button
-                  onClick={handleShareButtonClick}
-                  className={styles.inviteFriend}
-                >
-                  Пригласить друга
-                </button>
-                <button
-                  onClick={handleCopyLink} // Добавляем обработчик
-                  className={styles.copyLink}
-                  title="Скопировать реферальную ссылку" // Добавляем подсказку
-                >
-                  <CopyIcon />
-                </button>
+            <p className={styles.inviteText}>
+              Приглашай друга и получайте совместную награду!
+            </p>
+          </div>
+        ) : (
+          <div className={styles.friendsList}>
+            <header>
+              <div className={styles.header}>
+                <h1 className={styles.header_title}>Друзья</h1>
               </div>
 
-              <p className={styles.inviteText}>
-                Приглашай друга и получайте совместную награду!
-              </p>
+              <div className={styles.rewardBlock}>
+                <div className={styles.rewardBlock_top}>
+                  <img src={coinIcon} alt="Coin" className={styles.coinIcon} />
+                  <p className={styles.rewardBlock_description}>+50 000</p>
+                </div>
+
+                <span className={styles.rewardBlock_description_mini}>
+                  тебе и другу!
+                </span>
+              </div>
+            </header>
+
+            <p className={styles.friendsList_count}>У тебя 0 друзей</p>
+
+            <p className={styles.noFriendsMessage}>
+              У тебя пока нет друзей. Пригласи друга и получи награду!
+            </p>
+
+            <div className={styles.inviteButtons}>
+              <button
+                onClick={handleShareButtonClick}
+                className={styles.inviteFriend}
+              >
+                Пригласить друга
+              </button>
+              <button
+                onClick={handleCopyLink} // Добавляем обработчик
+                className={styles.copyLink}
+                title="Скопировать реферальную ссылку" // Добавляем подсказку
+              >
+                <CopyIcon />
+              </button>
             </div>
-          )}
-        </div>
+
+            <p className={styles.inviteText}>
+              Приглашай друга и получайте совместную награду!
+            </p>
+          </div>
+        )}
       </div>
-    </SharedContainer>
+    </div>
   );
 };
 

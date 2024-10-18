@@ -1,6 +1,16 @@
 /* src/pages/MainPage/MainPage.scss */
 
 /* Стили для отображения монет */
+/* src/pages/MainPage/MainPage.scss */
+
+.main-page-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+  /* Добавьте любые дополнительные стили, необходимые для адаптивности */
+}
+
 .coin-display {
   display: flex;
   align-items: center;
