@@ -1,0 +1,101 @@
+/* src/components/BusterModalContent/BusterModalContent.module.scss */
+
+.busterModalContent {
+  //padding-top: 100px;
+  height: 100%;
+
+  .booster_price_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+
+    margin-bottom: 28px;
+
+    .coinIcon {
+      width: 30px;
+      height: 30px;
+    }
+
+    .booster_price_title {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 30px;
+      text-align: left;
+      color: #f1f1f1;
+    }
+  }
+
+  .image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    max-height: 200px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+  }
+
+  /* Дополнительные стили по необходимости */
+
+  .title {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 30px;
+    text-align: center;
+    color: #f1f1f1;
+    margin-bottom: 27px;
+  }
+
+  .level {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 20px;
+    text-align: center;
+    color: #f1f1f1;
+    margin-bottom: 23px;
+  }
+
+  .income_info {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: center;
+    color: #ffffffb2;
+    margin-bottom: 23px;
+  }
+
+  .passive_income_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 64px;
+
+    .passive_income_value {
+      font-size: 32px;
+      font-weight: 700;
+      text-align: left;
+      color: #f1f1f1;
+    }
+  }
+
+  .buy_btn {
+    width: 100%;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(
+      140.39deg,
+      #deb565 10.72%,
+      #edc871 45.29%,
+      #ffffa8 109.99%
+    );
+    height: 60px;
+    box-sizing: border-box;
+    color: #2d3236;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+}

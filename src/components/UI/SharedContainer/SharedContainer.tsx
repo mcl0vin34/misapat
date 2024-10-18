@@ -12,13 +12,14 @@ const SharedContainer: React.FC<SharedContainerProps> = ({ children }) => {
   // Проверяем текущий маршрут
   const isShopRoute = location.pathname === "/shop";
   const isLeaderBoardRoute = location.pathname === "/leaderboard";
+  const isFriendsListRoute = location.pathname === "/friendslist";
 
   return (
     <div className="main-page">
       <div
         style={{
           background:
-            isShopRoute || isLeaderBoardRoute
+            isShopRoute || isLeaderBoardRoute || isFriendsListRoute
               ? "#1F1F1F"
               : "linear-gradient(180deg, #2D3236 0%, #000000 100%)",
         }}

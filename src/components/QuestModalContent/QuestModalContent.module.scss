@@ -1,0 +1,98 @@
+/* src/components/QuestModalContent/QuestModalContent.module.scss */
+
+.questModalContent {
+  color: #fff;
+  height: 100%;
+  padding: 20px 0;
+  text-align: center;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  .modalIcon {
+    width: 90px;
+    height: 90px;
+    margin-bottom: 20px;
+
+    margin-top: 100px;
+  }
+
+  h2 {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 30px;
+    text-align: center;
+    color: #f1f1f1;
+    margin-bottom: 40px;
+  }
+
+  .reward_wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+
+    .reward_amount {
+      font-size: 32px;
+      font-weight: 700;
+      text-align: left;
+      color: #f1f1f1;
+    }
+  }
+
+  .checkButton {
+    width: 100%;
+    background: linear-gradient(
+      140.39deg,
+      #deb565 10.72%,
+      #edc871 45.29%,
+      #ffffa8 109.99%
+    );
+    color: #000;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-weight: bold;
+    height: 60px;
+    box-sizing: border-box;
+    color: #2d3236;
+    cursor: pointer;
+    margin-top: auto;
+    margin-right: 10px;
+  }
+
+  .successMessage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .successIcon {
+      width: 40px;
+      height: 40px;
+      fill: #4caf50;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 18px;
+    }
+  }
+}
+
+.doneModalContent {
+  justify-content: flex-start !important;
+}
+
+.successMessage {
+  p {
+    color: #f1f1f1;
+    font-size: 32px !important;
+    font-weight: 700;
+    line-height: 30px;
+    text-align: center;
+    margin-bottom: 110px;
+  }
+}

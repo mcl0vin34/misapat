@@ -1,8 +1,9 @@
 // src/components/ShopCard/ShopCardModalContent.tsx
 import React from "react";
-import { ReactComponent as CoinIcon } from "../../assets/icons/coin.svg";
 import styles from "./ShopCardModalContent.module.scss";
 import { ShopItem } from "../../types/ShopItem";
+import ShopCardWithImageModal from "./ShopCardWithImageModal/ShopCardWithImageModal";
+import ShopCardModalBanner from "./ShopCardModalBanner/ShopCardModalBanner";
 
 interface ShopCardModalContentProps {
   card: ShopItem;
@@ -11,47 +12,36 @@ interface ShopCardModalContentProps {
 const ShopCardModalContent: React.FC<ShopCardModalContentProps> = ({
   card,
 }) => {
-  const modalClassName =
-    card.type === "cardWithoutImage" ? styles.cardWithoutImage : styles.default;
-
-  // Используем require для динамической загрузки изображения
-  let imageSrc;
-
-  console.log(card);
+  // Определяем путь к изображению, если оно есть
+  let imageSrc = "";
   if (card.image) {
     try {
       imageSrc = require(`../../assets/images/${card.image}`);
     } catch (error) {
       console.error(`Изображение не найдено: ${card.image}`);
-      imageSrc = ""; // Можно установить изображение по умолчанию
+      // Установите изображение по умолчанию, если требуется
     }
   }
 
-  return (
-    <div className={styles.modal_wrapper}>
-      <div className={styles.price}>
-        <CoinIcon className={styles.coinIcon} />
-        <span className={styles.price}>{card.price?.toLocaleString()}</span>
+  // Условный рендеринг компонентов модалки
+  if (card.type === "cardWithImage") {
+    return <ShopCardWithImageModal card={card} imageSrc={imageSrc} />;
+  } else if (card.type === "banner") {
+    return <ShopCardModalBanner card={card} imageSrc={imageSrc} />;
+  } else {
+    // Обработка неизвестных типов, если необходимо
+    return (
+      <div className={styles.modal_wrapper}>
+        <div className={styles.modalContent}>
+          <h3 className={styles.title}>{card.title}</h3>
+          <p className={styles.detailedDescription}>
+            {card.detailedDescription}
+          </p>
+          <button className={styles.buyButton}>Купить промокод</button>
+        </div>
       </div>
-
-      <div className={`${styles.modalContent} ${modalClassName}`}>
-        {imageSrc && (
-          <img src={imageSrc} alt={card.title} className={styles.image} />
-        )}
-
-        <h3 className={styles.title}>{card.title}</h3>
-        <p className={styles.detailedDescription}>{card.detailedDescription}</p>
-
-        <p className={styles.itemCount}>Осталось {card.count} шт.</p>
-        {/*
-        <p className={styles.detailedMiniDescription}>
-          {card.detailedMiniDescription}
-        </p>*/}
-
-        <button className={styles.buyButton}>Приобрести</button>
-      </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default ShopCardModalContent;

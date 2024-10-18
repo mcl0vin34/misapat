@@ -5,6 +5,7 @@ export interface ShopItem {
   type: "banner" | "cardWithImage" | "cardWithoutImage";
   image?: string;
   count: number;
+  description: string;
   title?: string;
   miniDescription?: string;
   detailedDescription?: string;

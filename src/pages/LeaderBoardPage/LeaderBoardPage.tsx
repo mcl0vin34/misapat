@@ -241,7 +241,7 @@ const LeaderBoardPage: React.FC = () => {
                       />
                     )}
                     <span className={styles.score}>
-                      {user.coins.toLocaleString()}₽
+                      {user.coins.toLocaleString()}
                     </span>
                   </div>
                 </div>

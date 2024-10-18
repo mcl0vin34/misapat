@@ -7,7 +7,6 @@
   justify-content: space-between;
   height: 100%;
   color: #ffffff;
-  padding: 20px;
   padding-bottom: 0;
 }
 
@@ -39,6 +38,7 @@
 
   &_top {
     display: flex;
+    gap: 10px;
   }
 
   &_description {
@@ -85,22 +85,34 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  border-radius: 8px;
+  border-radius: 10px;
   margin-bottom: 10px;
+  max-height: 40px;
+  box-sizing: border-box;
+  background-color: #2d3236;
 
   &_text {
     display: flex;
     align-items: center;
     gap: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 10px;
+    text-align: left;
+    color: #f1f1f1;
   }
 
   &_name,
   &_coins {
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 700;
     line-height: 30px;
     text-align: left;
     color: #f1f1f1;
+  }
+
+  &_index {
+    margin-right: 10px;
   }
 }
 

@@ -1,10 +1,16 @@
 import tg from "../utils/tg";
+import { useUserStore } from "../store/useUserStore";
 
 const getReferralLink = (): string => {
-  const { initDataUnsafe } = tg;
-  const userId = initDataUnsafe.user?.id;
+  const user = useUserStore.getState().user;
 
-  const referralLink = `https://t.me/SimaTap?startapp=refId${userId}`;
+  const userId = user?.id;
+
+  if (!userId) {
+    return `https://t.me/misapatStage_bot?startapp=refId0`; // или другой дефолтный ID
+  }
+
+  const referralLink = `https://t.me/misapatStage_bot?startapp=refId${userId}`;
 
   return referralLink;
 };

@@ -1,0 +1,100 @@
+/* src/components/ShopCard/ShopCardModalContent.module.scss */
+
+.modal_wrapper {
+  padding: 0 5px;
+  height: 100%;
+}
+
+.price {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 30px;
+  text-align: right;
+  color: #f1f1f1;
+}
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #ffffff;
+  padding-top: 30px;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+.title {
+  color: #f1f1f1;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 30px;
+  text-align: center;
+  margin-bottom: 23px;
+}
+
+.detailedDescription,
+.detailedMiniDescription {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  text-align: center;
+
+  color: #ffffffb2;
+}
+
+.detailedDescription {
+  margin-bottom: 20px;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+  font-size: 1.2em;
+}
+
+.coinIcon {
+  margin-right: 5px;
+}
+
+.buyButton {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(
+    140.39deg,
+    #deb565 10.72%,
+    #edc871 45.29%,
+    #ffffa8 109.99%
+  );
+  height: 60px;
+  box-sizing: border-box;
+
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 21px;
+  text-align: center;
+  color: #2d3236;
+
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+  margin-top: auto;
+}
+
+.itemCount {
+  color: #f1f1f1;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: center;
+}
+
+.bannerTextContainer {
+  margin-bottom: 20px;
+}

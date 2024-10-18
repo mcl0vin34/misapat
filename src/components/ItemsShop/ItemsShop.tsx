@@ -89,6 +89,7 @@ const ItemsShop = () => {
           type={banner.type}
           image={banner.image}
           title={banner.title}
+          description={banner.description}
           miniDescription={banner.miniDescription}
           detailedDescription={banner.detailedDescription}
           detailedMiniDescription={banner.detailedMiniDescription}
@@ -111,6 +112,7 @@ const ItemsShop = () => {
                   type={card.type}
                   image={card.image}
                   title={card.title}
+                  description={card.description}
                   miniDescription={card.miniDescription}
                   detailedDescription={card.detailedDescription}
                   detailedMiniDescription={card.detailedMiniDescription}
@@ -135,6 +137,7 @@ const ItemsShop = () => {
                   type={card.type}
                   image={card.image}
                   title={card.title}
+                  description={card.description}
                   miniDescription={card.miniDescription}
                   detailedDescription={card.detailedDescription}
                   detailedMiniDescription={card.detailedMiniDescription}

@@ -3,6 +3,8 @@
 import React from "react";
 import { ReactComponent as CoinIcon } from "../../assets/icons/coin.svg";
 import styles from "./HeaderModalContent.module.scss";
+import LicenseModal from "./LicenseModal/LicenseModal";
+import RulesModal from "./RulesModal/RulesModal";
 import useModalStore from "../../../store/useModalStore";
 import getReferralLink from "../../../helpers/getReferralLink";
 import tg from "../../../utils/tg";
@@ -83,38 +85,3 @@ const HeaderModalContent: React.FC<HeaderModalContentProps> = ({ user }) => {
 };
 
 export default HeaderModalContent;
-
-// Компонент модалки для правил игры
-const RulesModal: React.FC = () => {
-  const { closeModal } = useModalStore();
-
-  return (
-    <div className={`${styles.modal_wrapper} ${styles.rulesModal}`}>
-      <h2 className={styles.modalTitle}>Правила Игры</h2>
-      <p className={styles.modalDescription}>
-        {/* Ваш текст правил */}
-        Цель игры: Набрать максимальное количество очков или ресурсов, нажимая
-        (тапая) на экран в течение ограниченного времени или по определённым
-        правилам...
-      </p>
-    </div>
-  );
-};
-
-// Компонент модалки для лицензионного соглашения
-const LicenseModal: React.FC = () => {
-  const { closeModal } = useModalStore();
-
-  return (
-    <div className={`${styles.modal_wrapper} ${styles.licenseModal}`}>
-      <h2 className={styles.modalTitle}>Лицензионное соглашение</h2>
-      <p className={styles.modalDescription}>
-        {/* Ваш текст лицензионного соглашения */}
-        Лицензионное Соглашение Пользователя (EULA) для Игры "Simatap" Последнее
-        обновление: 14.10.2024 Пожалуйста, внимательно прочитайте это
-        Лицензионное Соглашение (далее - "Соглашение") перед использованием игры
-        "Simatap" (далее - "Игра")...
-      </p>
-    </div>
-  );
-};

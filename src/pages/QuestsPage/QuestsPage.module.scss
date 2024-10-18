@@ -1,0 +1,171 @@
+/* src/pages/QuestsPage/QuestsPage.module.scss */
+
+.questsPage {
+  text-align: center;
+  color: #fff;
+
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    color: #aaa;
+    margin-bottom: 20px;
+  }
+
+  .dailyReward {
+    display: flex;
+    flex-direction: column;
+    background-color: #2d3236;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    align-items: flex-start;
+
+    .dailyReward_top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%; /* Чтобы картинка и заголовок занимали всю ширину */
+    }
+
+    .rewardImage {
+      width: 120px;
+      height: 80px;
+      border-radius: 8px;
+      margin-right: 20px;
+    }
+
+    .rewardDetails {
+      .rewardTitle {
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 10px;
+        text-align: left;
+        color: #f1f1f1;
+        margin-bottom: 20px;
+      }
+
+      .rewardAmountWrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .coinIcon {
+          width: 30px;
+          height: 30px;
+        }
+
+        .rewardAmount {
+          font-size: 18px;
+          font-weight: 700;
+          line-height: 30px;
+          text-align: left;
+          color: #f1f1f1;
+        }
+      }
+    }
+
+    .progressBar {
+      display: flex;
+      gap: 5px;
+      margin-top: 10px;
+      width: 100%; /* Прогресс бар на 100% ширины */
+      justify-content: space-between; /* Равномерное распределение элементов */
+    }
+
+    .progressItem {
+      flex: 1; /* Равномерно распределяет ширину всех элементов */
+      height: 12px;
+      background-color: #d9d9d9;
+      border: 1px solid transparent;
+      border-radius: 4px;
+
+      &.filled {
+        background: linear-gradient(
+          140.39deg,
+          #deb565 10.72%,
+          #edc871 45.29%,
+          #ffffa8 109.99%
+        );
+      }
+    }
+  }
+
+  .questsList {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .questCard {
+    display: flex;
+    align-items: center;
+    background-color: #2d3236; /* Исходный цвет фона для невыполненных квестов */
+    padding: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &.questCompleted {
+      background-color: #1a1c1e; /* Новый цвет фона при выполнении */
+    }
+
+    &.questIncomplete {
+      background-color: #2d3236; /* Цвет фона для невыполненных квестов */
+    }
+
+    .questCard_top {
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .questDetails {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      justify-content: space-between;
+
+      .arrowRight {
+        margin-left: auto;
+      }
+
+      .doneIcon {
+        width: 24px;
+        height: 24px;
+        fill: #4caf50; /* Цвет иконки Done */
+      }
+
+      h3 {
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 18px;
+        text-align: left;
+        max-width: 245px;
+        color: #f1f1f1;
+      }
+
+      .rewardAmountWrapper {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .coinIcon {
+          width: 20px;
+          height: 20px;
+        }
+
+        .rewardAmount {
+          font-size: 14px;
+          font-weight: 700;
+          line-height: 30px;
+          text-align: right;
+          color: #f1f1f1;
+        }
+      }
+    }
+  }
+}

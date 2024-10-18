@@ -2,12 +2,14 @@
 import React from "react";
 import styles from "./ShopCard.module.scss";
 import { ReactComponent as CoinIcon } from "../../assets/icons/coin.svg";
+import { formatPrice } from "../../utils/formatPrice"; // Импортируем утилиту
 
 interface ShopCardProps {
   id: number;
   type: "banner" | "cardWithImage" | "cardWithoutImage";
   image?: string;
   title?: string;
+  description: string;
   miniDescription?: string;
   detailedDescription?: string;
   detailedMiniDescription?: string;
@@ -30,12 +32,19 @@ const ShopCard: React.FC<ShopCardProps> = ({
   discountPercentage,
   category,
   backgroundColor,
+  description,
   onClick,
 }) => {
   const cardClassName =
     type === "cardWithImage"
       ? `${styles.cardWithImage} ${styles[`card_${id}`]}`
       : styles.cardWithImage;
+
+  // Функция для форматирования цены
+  const displayPrice = (price?: number): string => {
+    if (price === undefined || price === null) return "";
+    return formatPrice(price);
+  };
 
   return (
     <div
@@ -68,7 +77,7 @@ const ShopCard: React.FC<ShopCardProps> = ({
 
             <div className={styles.bannerPriceContainer}>
               <CoinIcon className={styles.coinIcon} />
-              <p className={styles.bannerPrice}>{price?.toLocaleString()}</p>
+              <p className={styles.bannerPrice}>{displayPrice(price)}</p>
             </div>
           </div>
         </div>
@@ -83,13 +92,15 @@ const ShopCard: React.FC<ShopCardProps> = ({
             />
           )}
           <h3 className={styles.title}>{title}</h3>
-          <p className={styles.miniDescription}>{miniDescription}</p>
+          {/*<p className={styles.miniDescription}>{miniDescription}</p>*/}
 
           <div className={styles.divider}></div>
 
+          <p className={styles.miniDescription}>{description}</p>
+
           <div className={styles.priceContainer}>
             <CoinIcon className={styles.coinIcon} />
-            <p className={styles.price}>{price?.toLocaleString()}</p>
+            <p className={styles.price}>{displayPrice(price)}</p>
           </div>
         </div>
       )}
@@ -101,7 +112,7 @@ const ShopCard: React.FC<ShopCardProps> = ({
           <p className={styles.category}>{category}</p>
           <div className={styles.priceContainer}>
             <CoinIcon className={styles.coinIcon} />
-            <p className={styles.price}>{price?.toLocaleString()}</p>
+            <p className={styles.price}>{displayPrice(price)}</p>
           </div>
         </div>
       )}
