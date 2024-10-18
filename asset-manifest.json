@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/misapat/static/css/main.13997261.css",
-    "main.js": "/misapat/static/js/main.5c6ff16c.js",
+    "main.js": "/misapat/static/js/main.5ad7ee6b.js",
     "static/media/13.png": "/misapat/static/media/13.8b71a7d8de7ebca16ef9.png",
     "static/media/gold-lion.png": "/misapat/static/media/gold-lion.00707ebba5ec5e604285.png",
     "static/media/lion.png": "/misapat/static/media/lion.b631b4d3b2c729f61388.png",
@@ -52,10 +52,10 @@
     "static/media/right-arrow.svg": "/misapat/static/media/right-arrow.c385b476904d7f485d982c97b912903f.svg",
     "static/media/done-icon.svg": "/misapat/static/media/done-icon.a4642a646d89cb40e675f41b281ae763.svg",
     "main.13997261.css.map": "/misapat/static/css/main.13997261.css.map",
-    "main.5c6ff16c.js.map": "/misapat/static/js/main.5c6ff16c.js.map"
+    "main.5ad7ee6b.js.map": "/misapat/static/js/main.5ad7ee6b.js.map"
   },
   "entrypoints": [
     "static/css/main.13997261.css",
-    "static/js/main.5c6ff16c.js"
+    "static/js/main.5ad7ee6b.js"
   ]
 }
