@@ -1,3 +1,5 @@
+// src/components/TapButton/TapButton.tsx
+
 import React, { useState, useRef, useEffect } from "react";
 import TapIcons from "../TapIcons/TapIcons";
 import { nanoid } from "nanoid";
@@ -31,6 +33,8 @@ const TapButton: React.FC<TapButtonProps> = ({ lionImage }) => {
   const handleInteractionStart = async (
     e: React.PointerEvent<HTMLButtonElement>
   ) => {
+    e.preventDefault(); // Предотвращаем поведение по умолчанию
+
     if (energy < coinsPerClick) {
       console.warn("Недостаточно энергии для добавления монет.");
       return;
@@ -93,6 +97,7 @@ const TapButton: React.FC<TapButtonProps> = ({ lionImage }) => {
   };
 
   const handleInteractionEnd = (e: React.PointerEvent<HTMLButtonElement>) => {
+    e.preventDefault(); // Предотвращаем поведение по умолчанию
     setIsPressed(false);
   };
 

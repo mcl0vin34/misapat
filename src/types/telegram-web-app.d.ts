@@ -12,7 +12,10 @@ declare global {
       show: () => void;
       onClick: (callback: () => void) => void;
     };
-    openTelegramLink?: (url: string) => void; // Ensure this line is present
+    openTelegramLink?: (url: string) => void;
+    web_app_setup_swipe_behavior?: (options: {
+      allow_vertical_swipe: boolean;
+    }) => void; // Добавляем метод
   }
 
   interface Telegram {
