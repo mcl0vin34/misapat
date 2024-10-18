@@ -1,8 +1,11 @@
 {
   "files": {
-    "main.css": "/misapat/static/css/main.9c7e51ae.css",
-    "main.js": "/misapat/static/js/main.44928d48.js",
+    "main.css": "/misapat/static/css/main.bf9830d6.css",
+    "main.js": "/misapat/static/js/main.a3c5a479.js",
+    "static/media/13.png": "/misapat/static/media/13.8b71a7d8de7ebca16ef9.png",
+    "static/media/gold-lion.png": "/misapat/static/media/gold-lion.00707ebba5ec5e604285.png",
     "static/media/lion.png": "/misapat/static/media/lion.b631b4d3b2c729f61388.png",
+    "static/media/mag.jpg": "/misapat/static/media/mag.0163a1d4e780efa83c63.jpg",
     "static/media/vaynera.webp": "/misapat/static/media/vaynera.28968d8ecd06e77b44b0.webp",
     "static/media/image-10.webp": "/misapat/static/media/image-10.6e185c5aad89fa67ab03.webp",
     "static/media/third-place.png": "/misapat/static/media/third-place.57f3f05799fab6457212.png",
@@ -11,7 +14,9 @@
     "static/media/first-place.png": "/misapat/static/media/first-place.56ee8598103f466a6382.png",
     "static/media/image-17.webp": "/misapat/static/media/image-17.af3610993eb680ca2332.webp",
     "static/media/image-9.webp": "/misapat/static/media/image-9.f1d5c785a61ed7022c80.webp",
+    "static/media/party-icon.svg": "/misapat/static/media/party-icon.24e35eb8a6154358472b8ecba9732bad.svg",
     "static/media/image-18.webp": "/misapat/static/media/image-18.f959c5932f2b30120084.webp",
+    "static/media/kingbonus.webp": "/misapat/static/media/kingbonus.439b7c6194f53b6f6276.webp",
     "static/media/image-20.webp": "/misapat/static/media/image-20.cb95e05f78f61d8b40de.webp",
     "static/media/image-22.webp": "/misapat/static/media/image-22.531b1fee6a4a42e47feb.webp",
     "static/media/image-21.webp": "/misapat/static/media/image-21.6e802d806e9c5491008e.webp",
@@ -20,6 +25,7 @@
     "static/media/rocket.png": "/misapat/static/media/rocket.1fd57c08351c13ee93a5.png",
     "static/media/image-19.webp": "/misapat/static/media/image-19.caee1563c679941f9b49.webp",
     "static/media/image-5.webp": "/misapat/static/media/image-5.4958c22e61baae062264.webp",
+    "static/media/gold-lion.webp": "/misapat/static/media/gold-lion.4bdd1ab5dd3e5bc6f13b.webp",
     "static/media/image-1.webp": "/misapat/static/media/image-1.8483beb96d4eec897e1a.webp",
     "static/media/image-15.webp": "/misapat/static/media/image-15.15785885cd535a3dba59.webp",
     "static/media/image-14.webp": "/misapat/static/media/image-14.84cea127a8b03037a881.webp",
@@ -41,13 +47,15 @@
     "static/media/home.svg": "/misapat/static/media/home.660fdd0725f66dc4b3a4babf88362192.svg",
     "static/media/copy.svg": "/misapat/static/media/copy.bde699810b788156e27a6af2fe1e7837.svg",
     "static/media/task-list.svg": "/misapat/static/media/task-list.d1cc85c1c9b91cccc20177dadb606061.svg",
-    "static/media/close.svg": "/misapat/static/media/close.29cc823f760c384aa141abf3354f1bf5.svg",
+    "static/media/close.svg": "/misapat/static/media/close.47a5fb411c11ac42f66d56b1503ce7d1.svg",
     "static/media/heart.svg": "/misapat/static/media/heart.c794475b2afa94d38723ed73be7e7b2f.svg",
-    "main.9c7e51ae.css.map": "/misapat/static/css/main.9c7e51ae.css.map",
-    "main.44928d48.js.map": "/misapat/static/js/main.44928d48.js.map"
+    "static/media/right-arrow.svg": "/misapat/static/media/right-arrow.c385b476904d7f485d982c97b912903f.svg",
+    "static/media/done-icon.svg": "/misapat/static/media/done-icon.a4642a646d89cb40e675f41b281ae763.svg",
+    "main.bf9830d6.css.map": "/misapat/static/css/main.bf9830d6.css.map",
+    "main.a3c5a479.js.map": "/misapat/static/js/main.a3c5a479.js.map"
   },
   "entrypoints": [
-    "static/css/main.9c7e51ae.css",
-    "static/js/main.44928d48.js"
+    "static/css/main.bf9830d6.css",
+    "static/js/main.a3c5a479.js"
   ]
 }
