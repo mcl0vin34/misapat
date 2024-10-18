@@ -1,7 +1,7 @@
 // src/components/EnergyIndicator/EnergyIndicator.tsx
 import React from "react";
-import useCoinStore from "../../store/useCoinStore";
-import { ReactComponent as EnergyIcon } from "../../assets/icons/energy.svg"; // Импортируем SVG как React-компонент
+import useCoinStore from "../../../store/useCoinStore";
+import { ReactComponent as EnergyIcon } from "../../../assets/icons/energy.svg"; // Импортируем SVG как React-компонент
 import "./EnergyIndicator.scss";
 
 const EnergyIndicator: React.FC = () => {

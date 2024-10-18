@@ -16,6 +16,6 @@ main {
   display: flex;
   flex-direction: column;
   /* Удаляем overflow: hidden */
-  padding-bottom: 80px; /* Добавляем отступ снизу, равный высоте футера */
+  padding-bottom: 75px; /* Добавляем отступ снизу, равный высоте футера */
   overflow-y: auto; /* Разрешаем вертикальную прокрутку */
 }

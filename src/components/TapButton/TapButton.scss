@@ -31,21 +31,25 @@
 }
 
 .lion-image {
-  width: 80%;
-  height: 80%;
+  position: absolute;
+  width: 105%;
+  height: 105%;
   object-fit: contain;
   border-radius: 50%;
-  margin-left: 50px;
-  user-select: none; /* Запрещаем выделение */
-  pointer-events: none; /* Отключаем события мыши для изображения */
+  /* margin-bottom: 24px; */
+  margin-left: 15px;
+  -webkit-user-select: none;
+  user-select: none;
+  pointer-events: none;
+  bottom: 5px;
 }
 
 .button-border {
   position: absolute;
-  top: -15px;
-  left: -15px;
-  right: -15px;
-  bottom: -15px;
+  top: -12px;
+  left: -12px;
+  right: -12px;
+  bottom: -12px;
   border-radius: 50%;
   background: linear-gradient(359.23deg, #1d2025 1.92%, #e9e65b 102.25%);
   z-index: 1;

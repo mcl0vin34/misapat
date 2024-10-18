@@ -4,7 +4,7 @@ import ShopCard from "../ShopCard/ShopCard";
 import useModalStore from "../../store/useModalStore";
 import SharedContainer from "../UI/SharedContainer/SharedContainer";
 import styles from "./ItemsShop.module.scss";
-import ShopCardModalContent from "../ShopCardModalContent/ShopCardModalContent";
+import ShopCardModalContent from "../ShopCard/ShopCardModalContent/ShopCardModalContent";
 import { ShopItem } from "../../types/ShopItem"; // Импортируем тип
 
 const ItemsShop = () => {

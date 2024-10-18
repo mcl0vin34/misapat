@@ -1,7 +1,7 @@
 // src/components/ShopCard/ShopCardModalContent.tsx
 import React from "react";
 import styles from "./ShopCardModalContent.module.scss";
-import { ShopItem } from "../../types/ShopItem";
+import { ShopItem } from "../../../types/ShopItem";
 import ShopCardWithImageModal from "./ShopCardWithImageModal/ShopCardWithImageModal";
 import ShopCardModalBanner from "./ShopCardModalBanner/ShopCardModalBanner";
 

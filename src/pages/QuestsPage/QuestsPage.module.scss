@@ -5,8 +5,11 @@
   color: #fff;
 
   .title {
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 55.46px;
+    text-align: center;
+    color: #f1f1f1;
   }
 
   .subtitle {
@@ -29,23 +32,34 @@
       align-items: center;
       justify-content: space-between;
       width: 100%; /* Чтобы картинка и заголовок занимали всю ширину */
+
+      .dailyRewardContent {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
     }
 
     .rewardImage {
       width: 120px;
       height: 80px;
       border-radius: 8px;
-      margin-right: 20px;
     }
 
     .rewardDetails {
+      height: 100%;
+      height: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
       .rewardTitle {
         font-size: 14px;
         font-weight: 700;
         line-height: 10px;
         text-align: left;
         color: #f1f1f1;
-        margin-bottom: 20px;
+        margin-top: 10px;
       }
 
       .rewardAmountWrapper {
@@ -70,7 +84,7 @@
 
     .progressBar {
       display: flex;
-      gap: 5px;
+      gap: 3px;
       margin-top: 10px;
       width: 100%; /* Прогресс бар на 100% ширины */
       justify-content: space-between; /* Равномерное распределение элементов */
@@ -78,10 +92,10 @@
 
     .progressItem {
       flex: 1; /* Равномерно распределяет ширину всех элементов */
-      height: 12px;
+      height: 8px;
       background-color: #d9d9d9;
       border: 1px solid transparent;
-      border-radius: 4px;
+      border-radius: 2px;
 
       &.filled {
         background: linear-gradient(
@@ -107,6 +121,7 @@
     padding: 15px;
     border-radius: 10px;
     cursor: pointer;
+    height: 90px;
     transition: background-color 0.3s;
 
     &.questCompleted {

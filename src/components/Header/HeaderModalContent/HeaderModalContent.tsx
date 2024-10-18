@@ -1,7 +1,6 @@
 // src/components/Header/HeaderModalContent/HeaderModalContent.tsx
 
 import React from "react";
-import { ReactComponent as CoinIcon } from "../../assets/icons/coin.svg";
 import styles from "./HeaderModalContent.module.scss";
 import LicenseModal from "./LicenseModal/LicenseModal";
 import RulesModal from "./RulesModal/RulesModal";
@@ -52,6 +51,10 @@ const HeaderModalContent: React.FC<HeaderModalContentProps> = ({ user }) => {
       });
   };
 
+  const registrationDate = user?.created_at
+    ? new Date(user.created_at).toLocaleDateString("ru-RU")
+    : "01.01.2024";
+
   return (
     <div className={styles.headerModal}>
       <img src={photoUrl} alt="Avatar" className={styles.avatar} />
@@ -59,8 +62,7 @@ const HeaderModalContent: React.FC<HeaderModalContentProps> = ({ user }) => {
       <p className={styles.userId}>ID: {user?.id}</p>
 
       <p className={styles.registrationDate}>
-        Дата регистрации в приложении: <br />{" "}
-        {user?.registrationDate || "01.01.2024"}
+        Дата регистрации в приложении: <br /> {registrationDate}
       </p>
 
       <div className={styles.sections}>

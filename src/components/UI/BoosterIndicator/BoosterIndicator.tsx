@@ -1,11 +1,11 @@
 // src/components/BoosterIndicator/BoosterIndicator.tsx
 
 import React, { useState } from "react";
-import useCoinStore from "../../store/useCoinStore";
-import useModalStore from "../../store/useModalStore";
-import { ReactComponent as BoosterIcon } from "../../assets/icons/booster.svg";
-import rocketIcon from "../../assets/images/rocket.png"; // Оставляем как PNG
-import { ReactComponent as CoinIcon } from "../../assets/icons/coin.svg";
+import useCoinStore from "../../../store/useCoinStore";
+import useModalStore from "../../../store/useModalStore";
+import { ReactComponent as BoosterIcon } from "../../../assets/icons/booster.svg";
+import rocketIcon from "../..//../assets/images/rocket.png"; // Оставляем как PNG
+import { ReactComponent as CoinIcon } from "../..//../assets/icons/coin.svg";
 import "./BoosterIndicator.scss";
 
 const BoosterIndicator: React.FC = () => {

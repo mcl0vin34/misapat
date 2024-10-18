@@ -5,10 +5,10 @@ import lionImage from "../../assets/images/lion.png";
 import coinIcon from "../../assets/icons/coin.svg";
 import "./MainPage.scss";
 import TapButton from "../../components/TapButton/TapButton";
-import PassiveIncomeDisplay from "../../components/PassiveIncomeDisplay/PassiveIncomeDisplay";
+import PassiveIncomeDisplay from "../../components/UI/PassiveIncomeDisplay/PassiveIncomeDisplay";
 import useCoinStore from "../../store/useCoinStore";
-import EnergyIndicator from "../../components/EnergyIndicator/EnergyIndicator";
-import BoosterIndicator from "../../components/BoosterIndicator/BoosterIndicator";
+import EnergyIndicator from "../../components/UI/EnergyIndicator/EnergyIndicator";
+import BoosterIndicator from "../../components/UI/BoosterIndicator/BoosterIndicator";
 import FormattedNumber from "../../components/UI/FormattedNumber/FormattedNumber";
 import SharedContainer from "../../components/UI/SharedContainer/SharedContainer";
 

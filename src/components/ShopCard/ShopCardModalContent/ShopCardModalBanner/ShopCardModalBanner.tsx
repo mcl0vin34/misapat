@@ -1,9 +1,9 @@
 // src/components/ShopCard/ShopCardModalBanner.tsx
 import React from "react";
-import { ReactComponent as CoinIcon } from "../../../assets/icons/coin.svg";
+import { ReactComponent as CoinIcon } from "../../../../assets/icons/coin.svg";
 import styles from "./ShopCardModalBanner.module.scss";
-import { ShopItem } from "../../../types/ShopItem";
-import { formatPrice } from "../../../utils/formatPrice"; // Импортируем утилиту
+import { ShopItem } from "../../../../types/ShopItem";
+import { formatPrice } from "../../../../utils/formatPrice"; // Импортируем утилиту
 
 interface ShopCardModalBannerProps {
   card: ShopItem;

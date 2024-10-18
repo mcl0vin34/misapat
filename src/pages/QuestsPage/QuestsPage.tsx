@@ -71,18 +71,20 @@ const QuestsPage: React.FC = () => {
         {/* Статичный блок с ежедневной наградой */}
         <div className={styles.dailyReward}>
           <div className={styles.dailyReward_top}>
-            <img
-              src={magImg}
-              alt="Ежедневная награда"
-              className={styles.rewardImage}
-            />
+            <div className={styles.dailyRewardContent}>
+              <img
+                src={magImg}
+                alt="Ежедневная награда"
+                className={styles.rewardImage}
+              />
 
-            <div className={styles.rewardDetails}>
-              <h2 className={styles.rewardTitle}>Ежедневная награда</h2>
+              <div className={styles.rewardDetails}>
+                <h2 className={styles.rewardTitle}>Ежедневная награда</h2>
 
-              <div className={styles.rewardAmountWrapper}>
-                <CoinIcon className={styles.coinIcon} />
-                <p className={styles.rewardAmount}>+20 000</p>
+                <div className={styles.rewardAmountWrapper}>
+                  <CoinIcon className={styles.coinIcon} />
+                  <p className={styles.rewardAmount}>+20 000</p>
+                </div>
               </div>
             </div>
 
