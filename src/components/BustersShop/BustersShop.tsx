@@ -1,84 +1,102 @@
 // src/components/BustersShop/BustersShop.tsx
 
-import React, { useState } from "react";
-import goldLionImage from "../../assets/images/gold-lion.webp";
-import thirteenImage from "../../assets/images/kingbonus.webp";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useUserStore } from "../../store/useUserStore";
 import styles from "./BustersShop.module.scss";
+import { boosters, Booster } from "../../constants/boosters";
+import BusterModalContent from "./BusterModalContent/BusterModalContent";
 import { ReactComponent as CoinIcon } from "../../assets/icons/coin.svg";
-import useModalStore from "../../store/useModalStore"; // Импорт хука для модальных окон
-import BusterModalContent from "./BusterModalContent/BusterModalContent"; // Импорт нового компонента модального окна
-import { Upgrade } from "../../types/Upgrade"; // Импорт типа Upgrade
+import useModalStore from "../../store/useModalStore";
+import { Upgrade } from "../../types/Upgrade";
 
 const BustersShop = () => {
-  const [coins, setCoins] = useState<number>(10000); // начальные монеты
-  const [upgrades, setUpgrades] = useState<Upgrade[]>([
-    {
-      id: 1,
-      name: "Золотой лев",
-      imageUrl: goldLionImage, // замени на реальный путь к изображению
-      level: 1,
-      maxLevel: 10,
-      cost: 2500,
-      rateIncreasePerLevel: 300,
-      totalRateIncrease: 300,
-    },
-    {
-      id: 2,
-      name: "Королевский бонус",
-      imageUrl: thirteenImage, // замени на реальный путь к изображению
-      level: 1,
-      maxLevel: 10,
-      cost: 1500,
-      rateIncreasePerLevel: 700,
-      totalRateIncrease: 700,
-    },
-  ]);
+  const { user, setUser } = useUserStore(); // Теперь setUser доступен
+  const { openModal } = useModalStore();
 
-  const { openModal } = useModalStore(); // Деструктурируем openModal из хука
+  const [upgrades, setUpgrades] = useState<Upgrade[]>(() => {
+    return boosters.map((booster) => ({
+      id: booster.upgrade_id,
+      name: booster.name,
+      imageUrl: booster.imageUrl,
+      level: 1, // Начальный уровень
+      maxLevel: booster.max_level,
+      cost: booster.upgrade_costs[0], // Начальная стоимость
+      rateIncreasePerLevel: booster.income_increase_per_level,
+      totalRateIncrease: booster.income_increase_per_level, // Начальное увеличение
+    }));
+  });
 
-  const purchaseUpgrade = (id: number) => {
-    setUpgrades((prevUpgrades) =>
-      prevUpgrades.map((upgrade) => {
-        if (
-          upgrade.id === id &&
-          upgrade.level < upgrade.maxLevel &&
-          coins >= upgrade.cost
-        ) {
-          const newLevel = upgrade.level + 1;
-          const newCost = Math.floor(upgrade.cost * 1.8); // Увеличение стоимости
-          const newTotalRateIncrease =
-            upgrade.totalRateIncrease + upgrade.rateIncreasePerLevel;
+  useEffect(() => {
+    if (user && user.upgrades) {
+      const updatedUpgrades = boosters.map((booster) => {
+        const userUpgrade = user.upgrades.find(
+          (u) => u.upgrade_id === booster.upgrade_id
+        );
+        const level = userUpgrade?.level || 1;
+        return {
+          id: booster.upgrade_id,
+          name: booster.name,
+          imageUrl: booster.imageUrl,
+          level: level, // Уровень из данных пользователя
+          maxLevel: booster.max_level,
+          cost: booster.upgrade_costs[level - 1], // Стоимость на текущем уровне
+          rateIncreasePerLevel: booster.income_increase_per_level,
+          totalRateIncrease: booster.income_increase_per_level * level, // Общий прирост дохода
+        };
+      });
+      setUpgrades(updatedUpgrades);
+    }
+  }, [user]);
 
-          setCoins(coins - upgrade.cost); // Вычитаем монеты
+  // Функция для отправки POST-запроса на покупку
+  // src/components/BustersShop/BustersShop.tsx
 
-          return {
-            ...upgrade,
-            level: newLevel,
-            cost: newCost,
-            totalRateIncrease: newTotalRateIncrease,
-          };
+  const purchaseUpgrade = async (upgradeId: number) => {
+    try {
+      const response = await axios.post(
+        `https://dev.simatap.ru/api/upgrades/purchase`,
+        {},
+        {
+          params: {
+            userId: user?.id,
+            upgradeId: upgradeId,
+          },
         }
-        return upgrade;
-      })
-    );
+      );
+
+      const updatedUpgrades = response.data.upgrades;
+
+      if (user) {
+        // Обновляем состояние пользователя только если он определен
+        setUser({
+          ...user,
+          upgrades: updatedUpgrades,
+        });
+      }
+    } catch (error) {
+      console.error("Ошибка при покупке апгрейда:", error);
+    }
   };
 
   const handleUpgradeClick = (upgrade: Upgrade) => {
     openModal(
-      <BusterModalContent upgrade={upgrade} />,
-      "linear-gradient(180deg, #2D3236 0%, #000000 100%)" // Передаём градиент
+      <BusterModalContent
+        upgrade={upgrade}
+        onPurchase={() => purchaseUpgrade(upgrade.id)} // Передаем функцию покупки
+      />,
+      "linear-gradient(180deg, #2D3236 0%, #000000 100%)"
     );
   };
 
   return (
     <div className={styles.bustersShop}>
-      {/*<p>Ваши монеты: {coins}</p>*/}
       <div className={styles.upgrades}>
         {upgrades.map((upgrade) => (
           <div
             key={upgrade.id}
             className={styles.upgradeItem}
-            onClick={() => handleUpgradeClick(upgrade)} // Добавляем обработчик клика
+            onClick={() => handleUpgradeClick(upgrade)}
           >
             <div className={styles.upgradeImage_wrapper}>
               <img
@@ -86,7 +104,7 @@ const BustersShop = () => {
                 src={upgrade.imageUrl}
                 alt={upgrade.name}
               />
-              <div className={styles.gradientOverlay}></div> {/* Градиент */}
+              <div className={styles.gradientOverlay}></div>
             </div>
             <div className={styles.upgradeContent}>
               <div className={styles.topRow}>
@@ -98,7 +116,6 @@ const BustersShop = () => {
               <div className={styles.bottomRow}>
                 <div className={styles.income}>
                   <p className={styles.income__top}>Доход в час:</p>
-
                   <div className={styles.income__value}>
                     <CoinIcon className={styles.income__icon} />
                     <span className={styles.income__value_text}>
@@ -106,10 +123,8 @@ const BustersShop = () => {
                     </span>
                   </div>
                 </div>
-
                 <div className={styles.currentCostWrapper}>
                   <CoinIcon className={styles.another__icon} />
-
                   <span className={styles.currentCost__value}>
                     {upgrade.cost}
                   </span>

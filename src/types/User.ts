@@ -1,5 +1,10 @@
 // src/types/User.ts
 
+export interface UpgradeInfo {
+  upgrade_id: number;
+  level: number;
+}
+
 export interface AppUser {
   id: number;
   username: string;
@@ -17,5 +22,6 @@ export interface AppUser {
   boosts_updated_at: string;
   is_subscribed: boolean;
   morse_last_completed_at: string | null;
-  coins: number; // Добавлено поле для монет
+  coins: number;
+  upgrades: UpgradeInfo[]; // Добавлено поле для прокачки бустеров
 }
