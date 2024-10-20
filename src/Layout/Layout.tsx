@@ -1,4 +1,5 @@
 // src/layout/Layout.tsx
+
 import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import FooterNav from "../components/FooterNav/FooterNav";
@@ -12,8 +13,7 @@ import "./Layout.scss";
 
 const Layout = () => {
   const { modalStack, closeModal } = useModalStore();
-  const isModalOpen = modalStack.length > 0;
-  const modalContent = modalStack[modalStack.length - 1];
+  const topModal = modalStack[modalStack.length - 1];
 
   const {
     startPassiveIncome,
@@ -82,7 +82,8 @@ const Layout = () => {
           >
             Забрать награду
           </button>
-        </div>
+        </div>,
+        "linear-gradient(180deg, #2D3236 0%, #000000 100%)"
       );
     }
   }, [offlineIncome, setOfflineIncome]);
@@ -96,9 +97,12 @@ const Layout = () => {
         </SharedContainer>
       </div>
       <FooterNav />
-      <Modal isOpen={isModalOpen} onClose={closeModal}>
-        {modalContent}
-      </Modal>
+      {/* Рендерим все модальные окна из стэка */}
+      {modalStack.map((modalContent, index) => (
+        <Modal key={index} isOpen={true} onClose={() => closeModal()}>
+          {modalContent}
+        </Modal>
+      ))}
     </div>
   );
 };

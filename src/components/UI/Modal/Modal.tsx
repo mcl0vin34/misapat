@@ -1,21 +1,27 @@
+// src/components/UI/Modal/Modal.tsx
+
 import React, { useEffect, useRef, useState } from "react";
+import ReactDOM from "react-dom";
 import "./Modal.scss";
 import closeIcon from "../../../assets/icons/close.svg";
-import useModalStore from "../../../store/useModalStore";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
+  backgroundColor?: string; // Новый проп для фона
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
+const Modal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  children,
+  backgroundColor,
+}) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const [isClosing, setIsClosing] = useState(false);
   const [animate, setAnimate] = useState(false);
-
-  const { modalBackgroundColor } = useModalStore();
 
   useEffect(() => {
     if (isOpen || isClosing) {
@@ -40,12 +46,14 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
       };
       document.addEventListener("mousedown", handleClickOutside);
 
-      setTimeout(() => {
+      // Запускаем анимацию после небольшой задержки
+      const timer = setTimeout(() => {
         setAnimate(true);
       }, 10);
 
       return () => {
         document.removeEventListener("mousedown", handleClickOutside);
+        clearTimeout(timer);
       };
     }
   }, [isOpen]);
@@ -56,24 +64,23 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
     setTimeout(() => {
       setIsClosing(false);
       onClose();
-    }, 300);
+    }, 300); // Время анимации закрытия
   };
 
   if (!isOpen && !isClosing) return null;
 
-  return (
+  return ReactDOM.createPortal(
     <div
       className={`modal-overlay ${isClosing ? "fade-out" : "fade-in"}`}
       ref={overlayRef}
+      style={{ background: backgroundColor || "rgba(0, 0, 0, 0.5)" }} // Применяем цвет фона
     >
       <div
         className={`modal-content ${
           isClosing ? "slide-down" : animate ? "slide-up" : ""
         }`}
         ref={modalRef}
-        style={{
-          background: modalBackgroundColor || "#2d3236",
-        }}
+        onClick={(e) => e.stopPropagation()} // Предотвращаем всплытие клика
       >
         <img
           src={closeIcon}
@@ -83,7 +90,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
         />
         {children}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

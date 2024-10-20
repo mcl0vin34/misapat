@@ -9,6 +9,7 @@ import { ReactComponent as DoneIcon } from "../../assets/icons/done-icon.svg";
 import SimaLogo from "../../assets/images/sima-logo.png"; // Импорт общей иконки для квестов
 import useModalStore from "../../store/useModalStore"; // Импорт хука для модальных окон
 import QuestModalContent from "../../components/QuestModalContent/QuestModalContent"; // Импорт компонента модального окна
+import DailyRewardModal from "../../components/UI/DailyRewardModal/DailyRewardModal"; // Импорт DailyRewardModal
 import { Quest } from "../../types/Quest"; // Импорт интерфейса Quest
 
 const initialQuests: Quest[] = [
@@ -23,7 +24,7 @@ const initialQuests: Quest[] = [
     id: 2,
     title: "Подписаться на телеграм-канал «sima-land»",
     reward: "+50 000",
-    completed: true,
+    completed: false,
     icon: SimaLogo, // Общая иконка
   },
   {
@@ -61,13 +62,24 @@ const QuestsPage: React.FC = () => {
     );
   };
 
+  const handleDailyRewardClick = () => {
+    openModal(
+      <DailyRewardModal />,
+      "linear-gradient(180deg, #2D3236 0%, #000000 100%)" // Передаем градиент для фона модалки
+    );
+  };
+
   return (
     <div className={styles.questsPage}>
       <h1 className={styles.title}>Задания</h1>
       <p className={styles.subtitle}>Выполняй задания и получай награду!</p>
 
       {/* Статичный блок с ежедневной наградой */}
-      <div className={styles.dailyReward}>
+      <div
+        className={styles.dailyReward}
+        onClick={handleDailyRewardClick}
+        style={{ cursor: "pointer" }}
+      >
         <div className={styles.dailyReward_top}>
           <div className={styles.dailyRewardContent}>
             <img
@@ -95,8 +107,8 @@ const QuestsPage: React.FC = () => {
             <div
               key={index}
               className={`${styles.progressItem} ${
-                index < 3 ? styles.filled : ""
-              }`}
+                index < 1 ? styles.filled : ""
+              }`} // Пока что первый день (index < 1)
             />
           ))}
         </div>

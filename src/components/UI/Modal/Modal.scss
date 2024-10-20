@@ -1,4 +1,4 @@
-/* src/components/UI/Modal/Modal.scss */
+/* Пример стилей */
 
 .modal-overlay {
   position: fixed;
@@ -11,7 +11,7 @@
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  z-index: 1000;
+  z-index: 1000; /* Убедитесь, что это значение выше для новых модалок */
   opacity: 1;
   transition: opacity 0.3s ease;
 }
@@ -27,7 +27,7 @@
 .modal-content {
   overflow: auto;
   min-height: 300px;
-  z-index: 10001;
+  z-index: 1001; /* Более высокий z-index для содержимого модалки */
 
   height: 85%;
   background-color: #1c1c1e;

@@ -1,0 +1,112 @@
+/* src/components/DailyRewardModal/DailyRewardModal.module.scss */
+
+.modalContent {
+  position: relative;
+  padding: 0;
+  border-radius: 10px;
+  margin: auto;
+  text-align: center;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #fff;
+}
+
+.headerImage {
+  width: 135px; /* Размер изображения, можно изменить по необходимости */
+  height: auto;
+  margin: 0 auto 0 auto; /* Центрируем и добавляем нижний отступ */
+}
+
+.subtitle {
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 55.46px;
+  text-align: center;
+  color: #f1f1f1;
+
+  margin-bottom: 10px;
+}
+
+.description {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
+  text-align: center;
+  color: #f1f1f1;
+  margin-bottom: 10px;
+
+  max-width: 237px;
+}
+
+.modalTitle {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.cardsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.card {
+  padding: 0 29px 11px 29px; /* Сторонние паддинги 29px, снизу 11px */
+  width: calc(31.33%);
+  background-color: #2d3236;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column; /* Размещаем элементы по вертикали */
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  transition: border-color 0.3s;
+  background-color: #1c1c1e;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+.currentDay {
+  border: 2px solid;
+  border-image-source: linear-gradient(
+    315.49deg,
+    #c4954b 8.14%,
+    #eec66e 40.29%,
+    #ffffa0 53.61%,
+    #fada82 65.09%,
+    #c4954b 100%
+  );
+  border-radius: 10px !important;
+  border-image-slice: 1;
+}
+
+.completed {
+  cursor: default;
+}
+
+.dayLabel {
+  font-size: 1rem;
+  margin-top: 10px; /* Добавлен отступ сверху */
+}
+
+.cardIcon {
+  margin-top: 10px; /* Отступ между днем и иконкой */
+}
