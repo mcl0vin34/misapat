@@ -1,12 +1,14 @@
 {
   "files": {
-    "main.css": "/misapat/static/css/main.13997261.css",
-    "main.js": "/misapat/static/js/main.5ad7ee6b.js",
+    "main.css": "/misapat/static/css/main.c3e6ed5c.css",
+    "main.js": "/misapat/static/js/main.61880c41.js",
     "static/media/13.png": "/misapat/static/media/13.8b71a7d8de7ebca16ef9.png",
     "static/media/gold-lion.png": "/misapat/static/media/gold-lion.00707ebba5ec5e604285.png",
+    "static/media/card-1.png": "/misapat/static/media/card-1.ed165ecb1ce74ab6d70e.png",
     "static/media/lion.png": "/misapat/static/media/lion.b631b4d3b2c729f61388.png",
     "static/media/mag.jpg": "/misapat/static/media/mag.0163a1d4e780efa83c63.jpg",
     "static/media/vaynera.webp": "/misapat/static/media/vaynera.28968d8ecd06e77b44b0.webp",
+    "static/media/reward-card.svg": "/misapat/static/media/reward-card.e95f0bd023e89cd1c9a81d19b60b0b13.svg",
     "static/media/image-10.webp": "/misapat/static/media/image-10.6e185c5aad89fa67ab03.webp",
     "static/media/third-place.png": "/misapat/static/media/third-place.57f3f05799fab6457212.png",
     "static/media/image-8.webp": "/misapat/static/media/image-8.1fe2ab0161e2a0b1f9f3.webp",
@@ -27,6 +29,7 @@
     "static/media/image-5.webp": "/misapat/static/media/image-5.4958c22e61baae062264.webp",
     "static/media/gold-lion.webp": "/misapat/static/media/gold-lion.4bdd1ab5dd3e5bc6f13b.webp",
     "static/media/image-1.webp": "/misapat/static/media/image-1.8483beb96d4eec897e1a.webp",
+    "static/media/daily-cards.png": "/misapat/static/media/daily-cards.c7194347bbd14df653ed.png",
     "static/media/image-15.webp": "/misapat/static/media/image-15.15785885cd535a3dba59.webp",
     "static/media/image-14.webp": "/misapat/static/media/image-14.84cea127a8b03037a881.webp",
     "static/media/image-12.webp": "/misapat/static/media/image-12.39e284f4190ba9ee79fc.webp",
@@ -51,11 +54,11 @@
     "static/media/heart.svg": "/misapat/static/media/heart.c794475b2afa94d38723ed73be7e7b2f.svg",
     "static/media/right-arrow.svg": "/misapat/static/media/right-arrow.c385b476904d7f485d982c97b912903f.svg",
     "static/media/done-icon.svg": "/misapat/static/media/done-icon.a4642a646d89cb40e675f41b281ae763.svg",
-    "main.13997261.css.map": "/misapat/static/css/main.13997261.css.map",
-    "main.5ad7ee6b.js.map": "/misapat/static/js/main.5ad7ee6b.js.map"
+    "main.c3e6ed5c.css.map": "/misapat/static/css/main.c3e6ed5c.css.map",
+    "main.61880c41.js.map": "/misapat/static/js/main.61880c41.js.map"
   },
   "entrypoints": [
-    "static/css/main.13997261.css",
-    "static/js/main.5ad7ee6b.js"
+    "static/css/main.c3e6ed5c.css",
+    "static/js/main.61880c41.js"
   ]
 }
