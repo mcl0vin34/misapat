@@ -12,6 +12,7 @@ interface UserState {
   isLoading: boolean;
   error: string | null;
   initializeUser: () => Promise<void>;
+  setUser: (updatedUser: AppUser) => void; // Добавлена функция setUser для обновления пользователя
 }
 
 export const useUserStore = create<UserState>()(
@@ -55,6 +56,7 @@ export const useUserStore = create<UserState>()(
               is_subscribed: true,
               morse_last_completed_at: null,
               coins: 0,
+              upgrades: [], // Начальные апгрейды пользователя
             };
           } else {
             console.warn(
@@ -78,6 +80,10 @@ export const useUserStore = create<UserState>()(
               is_subscribed: true,
               morse_last_completed_at: null,
               coins: 0,
+              upgrades: [
+                { upgrade_id: 1, level: 2 },
+                { upgrade_id: 2, level: 3 },
+              ], // Моковые данные об апгрейдах
             };
           }
 
@@ -156,6 +162,11 @@ export const useUserStore = create<UserState>()(
             user: null, // Не используем mock user при ошибке
           });
         }
+      },
+
+      // Функция для обновления данных пользователя
+      setUser: (updatedUser: AppUser) => {
+        set({ user: updatedUser });
       },
     }),
     {
