@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body {
+  touch-action: none; /* Отключаем реакцию на свайпы и другие тач-события */
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Source Sans Pro", "Segoe UI",

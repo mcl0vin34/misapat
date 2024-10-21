@@ -30,6 +30,7 @@ const App: React.FC = () => {
       tg.expand();
       tg.disableVerticalSwipes();
       tg.isVerticalSwipesEnabled = false;
+      tg.bg_color = "#272727";
     }
 
     // Настройка поведения свайпа
