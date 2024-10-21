@@ -8,6 +8,7 @@ import "./App.scss";
 import { useUserStore } from "./store/useUserStore";
 import useCoinStore from "./store/useCoinStore";
 import tg from "./utils/tg"; // Импортируем tg
+import LoadingScreen from "./components/UI/LoadingScreen/LoadingScreen"; // Импортируем LoadingScreen
 
 const App: React.FC = () => {
   const [isInitialized, setIsInitialized] = useState(false);
@@ -45,14 +46,7 @@ const App: React.FC = () => {
   }, [initializeUser, initializeStore, storeInitialized]);
 
   if (!isInitialized) {
-    return (
-      <div
-        style={{ background: "#272727", textAlign: "center", color: "#fff" }}
-        className="loading"
-      >
-        Загрузка...
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   return (
