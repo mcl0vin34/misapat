@@ -26,13 +26,10 @@ export const useUserStore = create<UserState>()(
 
         try {
           const tg = (window as any).Telegram?.WebApp;
-          console.log("window.Telegram:", (window as any).Telegram);
-          console.log("tg:", tg);
 
           let userData: AppUser;
 
           if (tg && tg.initDataUnsafe?.user && tg.initDataUnsafe?.user?.id) {
-            console.log("tg.initDataUnsafe.user:", tg.initDataUnsafe.user);
             userData = {
               id: tg.initDataUnsafe.user.id,
               username: tg.initDataUnsafe.user.username,

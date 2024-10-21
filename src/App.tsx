@@ -44,8 +44,14 @@ const App: React.FC = () => {
   }, [initializeUser, initializeStore, storeInitialized]);
 
   if (!isInitialized) {
-    // Показываем индикатор загрузки или пустой экран до завершения инициализации
-    return <div>Загрузка...</div>;
+    return (
+      <div
+        style={{ background: "#272727", textAlign: "center", color: "#fff" }}
+        className="loading"
+      >
+        Загрузка...
+      </div>
+    );
   }
 
   return (

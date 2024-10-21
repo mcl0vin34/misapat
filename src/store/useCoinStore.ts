@@ -1,5 +1,4 @@
 // src/store/useCoinStore.ts
-
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { io, Socket } from "socket.io-client";
@@ -104,9 +103,21 @@ const useCoinStore = create<CoinStoreState>()(
           }
         });
 
-        //socket.on("weeklyCoinsUpdated", (data) => {
-        //  console.log("Обновлены weeklyCoins:", data);
-        //});
+        socket.on("passiveIncomePerHour", (data) => {
+          console.log("Получены данные passiveIncomePerHour:", data);
+          if (data.passive_income_per_hour !== undefined) {
+            set({ passiveIncomeRate: data.passive_income_per_hour });
+            console.log(
+              "passiveIncomeRate обновлен:",
+              data.passive_income_per_hour
+            );
+          } else {
+            console.warn(
+              "Обновление пассивного дохода не содержит данных:",
+              data
+            );
+          }
+        });
 
         socket.on("boostsUpdated", (data) => {
           if (data.boosts_left !== undefined) {
@@ -114,11 +125,6 @@ const useCoinStore = create<CoinStoreState>()(
           } else {
             console.warn("Обновление бустов не содержит данных:", data);
           }
-        });
-
-        socket.on("boostError", (error) => {
-          console.error("Ошибка при использовании буста:", error);
-          toast.error(`Ошибка при использовании буста: ${error.message}`);
         });
 
         socket.on("coinsUpdated", (data) => {
@@ -180,12 +186,6 @@ const useCoinStore = create<CoinStoreState>()(
         const { socket, userId, coinsPerClick, energy } = state;
 
         if (socket && userId && energy >= coinsPerClick) {
-          console.log("Отправка события 'tap' для пользователя", userId);
-          console.log("Данные перед отправкой 'tap':", {
-            userId,
-            coinsPerClick,
-            energy,
-          });
           socket.emit("tap", { userId });
         } else {
           console.error("Недостаточно энергии или сокет не инициализирован.");
@@ -226,7 +226,7 @@ const useCoinStore = create<CoinStoreState>()(
       },
 
       incrementCoins: (amount: number) => {
-        // Можно удалить или оставить для других целей
+        set((state) => ({ coins: state.coins + amount }));
       },
 
       purchaseUpgrade: (id: number) => {
@@ -246,7 +246,8 @@ const useCoinStore = create<CoinStoreState>()(
       partialize: (state) => ({
         coins: state.coins,
         energy: state.energy,
-        availableBoosters: state.availableBoosters, // Добавлено для сохранения бустеров
+        passiveIncomeRate: state.passiveIncomeRate,
+        availableBoosters: state.availableBoosters,
         userId: state.userId,
         storeInitialized: state.storeInitialized,
         offlineIncome: state.offlineIncome,

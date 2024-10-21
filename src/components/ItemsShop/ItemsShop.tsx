@@ -24,7 +24,7 @@ const ItemsShop = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <p>Загрузка...</p>;
+  if (loading) return <p className={styles.loading}>Загрузка...</p>;
   if (error)
     return (
       <p style={{ color: "#fff", textAlign: "center" }}>
@@ -33,6 +33,8 @@ const ItemsShop = () => {
     );
 
   const handleCardClick = (card: ShopItem) => {
+    console.log(card);
+
     openModal(
       <ShopCardModalContent card={card} />,
       card.backgroundColor || "#2d3236"
@@ -76,7 +78,9 @@ const ItemsShop = () => {
           )}
         </div>
       </div>
-      {isModalOpen && <SharedContainer>{modalContent}</SharedContainer>}
+      {isModalOpen && (
+        <SharedContainer>{modalContent?.content}</SharedContainer>
+      )}
     </div>
   );
 };

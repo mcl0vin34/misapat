@@ -1,4 +1,5 @@
 // src/pages/MainPage/MainPage.tsx
+
 import React from "react";
 import lionImage from "../../assets/images/lion.png";
 import coinIcon from "../../assets/icons/coin.svg";
@@ -13,6 +14,7 @@ import FormattedNumber from "../../components/UI/FormattedNumber/FormattedNumber
 const MainPage = () => {
   const coins = useCoinStore((state) => state.coins);
   const passiveIncomeRate = useCoinStore((state) => state.passiveIncomeRate);
+
   const energy = useCoinStore((state) => state.energy);
 
   return (

@@ -73,12 +73,13 @@ const Modal: React.FC<ModalProps> = ({
     <div
       className={`modal-overlay ${isClosing ? "fade-out" : "fade-in"}`}
       ref={overlayRef}
-      style={{ background: backgroundColor || "rgba(0, 0, 0, 0.5)" }} // Применяем цвет фона
+      style={{ background: "rgba(0, 0, 0, 0.5)" }} // Применяем цвет фона
     >
       <div
         className={`modal-content ${
           isClosing ? "slide-down" : animate ? "slide-up" : ""
         }`}
+        style={{ background: backgroundColor || "#1c1c1e" }} // Применяем цвет фона
         ref={modalRef}
         onClick={(e) => e.stopPropagation()} // Предотвращаем всплытие клика
       >

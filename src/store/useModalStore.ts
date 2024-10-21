@@ -1,33 +1,28 @@
-// src/store/useModalStore.ts
-
 import { create } from "zustand";
 
 interface ModalState {
-  modalStack: React.ReactNode[]; // Стек модальных окон содержит только контент
-  modalBackgroundColor?: string;
+  modalStack: Array<{ content: React.ReactNode; backgroundColor?: string }>; // Теперь стек содержит объекты с контентом и цветом
   openModal: (content: React.ReactNode, backgroundColor?: string) => void;
   closeModal: () => void;
 }
 
-const useModalStore = create<ModalState>((set, get) => ({
+const useModalStore = create<ModalState>((set) => ({
   modalStack: [],
-  modalBackgroundColor: undefined,
 
   openModal: (content, backgroundColor) =>
     set((state) => ({
-      modalStack: [...state.modalStack, content], // Добавляем контент модалки в стек
-      modalBackgroundColor: backgroundColor,
+      modalStack: [
+        ...state.modalStack,
+        { content, backgroundColor }, // Сохраняем контент и цвет фона вместе
+      ],
     })),
 
   closeModal: () => {
     set((state) => {
       const newStack = [...state.modalStack];
-      newStack.pop(); // Убираем последний элемент из стэка
+      newStack.pop(); // Убираем последний элемент из стека
       return {
         modalStack: newStack,
-        modalBackgroundColor: newStack.length
-          ? state.modalBackgroundColor
-          : undefined,
       };
     });
   },
