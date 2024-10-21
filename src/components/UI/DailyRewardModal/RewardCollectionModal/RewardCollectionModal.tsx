@@ -34,7 +34,6 @@ const RewardCollectModal: React.FC<RewardCollectModalProps> = ({
 
   const handleCollect = () => {
     incrementCoins(rewardAmount);
-    toast.success(`Вы получили ${rewardAmount.toLocaleString()} монет!`);
     onComplete();
   };
 

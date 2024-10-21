@@ -5,155 +5,82 @@ import useModalStore from "../../store/useModalStore";
 import SharedContainer from "../UI/SharedContainer/SharedContainer";
 import styles from "./ItemsShop.module.scss";
 import ShopCardModalContent from "../ShopCard/ShopCardModalContent/ShopCardModalContent";
-import { ShopItem } from "../../types/ShopItem"; // Импортируем тип
+import { ShopItem } from "../../types/ShopItem";
 
 const ItemsShop = () => {
   const [shopItems, setShopItems] = useState<ShopItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
-  const { openModal, modalStack } = useModalStore(); // Используем modalStack вместо modalContent и isModalOpen
+  const { openModal, modalStack } = useModalStore();
 
-  // Определяем, открыта ли модалка (если стек не пуст)
   const isModalOpen = modalStack.length > 0;
-  const modalContent = modalStack[modalStack.length - 1]; // Последняя модалка в стеке
+  const modalContent = modalStack[modalStack.length - 1];
 
   useEffect(() => {
     axios
       .get("https://dev.simatap.ru/api/market-items")
-      .then((response) => {
-        setShopItems(response.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        setError(error);
-        setLoading(false);
-      });
+      .then((response) => setShopItems(response.data))
+      .catch(setError)
+      .finally(() => setLoading(false));
   }, []);
 
-  if (loading) {
-    return <p>Загрузка...</p>;
-  }
-
-  if (error) {
+  if (loading) return <p className={styles.loading}>Загрузка...</p>;
+  if (error)
     return (
       <p style={{ color: "#fff", textAlign: "center" }}>
         Ошибка: {error.message}
       </p>
     );
-  }
 
   const handleCardClick = (card: ShopItem) => {
+    console.log(card);
+
     openModal(
       <ShopCardModalContent card={card} />,
       card.backgroundColor || "#2d3236"
     );
   };
 
+  const renderCard = (card: ShopItem, index: number, position: string) => (
+    <ShopCard
+      key={`${position}-card-${index}`}
+      {...card}
+      backgroundColor={card.backgroundColor}
+      onClick={() => handleCardClick(card)}
+    />
+  );
+
   const banner = shopItems.find((item) => item.type === "banner");
   const cardsWithImage = shopItems.filter(
     (item) => item.type === "cardWithImage"
   );
-  const cardsWithoutImage = shopItems.filter(
-    (item) => item.type === "cardWithoutImage"
+
+  const splitCards = cardsWithImage.reduce(
+    (acc, card, index) => {
+      index % 2 === 0 ? acc.left.push(card) : acc.right.push(card);
+      return acc;
+    },
+    { left: [] as ShopItem[], right: [] as ShopItem[] }
   );
-
-  const leftColumn = [
-    cardsWithImage[0],
-    cardsWithImage[2],
-    cardsWithImage[4],
-    cardsWithImage[6],
-    cardsWithImage[8],
-    cardsWithImage[12],
-    cardsWithImage[14],
-    cardsWithImage[16],
-  ];
-
-  const rightColumn = [
-    cardsWithImage[1],
-    cardsWithImage[3],
-    cardsWithImage[5],
-    cardsWithImage[7],
-    cardsWithImage[9],
-    cardsWithImage[11],
-    cardsWithImage[13],
-    cardsWithImage[15],
-  ];
 
   return (
     <div className={styles.itemsShop}>
-      {/* Отображаем баннер */}
-      {banner && (
-        <ShopCard
-          key="banner"
-          id={banner.id}
-          type={banner.type}
-          image={banner.image}
-          title={banner.title}
-          description={banner.description}
-          miniDescription={banner.miniDescription}
-          detailedDescription={banner.detailedDescription}
-          detailedMiniDescription={banner.detailedMiniDescription}
-          price={banner.price}
-          discountPercentage={banner.discountPercentage}
-          category={banner.category}
-          onClick={() => handleCardClick(banner)}
-        />
-      )}
-
+      {banner && renderCard(banner, 0, "banner")}
       <div className={styles.flexContainer}>
-        {/* Левый столбец */}
         <div className={styles.column}>
-          {leftColumn.map(
-            (card, index) =>
-              card && (
-                <ShopCard
-                  key={`left-card-${index}`}
-                  id={card.id}
-                  type={card.type}
-                  image={card.image}
-                  title={card.title}
-                  description={card.description}
-                  miniDescription={card.miniDescription}
-                  detailedDescription={card.detailedDescription}
-                  detailedMiniDescription={card.detailedMiniDescription}
-                  price={card.price}
-                  discountPercentage={card.discountPercentage}
-                  category={card.category}
-                  backgroundColor={card.backgroundColor}
-                  onClick={() => handleCardClick(card)}
-                />
-              )
+          {splitCards.left.map((card, index) =>
+            renderCard(card, index, "left")
           )}
         </div>
-
-        {/* Правый столбец */}
         <div className={styles.column}>
-          {rightColumn.map(
-            (card, index) =>
-              card && (
-                <ShopCard
-                  key={`right-card-${index}`}
-                  id={card.id}
-                  type={card.type}
-                  image={card.image}
-                  title={card.title}
-                  description={card.description}
-                  miniDescription={card.miniDescription}
-                  detailedDescription={card.detailedDescription}
-                  detailedMiniDescription={card.detailedMiniDescription}
-                  price={card.price}
-                  discountPercentage={card.discountPercentage}
-                  category={card.category}
-                  backgroundColor={card.backgroundColor}
-                  onClick={() => handleCardClick(card)}
-                />
-              )
+          {splitCards.right.map((card, index) =>
+            renderCard(card, index, "right")
           )}
         </div>
       </div>
-
-      {/* Модальное окно */}
-      {isModalOpen && <SharedContainer>{modalContent}</SharedContainer>}
+      {isModalOpen && (
+        <SharedContainer>{modalContent?.content}</SharedContainer>
+      )}
     </div>
   );
 };

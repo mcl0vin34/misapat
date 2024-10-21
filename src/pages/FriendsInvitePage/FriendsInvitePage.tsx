@@ -1,5 +1,3 @@
-// src/pages/FriendsInvite/FriendsInvite.tsx
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./FriendsInvitePage.module.scss";
@@ -7,8 +5,8 @@ import getReferralLink from "../../helpers/getReferralLink";
 import tg from "../../utils/tg";
 import coinIcon from "../../assets/icons/coin.svg";
 import { ReactComponent as CopyIcon } from "../../assets/icons/copy.svg";
-import { toast } from "react-toastify"; // Импортируем toast
-import { useUserStore } from "../../store/useUserStore"; // Импортируем хук хранилища
+import { toast } from "react-toastify";
+import { useUserStore } from "../../store/useUserStore";
 
 // Типизация для друга
 interface Friend {
@@ -23,8 +21,7 @@ const FriendsInvite = () => {
 
   const referralLink = getReferralLink();
   const shareReferralLinkText = "Тапай и зарабатывай!";
-
-  const { user } = useUserStore(); // Получаем пользователя из хранилища
+  const { user } = useUserStore();
   const userId = user?.id;
 
   const handleShareButtonClick = () => {
@@ -42,20 +39,25 @@ const FriendsInvite = () => {
   // Функция для копирования реферальной ссылки
   const handleCopyLink = () => {
     if (navigator.clipboard && window.isSecureContext) {
-      // Используем Clipboard API
       navigator.clipboard
         .writeText(referralLink)
         .then(() => {
-          toast.success("Реферальная ссылка скопирована!");
+          toast.success("Реферальная ссылка скопирована!", {
+            icon: <CopyIcon style={{ width: 24, height: 24 }} />, // Заменяем иконку
+            style: { backgroundColor: "#2d3236", color: "#ffffff" }, // Задний фон и цвет текста
+            autoClose: 1000, // Длительность уведомления 1 секунда
+          });
         })
         .catch(() => {
-          toast.error("Не удалось скопировать ссылку.");
+          toast.error("Не удалось скопировать ссылку.", {
+            icon: <CopyIcon style={{ width: 24, height: 24 }} />, // Заменяем иконку
+            style: { backgroundColor: "#ff4d4f", color: "#ffffff" }, // Задний фон и цвет текста
+            autoClose: 1000, // Длительность уведомления 1 секунда
+          });
         });
     } else {
-      // Альтернативный способ для незащищенных контекстов
       const textArea = document.createElement("textarea");
       textArea.value = referralLink;
-      // Сделать textarea невидимым
       textArea.style.position = "fixed";
       textArea.style.left = "-999999px";
       textArea.style.top = "-999999px";
@@ -65,9 +67,17 @@ const FriendsInvite = () => {
 
       try {
         document.execCommand("copy");
-        toast.success("Реферальная ссылка скопирована!");
+        toast.success("Реферальная ссылка скопирована!", {
+          icon: <CopyIcon style={{ width: 24, height: 24 }} />,
+          style: { backgroundColor: "#2d3236", color: "#ffffff" },
+          autoClose: 1000,
+        });
       } catch (err) {
-        toast.error("Не удалось скопировать ссылку.");
+        toast.error("Не удалось скопировать ссылку.", {
+          icon: <CopyIcon style={{ width: 24, height: 24 }} />,
+          style: { backgroundColor: "#ff4d4f", color: "#ffffff" },
+          autoClose: 1000,
+        });
       }
 
       document.body.removeChild(textArea);
@@ -75,14 +85,12 @@ const FriendsInvite = () => {
   };
 
   useEffect(() => {
-    // Проверяем, есть ли userId
     if (!userId) {
       setError("Пользователь не найден.");
       setLoading(false);
       return;
     }
 
-    // Функция для получения данных о друзьях
     const fetchFriends = async () => {
       try {
         const response = await axios.get<Friend[]>(
@@ -90,8 +98,12 @@ const FriendsInvite = () => {
         );
         setFriends(response.data);
       } catch (error) {
-        console.error(error);
-        setError("Не удалось загрузить список друзей.");
+        if (axios.isAxiosError(error) && error.response?.status === 404) {
+          setFriends([]);
+        } else {
+          console.error(error);
+          setError("Не удалось загрузить список друзей.");
+        }
       } finally {
         setLoading(false);
       }
@@ -109,69 +121,77 @@ const FriendsInvite = () => {
           <p className={styles.errorMessage}>{error}</p>
         ) : friends.length > 0 ? (
           <div className={styles.friendsList}>
-            <header>
-              <div className={styles.header}>
-                <h1 className={styles.header_title}>Друзья</h1>
-              </div>
-
-              <div className={styles.rewardBlock}>
-                <div className={styles.rewardBlock_top}>
-                  <img src={coinIcon} alt="Coin" className={styles.coinIcon} />
-                  <p className={styles.rewardBlock_description}>+50 000</p>
+            <div>
+              <header>
+                <div className={styles.header}>
+                  <h1 className={styles.header_title}>Друзья</h1>
                 </div>
 
-                <span className={styles.rewardBlock_description_mini}>
-                  тебе и другу!
-                </span>
-              </div>
-            </header>
-
-            <p className={styles.friendsList_count}>
-              У тебя {friends.length} друзей
-            </p>
-            <ul>
-              {friends.map((friend, index) => (
-                <li key={index} className={styles.friendItem}>
-                  <span className={styles.friendItem_name}>
-                    <span className={styles.friendItem_index}>
-                      {index + 1}.
-                    </span>
-                    {friend.username}
-                  </span>
-
-                  <div className={styles.friendItem_text}>
+                <div className={styles.rewardBlock}>
+                  <div className={styles.rewardBlock_top}>
                     <img
                       src={coinIcon}
                       alt="Coin"
-                      className={styles.friendCoinIcon}
+                      className={styles.coinIcon}
                     />
-                    <span className={styles.friendItem_coins}>
-                      {friend.coins.toLocaleString()}
-                    </span>
+                    <p className={styles.rewardBlock_description}>+50 000</p>
                   </div>
-                </li>
-              ))}
-            </ul>
 
-            <div className={styles.inviteButtons}>
-              <button
-                onClick={handleShareButtonClick}
-                className={styles.inviteFriend}
-              >
-                Пригласить друга
-              </button>
-              <button
-                onClick={handleCopyLink} // Добавляем обработчик
-                className={styles.copyLink}
-                title="Скопировать реферальную ссылку" // Добавляем подсказку
-              >
-                <CopyIcon />
-              </button>
+                  <span className={styles.rewardBlock_description_mini}>
+                    тебе и другу!
+                  </span>
+                </div>
+
+                <p className={styles.friendsList_count}>
+                  У тебя {friends.length} друзей
+                </p>
+              </header>
+
+              <ul>
+                {friends.map((friend, index) => (
+                  <li key={index} className={styles.friendItem}>
+                    <span className={styles.friendItem_name}>
+                      <span className={styles.friendItem_index}>
+                        {index + 1}.
+                      </span>
+                      {friend.username}
+                    </span>
+
+                    <div className={styles.friendItem_text}>
+                      <img
+                        src={coinIcon}
+                        alt="Coin"
+                        className={styles.friendCoinIcon}
+                      />
+                      <span className={styles.friendItem_coins}>
+                        {friend.coins.toLocaleString()}
+                      </span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </div>
 
-            <p className={styles.inviteText}>
-              Приглашай друга и получайте совместную награду!
-            </p>
+            <div className={styles.inviteButtons}>
+              <div className={styles.inviteButtons_block}>
+                <button
+                  onClick={handleShareButtonClick}
+                  className={styles.inviteFriend}
+                >
+                  Пригласить друга
+                </button>
+                <button
+                  onClick={handleCopyLink} // Добавляем обработчик
+                  className={styles.copyLink}
+                  title="Скопировать реферальную ссылку" // Добавляем подсказку
+                >
+                  <CopyIcon />
+                </button>
+              </div>
+              <p className={styles.inviteText}>
+                Приглашай друга и получайте совместную награду!
+              </p>
+            </div>
           </div>
         ) : (
           <div className={styles.friendsList}>

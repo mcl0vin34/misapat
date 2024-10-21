@@ -13,6 +13,8 @@ declare global {
       onClick: (callback: () => void) => void;
     };
     openTelegramLink?: (url: string) => void;
+    disableVerticalSwipes: () => void;
+    isVerticalSwipesEnabled: boolean;
     web_app_setup_swipe_behavior?: (options: {
       allow_vertical_swipe: boolean;
     }) => void; // Добавляем метод

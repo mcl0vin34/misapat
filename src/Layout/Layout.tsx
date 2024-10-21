@@ -7,6 +7,8 @@ import Modal from "../components/UI/Modal/Modal";
 import useCoinStore from "../store/useCoinStore";
 import SharedContainer from "../components/UI/SharedContainer/SharedContainer";
 import { useUserStore } from "../store/useUserStore";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Импорт стилей toast
 import "./Layout.scss";
 
 const Layout = () => {
@@ -24,7 +26,6 @@ const Layout = () => {
     initializeUser();
   }, [initializeUser]);
 
-  // Инициализация CoinStore после загрузки пользователя
   useEffect(() => {
     if (user) {
       initializeCoinStore(user);
@@ -65,11 +66,18 @@ const Layout = () => {
       </div>
       <FooterNav />
       {/* Рендерим все модальные окна из стека */}
-      {modalStack.map((modalContent, index) => (
-        <Modal key={index} isOpen={true} onClose={() => closeModal()}>
-          {modalContent}
+      {modalStack.map(({ content, backgroundColor }, index) => (
+        <Modal
+          key={index}
+          isOpen={true}
+          onClose={() => closeModal()}
+          backgroundColor={backgroundColor}
+        >
+          {content}
         </Modal>
       ))}
+
+      <ToastContainer />
     </div>
   );
 };

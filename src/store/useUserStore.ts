@@ -26,13 +26,10 @@ export const useUserStore = create<UserState>()(
 
         try {
           const tg = (window as any).Telegram?.WebApp;
-          console.log("window.Telegram:", (window as any).Telegram);
-          console.log("tg:", tg);
 
           let userData: AppUser;
 
           if (tg && tg.initDataUnsafe?.user && tg.initDataUnsafe?.user?.id) {
-            console.log("tg.initDataUnsafe.user:", tg.initDataUnsafe.user);
             userData = {
               id: tg.initDataUnsafe.user.id,
               username: tg.initDataUnsafe.user.username,
@@ -159,13 +156,7 @@ export const useUserStore = create<UserState>()(
           }
         } catch (error: any) {
           console.error("Ошибка при инициализации пользователя:", error);
-          toast.error(
-            `Ошибка инициализации пользователя: ${
-              error.response?.data?.message ||
-              error.message ||
-              "Неизвестная ошибка"
-            }`
-          );
+
           set({
             error: error.message || "Неизвестная ошибка",
             isLoading: false,

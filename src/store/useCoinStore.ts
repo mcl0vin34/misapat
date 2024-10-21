@@ -1,5 +1,4 @@
 // src/store/useCoinStore.ts
-
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { io, Socket } from "socket.io-client";
@@ -52,11 +51,8 @@ const useCoinStore = create<CoinStoreState>()(
 
       // Инициализация Store
       initializeStore: (user: AppUser) => {
-        console.log("Инициализация Store с данными пользователя:", user);
-
         set((state) => {
           if (state.storeInitialized) {
-            console.log("Store уже инициализирован, пропускаем.");
             return {};
           }
 
@@ -69,15 +65,10 @@ const useCoinStore = create<CoinStoreState>()(
             storeInitialized: true,
           };
 
-          console.log("Обновление состояния с данными:", updatedState);
           return updatedState;
         });
 
         const currentState = get();
-        console.log(
-          "Текущее состояние после установки энергии:",
-          currentState.energy
-        );
 
         currentState.initializeSocket();
       },
@@ -94,18 +85,17 @@ const useCoinStore = create<CoinStoreState>()(
           return;
         }
 
-        const socket = io("http://212.233.79.35:7860", {
-          reconnectionAttempts: 5,
-          reconnectionDelay: 2000,
+        const socket = io("wss://dev.simatap.ru", {
+          path: "/socket.io",
+          transports: ["websocket"],
+          withCredentials: true,
         });
 
         socket.on("connect", () => {
-          console.log(`Пользователь ${userId} подключен к WebSocket`);
           socket.emit("register", { userId });
         });
 
         socket.on("energyUpdated", (data) => {
-          console.log("Получено обновление энергии от сервера:", data);
           if (data.energy_left !== undefined) {
             set({ energy: data.energy_left });
           } else {
@@ -113,18 +103,28 @@ const useCoinStore = create<CoinStoreState>()(
           }
         });
 
+        socket.on("passiveIncomePerHour", (data) => {
+          console.log("Получены данные passiveIncomePerHour:", data);
+          if (data.passive_income_per_hour !== undefined) {
+            set({ passiveIncomeRate: data.passive_income_per_hour });
+            console.log(
+              "passiveIncomeRate обновлен:",
+              data.passive_income_per_hour
+            );
+          } else {
+            console.warn(
+              "Обновление пассивного дохода не содержит данных:",
+              data
+            );
+          }
+        });
+
         socket.on("boostsUpdated", (data) => {
-          console.log("Получено обновление бустов от сервера:", data);
           if (data.boosts_left !== undefined) {
             set({ availableBoosters: data.boosts_left });
           } else {
             console.warn("Обновление бустов не содержит данных:", data);
           }
-        });
-
-        socket.on("boostError", (error) => {
-          console.error("Ошибка при использовании буста:", error);
-          toast.error(`Ошибка при использовании буста: ${error.message}`);
         });
 
         socket.on("coinsUpdated", (data) => {
@@ -140,16 +140,11 @@ const useCoinStore = create<CoinStoreState>()(
             `Ошибка подключения WebSocket для пользователя ${userId}:`,
             error
           );
-          toast.error(
-            "Ошибка подключения к серверу. Попытка переподключения..."
-          );
         });
 
         socket.on("disconnect", () => {
           console.log(`Пользователь ${userId} отключен от WebSocket`);
-          toast.info(
-            "Соединение с сервером потеряно. Попытка переподключения..."
-          );
+
           state.reconnectSocket();
         });
 
@@ -186,16 +181,9 @@ const useCoinStore = create<CoinStoreState>()(
         const { socket, userId, coinsPerClick, energy } = state;
 
         if (socket && userId && energy >= coinsPerClick) {
-          console.log("Отправка события 'tap' для пользователя", userId);
-          console.log("Данные перед отправкой 'tap':", {
-            userId,
-            coinsPerClick,
-            energy,
-          });
           socket.emit("tap", { userId });
         } else {
           console.error("Недостаточно энергии или сокет не инициализирован.");
-          toast.error("Недостаточно энергии для отправки события 'tap'.");
         }
       },
 
@@ -218,13 +206,13 @@ const useCoinStore = create<CoinStoreState>()(
 
         if (!userId) {
           console.error("Пользователь не авторизован.");
-          toast.error("Пользователь не авторизован.");
+
           return;
         }
 
         if (energy < coinsPerClick) {
           console.error("Недостаточно энергии для добавления монет.");
-          toast.error("Недостаточно энергии для добавления монет.");
+
           return;
         }
 
@@ -232,7 +220,7 @@ const useCoinStore = create<CoinStoreState>()(
       },
 
       incrementCoins: (amount: number) => {
-        // Можно удалить или оставить для других целей
+        set((state) => ({ coins: state.coins + amount }));
       },
 
       purchaseUpgrade: (id: number) => {
@@ -252,7 +240,8 @@ const useCoinStore = create<CoinStoreState>()(
       partialize: (state) => ({
         coins: state.coins,
         energy: state.energy,
-        availableBoosters: state.availableBoosters, // Добавлено для сохранения бустеров
+        passiveIncomeRate: state.passiveIncomeRate,
+        availableBoosters: state.availableBoosters,
         userId: state.userId,
         storeInitialized: state.storeInitialized,
         offlineIncome: state.offlineIncome,

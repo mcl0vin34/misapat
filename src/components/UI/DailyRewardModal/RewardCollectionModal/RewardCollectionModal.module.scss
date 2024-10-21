@@ -3,7 +3,7 @@
 .modalContent {
   position: relative;
   border-radius: 15px;
-  padding-top: 95px;
+  padding-top: 45px;
   margin: auto;
   height: 100%;
   text-align: center;
@@ -101,11 +101,33 @@
 .rewardIcon {
   width: 265px;
   height: 400px;
+  g {
+    width: 265px;
+    height: 400px;
+  }
+  path {
+    width: 265px;
+    height: 400px;
+  }
   margin-bottom: 15px;
 }
 
 .cardImage {
-  width: 100%;
+  width: 265px;
+  height: 385px;
+  border: 1px solid;
+
+  border-image-source: linear-gradient(
+    315.49deg,
+    #c4954b 8.14%,
+    #eec66e 40.29%,
+    #ffffa0 53.61%,
+    #fada82 65.09%,
+    #c4954b 100%
+  );
+
+  box-shadow: 0px 4px 10px 0px #e3bb69b2;
+
   object-fit: cover;
   border-radius: 66px;
   margin-bottom: 20px;
