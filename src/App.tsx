@@ -28,6 +28,8 @@ const App: React.FC = () => {
     // Разворачиваем приложение в полный экран
     if (tg?.expand) {
       tg.expand();
+      tg.disableVerticalSwipes();
+      tg.isVerticalSwipesEnabled = false;
     }
 
     // Настройка поведения свайпа

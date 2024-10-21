@@ -52,11 +52,8 @@ const useCoinStore = create<CoinStoreState>()(
 
       // Инициализация Store
       initializeStore: (user: AppUser) => {
-        console.log("Инициализация Store с данными пользователя:", user);
-
         set((state) => {
           if (state.storeInitialized) {
-            console.log("Store уже инициализирован, пропускаем.");
             return {};
           }
 
@@ -69,15 +66,10 @@ const useCoinStore = create<CoinStoreState>()(
             storeInitialized: true,
           };
 
-          console.log("Обновление состояния с данными:", updatedState);
           return updatedState;
         });
 
         const currentState = get();
-        console.log(
-          "Текущее состояние после установки энергии:",
-          currentState.energy
-        );
 
         currentState.initializeSocket();
       },
@@ -101,12 +93,10 @@ const useCoinStore = create<CoinStoreState>()(
         });
 
         socket.on("connect", () => {
-          console.log(`Пользователь ${userId} подключен к WebSocket`);
           socket.emit("register", { userId });
         });
 
         socket.on("energyUpdated", (data) => {
-          console.log("Получено обновление энергии от сервера:", data);
           if (data.energy_left !== undefined) {
             set({ energy: data.energy_left });
           } else {
@@ -114,12 +104,11 @@ const useCoinStore = create<CoinStoreState>()(
           }
         });
 
-        socket.on("weeklyCoinsUpdated", (data) => {
-          console.log("Обновлены weeklyCoins:", data);
-        });
+        //socket.on("weeklyCoinsUpdated", (data) => {
+        //  console.log("Обновлены weeklyCoins:", data);
+        //});
 
         socket.on("boostsUpdated", (data) => {
-          console.log("Получено обновление бустов от сервера:", data);
           if (data.boosts_left !== undefined) {
             set({ availableBoosters: data.boosts_left });
           } else {
