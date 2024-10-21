@@ -156,13 +156,7 @@ export const useUserStore = create<UserState>()(
           }
         } catch (error: any) {
           console.error("Ошибка при инициализации пользователя:", error);
-          toast.error(
-            `Ошибка инициализации пользователя: ${
-              error.response?.data?.message ||
-              error.message ||
-              "Неизвестная ошибка"
-            }`
-          );
+
           set({
             error: error.message || "Неизвестная ошибка",
             isLoading: false,

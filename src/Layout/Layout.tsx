@@ -76,7 +76,7 @@ const Layout = () => {
           {content}
         </Modal>
       ))}
-      {/* Добавляем ToastContainer для отображения уведомлений */}
+
       <ToastContainer />
     </div>
   );

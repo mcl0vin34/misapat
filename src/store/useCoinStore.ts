@@ -140,16 +140,11 @@ const useCoinStore = create<CoinStoreState>()(
             `Ошибка подключения WebSocket для пользователя ${userId}:`,
             error
           );
-          toast.error(
-            "Ошибка подключения к серверу. Попытка переподключения..."
-          );
         });
 
         socket.on("disconnect", () => {
           console.log(`Пользователь ${userId} отключен от WebSocket`);
-          toast.info(
-            "Соединение с сервером потеряно. Попытка переподключения..."
-          );
+
           state.reconnectSocket();
         });
 
@@ -189,7 +184,6 @@ const useCoinStore = create<CoinStoreState>()(
           socket.emit("tap", { userId });
         } else {
           console.error("Недостаточно энергии или сокет не инициализирован.");
-          toast.error("Недостаточно энергии для отправки события 'tap'.");
         }
       },
 
@@ -212,13 +206,13 @@ const useCoinStore = create<CoinStoreState>()(
 
         if (!userId) {
           console.error("Пользователь не авторизован.");
-          toast.error("Пользователь не авторизован.");
+
           return;
         }
 
         if (energy < coinsPerClick) {
           console.error("Недостаточно энергии для добавления монет.");
-          toast.error("Недостаточно энергии для добавления монет.");
+
           return;
         }
 
