@@ -114,6 +114,10 @@ const useCoinStore = create<CoinStoreState>()(
           }
         });
 
+        socket.on("weeklyCoinsUpdated", (data) => {
+          console.log("Обновлены weeklyCoins:", data);
+        });
+
         socket.on("boostsUpdated", (data) => {
           console.log("Получено обновление бустов от сервера:", data);
           if (data.boosts_left !== undefined) {
