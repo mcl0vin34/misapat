@@ -11,7 +11,10 @@ import BoosterIndicator from "../../components/UI/BoosterIndicator/BoosterIndica
 import FormattedNumber from "../../components/UI/FormattedNumber/FormattedNumber";
 
 const MainPage = () => {
-  const { coins, passiveIncomeRate } = useCoinStore();
+  const coins = useCoinStore((state) => state.coins);
+  const passiveIncomeRate = useCoinStore((state) => state.passiveIncomeRate);
+
+  console.log("Coins from store:", coins);
 
   return (
     <div className="main-page-content">
@@ -19,7 +22,7 @@ const MainPage = () => {
         <div className="coin-display_wrapper">
           <img src={coinIcon} alt="Coin" className="coin-icon" />
           <div className="coin-count">
-            <FormattedNumber number={Math.floor(coins)} />
+            <FormattedNumber number={Math.floor(coins || 0)} />
           </div>
         </div>
 

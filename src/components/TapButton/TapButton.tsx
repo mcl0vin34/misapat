@@ -27,13 +27,12 @@ const TapButton: React.FC<TapButtonProps> = ({ lionImage }) => {
     x: number;
     y: number;
   }>({ x: 0, y: 0 });
-
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const handleInteractionStart = async (
     e: React.PointerEvent<HTMLButtonElement>
   ) => {
-    e.preventDefault(); // Предотвращаем поведение по умолчанию
+    e.preventDefault();
 
     if (energy < coinsPerClick) {
       console.warn("Недостаточно энергии для добавления монет.");
@@ -43,7 +42,7 @@ const TapButton: React.FC<TapButtonProps> = ({ lionImage }) => {
     const touchX = e.clientX;
     const touchY = e.clientY;
 
-    await addCoins();
+    await addCoins(); // Вызов добавления монет через WebSocket
 
     if (wrapperRef.current) {
       const rect = wrapperRef.current.getBoundingClientRect();
@@ -78,7 +77,6 @@ const TapButton: React.FC<TapButtonProps> = ({ lionImage }) => {
         return updatedIcons.slice(-MAX_ICONS);
       });
 
-      // Анимация нажатия
       const offsetX = (x / rect.width - 0.5) * 20;
       const offsetY = (y / rect.height - 0.5) * 20;
 
@@ -88,7 +86,6 @@ const TapButton: React.FC<TapButtonProps> = ({ lionImage }) => {
 
     // Вибрация (если необходимо)
     const isProduction = process.env.NODE_ENV === "production";
-
     if (isProduction && (tg as any)?.HapticFeedback) {
       (tg as any).HapticFeedback.impactOccurred("medium");
     } else if (!isProduction && navigator.vibrate) {
@@ -97,7 +94,7 @@ const TapButton: React.FC<TapButtonProps> = ({ lionImage }) => {
   };
 
   const handleInteractionEnd = (e: React.PointerEvent<HTMLButtonElement>) => {
-    e.preventDefault(); // Предотвращаем поведение по умолчанию
+    e.preventDefault();
     setIsPressed(false);
   };
 
