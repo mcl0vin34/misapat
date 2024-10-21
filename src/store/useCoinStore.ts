@@ -1,12 +1,10 @@
 // src/store/useCoinStore.ts
-
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { io, Socket } from "socket.io-client";
 import { toast } from "react-toastify";
 import { AppUser } from "../types/User";
 import { Upgrade } from "../types/Upgrade";
-import axios from "axios";
 
 interface CoinStoreState {
   coins: number;
@@ -135,7 +133,7 @@ const useCoinStore = create<CoinStoreState>()(
 
         socket.on("coinsUpdated", (data) => {
           console.log(`Монеты обновлены:`, data);
-          set({ coins: data.totalCoins });
+          set({ coins: data.coins });
         });
 
         socket.on("tapError", (error) => {
@@ -166,10 +164,6 @@ const useCoinStore = create<CoinStoreState>()(
       sendTap: () => {
         const state = get();
         const { socket, userId } = state;
-
-        console.log(socket);
-
-        console.log(userId);
 
         if (socket && userId) {
           console.log(`Отправка события "tap" для пользователя ${userId}`);
@@ -267,32 +261,26 @@ const useCoinStore = create<CoinStoreState>()(
       },
 
       startPassiveIncome: () => {
-        // Реализуйте логику пассивного дохода
         console.log("Начало пассивного дохода.");
       },
 
       stopPassiveIncome: () => {
-        // Остановите пассивный доход
         console.log("Пассивный доход остановлен.");
       },
 
       startEnergyRecovery: () => {
-        // Реализуйте логику восстановления энергии
         console.log("Начато восстановление энергии.");
       },
 
       stopEnergyRecovery: () => {
-        // Остановите восстановление энергии
         console.log("Восстановление энергии остановлено.");
       },
 
       calculateOfflineIncome: () => {
-        // Реализуйте расчёт оффлайн дохода
         console.log("Расчёт оффлайн дохода.");
       },
 
       calculateEnergyRestoration: () => {
-        // Реализуйте расчёт восстановления энергии
         console.log("Расчёт восстановления энергии.");
       },
 

@@ -1,3 +1,4 @@
+// src/store/useUserStore.ts
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import photoUrl from "../assets/images/avatar.png";
