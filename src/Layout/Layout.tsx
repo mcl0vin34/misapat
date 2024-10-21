@@ -1,4 +1,4 @@
-// src/layout/Layout.tsx
+// src/Layout/Layout.tsx
 
 import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
@@ -13,7 +13,7 @@ import "./Layout.scss";
 
 const Layout = () => {
   const { modalStack, closeModal } = useModalStore();
-  const topModal = modalStack[modalStack.length - 1];
+  const { initializeUser, user, isLoading } = useUserStore();
 
   const {
     startPassiveIncome,
@@ -25,37 +25,47 @@ const Layout = () => {
     setLastActiveTime,
     offlineIncome,
     setOfflineIncome,
-    coins,
-    incrementCoins,
+    initializeStore: initializeCoinStore,
   } = useCoinStore();
 
-  const { initializeUser } = useUserStore();
-
+  // Инициализация пользователя при запуске приложения
   useEffect(() => {
-    initializeUser(); // Инициализация пользователя при запуске приложения
+    initializeUser();
   }, [initializeUser]);
 
+  // Инициализация CoinStore после загрузки пользователя
   useEffect(() => {
-    calculateEnergyRestoration(); // Восстанавливаем энергию при загрузке приложения
-    calculateOfflineIncome();
-    setLastActiveTime(Date.now());
+    if (user) {
+      initializeCoinStore(user);
+    }
+  }, [user, initializeCoinStore]);
 
-    startPassiveIncome();
-    startEnergyRecovery();
-
-    const handleBeforeUnload = () => {
+  // Запуск пассивного дохода и восстановления энергии после инициализации CoinStore
+  useEffect(() => {
+    if (!isLoading && user) {
+      calculateEnergyRestoration();
+      calculateOfflineIncome();
       setLastActiveTime(Date.now());
-    };
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
+      startPassiveIncome();
+      startEnergyRecovery();
 
-    return () => {
-      stopPassiveIncome();
-      stopEnergyRecovery();
-      setLastActiveTime(Date.now());
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
+      const handleBeforeUnload = () => {
+        setLastActiveTime(Date.now());
+      };
+
+      window.addEventListener("beforeunload", handleBeforeUnload);
+
+      return () => {
+        stopPassiveIncome();
+        stopEnergyRecovery();
+        setLastActiveTime(Date.now());
+        window.removeEventListener("beforeunload", handleBeforeUnload);
+      };
+    }
   }, [
+    isLoading,
+    user,
     startPassiveIncome,
     startEnergyRecovery,
     stopPassiveIncome,
@@ -65,6 +75,7 @@ const Layout = () => {
     setLastActiveTime,
   ]);
 
+  // Обработка оффлайн дохода
   useEffect(() => {
     if (offlineIncome > 0) {
       useModalStore.getState().openModal(
@@ -97,7 +108,7 @@ const Layout = () => {
         </SharedContainer>
       </div>
       <FooterNav />
-      {/* Рендерим все модальные окна из стэка */}
+      {/* Рендерим все модальные окна из стека */}
       {modalStack.map((modalContent, index) => (
         <Modal key={index} isOpen={true} onClose={() => closeModal()}>
           {modalContent}

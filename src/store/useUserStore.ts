@@ -1,5 +1,3 @@
-// src/store/useUserStore.ts
-
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import photoUrl from "../assets/images/avatar.png";
@@ -12,7 +10,7 @@ interface UserState {
   isLoading: boolean;
   error: string | null;
   initializeUser: () => Promise<void>;
-  setUser: (updatedUser: AppUser) => void; // Добавлена функция setUser для обновления пользователя
+  setUser: (updatedUser: AppUser) => void;
 }
 
 export const useUserStore = create<UserState>()(
@@ -33,9 +31,7 @@ export const useUserStore = create<UserState>()(
           let userData: AppUser;
 
           if (tg && tg.initDataUnsafe?.user && tg.initDataUnsafe?.user?.id) {
-            // Получаем данные из Telegram WebApp
             console.log("tg.initDataUnsafe.user:", tg.initDataUnsafe.user);
-
             userData = {
               id: tg.initDataUnsafe.user.id,
               username: tg.initDataUnsafe.user.username,
@@ -56,13 +52,12 @@ export const useUserStore = create<UserState>()(
               is_subscribed: true,
               morse_last_completed_at: null,
               coins: 0,
-              upgrades: [], // Начальные апгрейды пользователя
+              upgrades: [],
             };
           } else {
             console.warn(
               "Telegram WebApp недоступен или данные пользователя не найдены. Используем моковые данные."
             );
-            // Используем моковые данные
             userData = {
               id: 422840434,
               username: "muamee4ever",
@@ -74,97 +69,110 @@ export const useUserStore = create<UserState>()(
               level: 1,
               created_at: "2024-09-26T01:40:17.811Z",
               energy_left: 2000,
-              energy_updated_at: "2024-10-16T06:01:02.943Z",
+              energy_updated_at: "2024-10-21T02:33:30.590Z",
               boosts_left: 6,
-              boosts_updated_at: "2024-10-16T05:02:42.888Z",
+              boosts_updated_at: "2024-10-20T19:00:00.464Z",
               is_subscribed: true,
               morse_last_completed_at: null,
               coins: 0,
               upgrades: [
-                { upgrade_id: 1, level: 2 },
+                { upgrade_id: 1, level: 8 },
                 { upgrade_id: 2, level: 3 },
-              ], // Моковые данные об апгрейдах
+              ],
             };
           }
 
-          // POST запрос для создания или обновления пользователя
-          const postResponse = await axios.post(
-            `${process.env.REACT_APP_API_URL}api/users`,
-            {},
-            {
-              params: {
-                id: userData.id,
-                username: userData.username,
-                first_name: userData.first_name,
-                last_name: userData.last_name || "",
-              },
-              headers: {
-                "Content-Type": "application/json",
-              },
+          try {
+            // POST запрос для создания или обновления пользователя
+            const postResponse = await axios.post(
+              `${process.env.REACT_APP_API_URL}api/users`,
+              {},
+              {
+                params: {
+                  id: userData.id,
+                  username: userData.username,
+                  first_name: userData.first_name,
+                  last_name: userData.last_name || "",
+                },
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+
+            if (postResponse.status !== 200) {
+              throw new Error(
+                `Ошибка при отправке POST запроса: ${postResponse.statusText}`
+              );
             }
-          );
 
-          if (postResponse.status !== 200) {
-            throw new Error(
-              `Ошибка при отправке POST запроса: ${postResponse.statusText}`
+            // GET запрос для получения данных пользователя по его ID
+            const getResponse = await axios.get<AppUser>(
+              `https://dev.simatap.ru/api/users/${userData.id}`
             );
-          }
 
-          // GET запрос для получения обновлённых данных пользователя
-          const getResponse = await axios.get<AppUser>(
-            `${process.env.REACT_APP_API_URL}api/users/${userData.id}`
-          );
+            if (getResponse.status !== 200) {
+              throw new Error(
+                `Ошибка при отправке GET запроса: ${getResponse.statusText}`
+              );
+            }
 
-          if (getResponse.status !== 200) {
-            throw new Error(
-              `Ошибка при отправке GET запроса: ${getResponse.statusText}`
+            const fetchedUserData = getResponse.data;
+
+            // Теперь получаем количество монет
+            let totalCoins = 10000; // Значение по умолчанию, если запрос вернет ошибку
+            try {
+              const coinsResponse = await axios.get(
+                `${process.env.REACT_APP_API_URL}api/totalCoins/${userData.id}`
+              );
+
+              if (coinsResponse.status === 200) {
+                const coinsData = coinsResponse.data;
+                totalCoins = coinsData.coins || totalCoins;
+              } else {
+                throw new Error(
+                  `Ошибка при получении количества монет: ${coinsResponse.statusText}`
+                );
+              }
+            } catch (coinError) {
+              console.warn(
+                "Ошибка при запросе количества монет. Используем значение по умолчанию 10,000.",
+                coinError
+              );
+            }
+
+            const userWithCoins: AppUser = {
+              ...fetchedUserData,
+              coins: totalCoins,
+            };
+
+            set({ user: userWithCoins, isLoading: false });
+          } catch (fetchError) {
+            console.warn(
+              "Ошибка при запросе данных с сервера. Используем моковые данные.",
+              fetchError
             );
+
+            // Если запросы завершились ошибкой, используем моковые данные
+            set({ user: userData, isLoading: false });
           }
-
-          const fetchedUserData = getResponse.data;
-
-          // Проверяем, что энергия получена с бэкенда
-          if (fetchedUserData.energy_left === undefined) {
-            throw new Error("Данные об энергии не получены с бэкенда.");
-          }
-
-          // Теперь получаем количество монет
-          const coinsResponse = await axios.get(
-            `${process.env.REACT_APP_API_URL}api/totalCoins/${userData.id}`
-          );
-
-          if (coinsResponse.status !== 200) {
-            throw new Error(
-              `Ошибка при получении количества монет: ${coinsResponse.statusText}`
-            );
-          }
-
-          const coinsData = coinsResponse.data;
-          const totalCoins = coinsData.coins || 0;
-
-          // Обновляем данные пользователя с количеством монет
-          const userWithCoins: AppUser = {
-            ...fetchedUserData,
-            coins: totalCoins,
-          };
-
-          set({ user: userWithCoins, isLoading: false });
         } catch (error: any) {
           console.error("Ошибка при инициализации пользователя:", error);
           toast.error(
             `Ошибка инициализации пользователя: ${
-              error.message || "Неизвестная ошибка"
+              error.response?.data?.message ||
+              error.message ||
+              "Неизвестная ошибка"
             }`
           );
           set({
             error: error.message || "Неизвестная ошибка",
             isLoading: false,
-            user: null, // Не используем mock user при ошибке
+            user: null,
           });
         }
       },
 
-      // Функция для обновления данных пользователя
       setUser: (updatedUser: AppUser) => {
         set({ user: updatedUser });
       },
