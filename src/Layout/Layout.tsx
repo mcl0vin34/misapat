@@ -1,5 +1,3 @@
-// src/Layout/Layout.tsx
-
 import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import FooterNav from "../components/FooterNav/FooterNav";
@@ -16,13 +14,6 @@ const Layout = () => {
   const { initializeUser, user, isLoading } = useUserStore();
 
   const {
-    startPassiveIncome,
-    stopPassiveIncome,
-    startEnergyRecovery,
-    stopEnergyRecovery,
-    calculateOfflineIncome,
-    calculateEnergyRestoration,
-    setLastActiveTime,
     offlineIncome,
     setOfflineIncome,
     initializeStore: initializeCoinStore,
@@ -39,41 +30,6 @@ const Layout = () => {
       initializeCoinStore(user);
     }
   }, [user, initializeCoinStore]);
-
-  // Запуск пассивного дохода и восстановления энергии после инициализации CoinStore
-  useEffect(() => {
-    if (!isLoading && user) {
-      calculateEnergyRestoration();
-      calculateOfflineIncome();
-      setLastActiveTime(Date.now());
-
-      startPassiveIncome();
-      startEnergyRecovery();
-
-      const handleBeforeUnload = () => {
-        setLastActiveTime(Date.now());
-      };
-
-      window.addEventListener("beforeunload", handleBeforeUnload);
-
-      return () => {
-        stopPassiveIncome();
-        stopEnergyRecovery();
-        setLastActiveTime(Date.now());
-        window.removeEventListener("beforeunload", handleBeforeUnload);
-      };
-    }
-  }, [
-    isLoading,
-    user,
-    startPassiveIncome,
-    startEnergyRecovery,
-    stopPassiveIncome,
-    stopEnergyRecovery,
-    calculateOfflineIncome,
-    calculateEnergyRestoration,
-    setLastActiveTime,
-  ]);
 
   // Обработка оффлайн дохода
   useEffect(() => {

@@ -13,8 +13,7 @@ import FormattedNumber from "../../components/UI/FormattedNumber/FormattedNumber
 const MainPage = () => {
   const coins = useCoinStore((state) => state.coins);
   const passiveIncomeRate = useCoinStore((state) => state.passiveIncomeRate);
-
-  console.log("Coins from store:", coins);
+  const energy = useCoinStore((state) => state.energy);
 
   return (
     <div className="main-page-content">

@@ -1,17 +1,19 @@
-// src/components/BoosterIndicator/BoosterIndicator.tsx
+// src/components/UI/BoosterIndicator/BoosterIndicator.tsx
 
 import React, { useState } from "react";
 import useCoinStore from "../../../store/useCoinStore";
 import useModalStore from "../../../store/useModalStore";
 import { ReactComponent as BoosterIcon } from "../../../assets/icons/booster.svg";
-import rocketIcon from "../..//../assets/images/rocket.png"; // Оставляем как PNG
-import { ReactComponent as CoinIcon } from "../..//../assets/icons/coin.svg";
+import rocketIcon from "../../../assets/images/rocket.png";
+import { ReactComponent as CoinIcon } from "../../../assets/icons/coin.svg";
 import "./BoosterIndicator.scss";
 
 const BoosterIndicator: React.FC = () => {
-  const { availableBoosters, totalBoosters, activateBooster } = useCoinStore();
+  const availableBoosters = useCoinStore((state) => state.availableBoosters);
+  const totalBoosters = useCoinStore((state) => state.totalBoosters);
+  const activateBoost = useCoinStore((state) => state.activateBoost);
   const { openModal, closeModal } = useModalStore();
-  const [isLoading, setIsLoading] = useState(false); // Добавили состояние загрузки
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleBoosterClick = () => {
     if (availableBoosters > 0) {
@@ -31,12 +33,12 @@ const BoosterIndicator: React.FC = () => {
               <button
                 className="confirm-button"
                 onClick={async () => {
-                  setIsLoading(true); // Устанавливаем состояние загрузки
-                  await activateBooster();
-                  setIsLoading(false); // Снимаем состояние загрузки
+                  setIsLoading(true);
+                  await activateBoost();
+                  setIsLoading(false);
                   closeModal();
                 }}
-                disabled={isLoading} // Отключаем кнопку во время загрузки
+                disabled={isLoading}
               >
                 {isLoading ? "Загрузка..." : "Воспользоваться"}
               </button>

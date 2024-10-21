@@ -1,6 +1,6 @@
 // src/App.tsx
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import AppRouter from "./router/AppRouter";
 import "./index.css";
@@ -10,7 +10,8 @@ import useCoinStore from "./store/useCoinStore";
 import tg from "./utils/tg"; // Импортируем tg
 
 const App: React.FC = () => {
-  const { initializeUser, user } = useUserStore();
+  const [isInitialized, setIsInitialized] = useState(false);
+  const { initializeUser, user, isLoading: isUserLoading } = useUserStore();
   const { initializeStore, storeInitialized } = useCoinStore();
 
   useEffect(() => {
@@ -20,6 +21,7 @@ const App: React.FC = () => {
       if (user && !storeInitialized) {
         initializeStore(user);
       }
+      setIsInitialized(true);
     };
     initUserAndStore();
 
@@ -38,6 +40,11 @@ const App: React.FC = () => {
     // Проверяем значение process.env.NODE_ENV
     console.log("process.env.NODE_ENV:", process.env.NODE_ENV);
   }, [initializeUser, initializeStore, storeInitialized]);
+
+  if (!isInitialized) {
+    // Показываем индикатор загрузки или пустой экран до завершения инициализации
+    return <div>Загрузка...</div>;
+  }
 
   return (
     <Router basename="/misapat">

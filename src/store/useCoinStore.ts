@@ -1,4 +1,5 @@
 // src/store/useCoinStore.ts
+
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { io, Socket } from "socket.io-client";
@@ -26,42 +27,12 @@ interface CoinStoreState {
   disconnectSocket: () => void;
   addCoins: () => Promise<void>;
   incrementCoins: (amount: number) => void;
-  activateBooster: () => void;
+  decrementEnergy: (amount: number) => void;
+  activateBoost: () => void;
   purchaseUpgrade: (id: number) => void;
   setOfflineIncome: (amount: number) => void;
   setPassiveIncomeRate: (rate: number) => void;
-  startPassiveIncome: () => void;
-  stopPassiveIncome: () => void;
-  startEnergyRecovery: () => void;
-  stopEnergyRecovery: () => void;
-  calculateOfflineIncome: () => void;
-  calculateEnergyRestoration: () => void;
-  setLastActiveTime: (timestamp: number) => void;
 }
-
-const initialUpgrades: Upgrade[] = [
-  {
-    id: 1,
-    name: "Ларёк с шаурмой",
-    imageUrl: "/images/shaurma.png",
-    level: 0,
-    maxLevel: 10,
-    cost: 10,
-    rateIncreasePerLevel: 3,
-    totalRateIncrease: 0,
-  },
-  {
-    id: 2,
-    name: "Магазин сувениров",
-    imageUrl: "/images/souvenirs.png",
-    level: 0,
-    maxLevel: 15,
-    cost: 50,
-    rateIncreasePerLevel: 5,
-    totalRateIncrease: 0,
-  },
-  // Добавьте остальные улучшения здесь
-];
 
 const useCoinStore = create<CoinStoreState>()(
   persist(
@@ -76,25 +47,42 @@ const useCoinStore = create<CoinStoreState>()(
       userId: null,
       storeInitialized: false,
       offlineIncome: 0,
-      upgrades: initialUpgrades,
+      upgrades: [],
       socket: null,
 
+      // Инициализация Store
       initializeStore: (user: AppUser) => {
+        console.log("Инициализация Store с данными пользователя:", user);
+
         set((state) => {
           if (state.storeInitialized) {
+            console.log("Store уже инициализирован, пропускаем.");
             return {};
           }
-          return {
+
+          const updatedState = {
             coins: user.coins || 0,
-            energy: user.energy_left,
-            availableBoosters: user.boosts_left,
+            energy: user.energy_left !== undefined ? user.energy_left : 2000,
+            availableBoosters:
+              user.boosts_left !== undefined ? user.boosts_left : 6,
             userId: user.id,
             storeInitialized: true,
           };
+
+          console.log("Обновление состояния с данными:", updatedState);
+          return updatedState;
         });
-        get().initializeSocket(); // Правильный вызов метода
+
+        const currentState = get();
+        console.log(
+          "Текущее состояние после установки энергии:",
+          currentState.energy
+        );
+
+        currentState.initializeSocket();
       },
 
+      // Инициализация сокета
       initializeSocket: () => {
         const state = get();
         const { userId } = state;
@@ -116,6 +104,37 @@ const useCoinStore = create<CoinStoreState>()(
           socket.emit("register", { userId });
         });
 
+        socket.on("energyUpdated", (data) => {
+          console.log("Получено обновление энергии от сервера:", data);
+          if (data.energy_left !== undefined) {
+            set({ energy: data.energy_left });
+          } else {
+            console.warn("Обновление энергии не содержит данных:", data);
+          }
+        });
+
+        socket.on("boostsUpdated", (data) => {
+          console.log("Получено обновление бустов от сервера:", data);
+          if (data.boosts_left !== undefined) {
+            set({ availableBoosters: data.boosts_left });
+          } else {
+            console.warn("Обновление бустов не содержит данных:", data);
+          }
+        });
+
+        socket.on("boostError", (error) => {
+          console.error("Ошибка при использовании буста:", error);
+          toast.error(`Ошибка при использовании буста: ${error.message}`);
+        });
+
+        socket.on("coinsUpdated", (data) => {
+          if (data.coins !== undefined) {
+            set({ coins: data.coins });
+          } else {
+            console.warn("Обновление монет не содержит данных:", data);
+          }
+        });
+
         socket.on("connect_error", (error) => {
           console.error(
             `Ошибка подключения WebSocket для пользователя ${userId}:`,
@@ -124,21 +143,6 @@ const useCoinStore = create<CoinStoreState>()(
           toast.error(
             "Ошибка подключения к серверу. Попытка переподключения..."
           );
-        });
-
-        socket.on("energyUpdated", (data) => {
-          console.log(`Энергия обновлена:`, data);
-          set({ energy: data.energyLeft });
-        });
-
-        socket.on("coinsUpdated", (data) => {
-          console.log(`Монеты обновлены:`, data);
-          set({ coins: data.coins });
-        });
-
-        socket.on("tapError", (error) => {
-          console.error(`Ошибка при тапе:`, error);
-          toast.error(`Ошибка при тапе: ${error.message}`);
         });
 
         socket.on("disconnect", () => {
@@ -161,18 +165,42 @@ const useCoinStore = create<CoinStoreState>()(
         }
       },
 
-      sendTap: () => {
+      // Использование буста
+      activateBoost: () => {
         const state = get();
         const { socket, userId } = state;
 
         if (socket && userId) {
-          console.log(`Отправка события "tap" для пользователя ${userId}`);
-          socket.emit("tap", { userId });
+          console.log(`Пользователь ${userId} использует буст.`);
+          socket.emit("useBoost", { userId });
         } else {
           console.error(
-            "Сокет не инициализирован или пользователь не авторизован."
+            "Не удалось использовать буст: сокет не подключен или userId не установлен."
           );
+          toast.error("Не удалось использовать буст.");
         }
+      },
+
+      sendTap: () => {
+        const state = get();
+        const { socket, userId, coinsPerClick, energy } = state;
+
+        if (socket && userId && energy >= coinsPerClick) {
+          console.log("Отправка события 'tap' для пользователя", userId);
+          console.log("Данные перед отправкой 'tap':", {
+            userId,
+            coinsPerClick,
+            energy,
+          });
+          socket.emit("tap", { userId });
+        } else {
+          console.error("Недостаточно энергии или сокет не инициализирован.");
+          toast.error("Недостаточно энергии для отправки события 'tap'.");
+        }
+      },
+
+      decrementEnergy: (amount: number) => {
+        // Удаляем локальное обновление энергии
       },
 
       disconnectSocket: () => {
@@ -204,9 +232,11 @@ const useCoinStore = create<CoinStoreState>()(
       },
 
       incrementCoins: (amount: number) => {
-        set((state) => ({
-          coins: state.coins + amount,
-        }));
+        // Можно удалить или оставить для других целей
+      },
+
+      purchaseUpgrade: (id: number) => {
+        console.log(`Покупка улучшения с id: ${id}`);
       },
 
       setOfflineIncome: (amount: number) => {
@@ -216,87 +246,16 @@ const useCoinStore = create<CoinStoreState>()(
       setPassiveIncomeRate: (rate: number) => {
         set({ passiveIncomeRate: rate });
       },
-
-      purchaseUpgrade: (id: number) => {
-        const state = get();
-        const upgrade = state.upgrades.find((u) => u.id === id);
-        if (
-          upgrade &&
-          state.coins >= upgrade.cost &&
-          upgrade.level < upgrade.maxLevel
-        ) {
-          const newLevel = upgrade.level + 1;
-          const newTotalRateIncrease = upgrade.rateIncreasePerLevel * newLevel;
-          const newCost = Math.round(upgrade.cost * 2);
-
-          set((state) => ({
-            coins: state.coins - upgrade.cost,
-            upgrades: state.upgrades.map((u) =>
-              u.id === id
-                ? {
-                    ...u,
-                    level: newLevel,
-                    cost: newCost,
-                    totalRateIncrease: newTotalRateIncrease,
-                  }
-                : u
-            ),
-          }));
-          toast.success(`${upgrade.name} улучшен до уровня ${newLevel}`);
-        } else {
-          toast.error("Недостаточно монет или максимальный уровень достигнут.");
-        }
-      },
-
-      activateBooster: () => {
-        const state = get();
-        if (state.availableBoosters > 0) {
-          set({
-            availableBoosters: state.availableBoosters - 1,
-          });
-          toast.success("Бустер активирован!");
-        } else {
-          toast.error("Нет доступных бустеров.");
-        }
-      },
-
-      startPassiveIncome: () => {
-        console.log("Начало пассивного дохода.");
-      },
-
-      stopPassiveIncome: () => {
-        console.log("Пассивный доход остановлен.");
-      },
-
-      startEnergyRecovery: () => {
-        console.log("Начато восстановление энергии.");
-      },
-
-      stopEnergyRecovery: () => {
-        console.log("Восстановление энергии остановлено.");
-      },
-
-      calculateOfflineIncome: () => {
-        console.log("Расчёт оффлайн дохода.");
-      },
-
-      calculateEnergyRestoration: () => {
-        console.log("Расчёт восстановления энергии.");
-      },
-
-      setLastActiveTime: (timestamp: number) => {
-        console.log(`Последняя активность: ${timestamp}`);
-      },
     }),
     {
       name: "coin-storage",
       partialize: (state) => ({
         coins: state.coins,
         energy: state.energy,
+        availableBoosters: state.availableBoosters, // Добавлено для сохранения бустеров
         userId: state.userId,
         storeInitialized: state.storeInitialized,
         offlineIncome: state.offlineIncome,
-        upgrades: state.upgrades,
       }),
     }
   )
