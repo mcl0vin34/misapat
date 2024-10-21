@@ -94,9 +94,10 @@ const useCoinStore = create<CoinStoreState>()(
           return;
         }
 
-        const socket = io("http://212.233.79.35:7860", {
-          reconnectionAttempts: 5,
-          reconnectionDelay: 2000,
+        const socket = io("wss://dev.simatap.ru", {
+          path: "/socket.io",
+          transports: ["websocket"],
+          withCredentials: true,
         });
 
         socket.on("connect", () => {
