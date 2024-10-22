@@ -1,19 +1,37 @@
-// src/components/BusterModalContent/BusterModalContent.tsx
+// src/components/BustersShop/BusterModalContent/BusterModalContent.tsx
 
-import React from "react";
+import React, { useState } from "react";
 import styles from "./BusterModalContent.module.scss";
-import { Upgrade } from "../../../types/Upgrade"; // Корректный путь к типу
+import { Upgrade } from "../../../types/Upgrade";
 import { ReactComponent as CoinIcon } from "../../../assets/icons/coin.svg";
+import useCoinStore from "../../../store/useCoinStore"; // Импорт хука Zustand
 
 interface BusterModalContentProps {
   upgrade: Upgrade;
-  onPurchase: () => void; // Добавляем это поле
+  onPurchase: () => void; // Функция для закрытия модалки
 }
 
 const BusterModalContent: React.FC<BusterModalContentProps> = ({
   upgrade,
   onPurchase,
 }) => {
+  const { purchaseUpgrade } = useCoinStore();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handlePurchase = async () => {
+    setIsProcessing(true);
+    setError(null);
+    try {
+      await purchaseUpgrade(upgrade.id);
+      onPurchase(); // Закрываем модалку при успехе
+    } catch (err: any) {
+      setError(err);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   return (
     <div className={styles.busterModalContent}>
       <div className={styles.booster_price_wrapper}>
@@ -32,10 +50,15 @@ const BusterModalContent: React.FC<BusterModalContentProps> = ({
           +{upgrade.rateIncreasePerLevel}{" "}
         </p>
       </div>
-      <button className={styles.buy_btn} onClick={onPurchase}>
-        Купить бустер
-      </button>{" "}
-      {/* Добавляем обработчик клика */}
+      {error && <p className={styles.error}>{error}</p>}{" "}
+      {/* Отображение ошибки */}
+      <button
+        className={styles.buy_btn}
+        onClick={handlePurchase}
+        disabled={isProcessing}
+      >
+        {isProcessing ? "Покупка..." : "Купить бустер"}
+      </button>
     </div>
   );
 };
