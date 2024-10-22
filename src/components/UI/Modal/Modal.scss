@@ -11,7 +11,7 @@
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  z-index: 1000; /* Убедитесь, что это значение выше для новых модалок */
+  z-index: 2000; /* Убедитесь, что это значение выше для новых модалок */
   opacity: 1;
   transition: opacity 0.3s ease;
 }
