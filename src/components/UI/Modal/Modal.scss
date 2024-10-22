@@ -27,9 +27,9 @@
 .modal-content {
   overflow: auto;
   min-height: 300px;
-  z-index: 1001; /* Более высокий z-index для содержимого модалки */
+  z-index: 3001; /* Более высокий z-index для содержимого модалки */
 
-  height: 85%;
+  height: 90%;
   background-color: #1c1c1e;
   box-shadow: 0px 2px 0px 0px #e2ba68 inset;
   border-top: 2px solid #e2ba68;
