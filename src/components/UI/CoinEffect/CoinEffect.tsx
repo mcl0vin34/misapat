@@ -1,23 +1,13 @@
 // src/components/UI/CoinEffect/CoinEffect.tsx
-
-import React, { useEffect } from "react";
+import React from "react";
 import styles from "./CoinEffect.module.scss";
-import coinImage from "../../../assets/icons/coin.svg"; // Убедитесь, что путь верный
+import coinImage from "../../../assets/icons/coin.svg";
 
 interface CoinEffectProps {
-  onComplete: () => void; // Функция, вызываемая после завершения анимации
+  onComplete: () => void;
 }
 
 const CoinEffect: React.FC<CoinEffectProps> = ({ onComplete }) => {
-  useEffect(() => {
-    // Устанавливаем таймер для удаления эффекта после завершения анимации
-    const timer = setTimeout(() => {
-      onComplete();
-    }, 2000); // Продолжительность анимации в мс
-
-    return () => clearTimeout(timer);
-  }, [onComplete]);
-
   // Генерируем массив монет с уникальными ключами
   const coins = Array.from({ length: 10 }).map((_, index) => {
     const xOffset = Math.random() * 200 - 100; // От -100 до +100 px
@@ -33,10 +23,9 @@ const CoinEffect: React.FC<CoinEffectProps> = ({ onComplete }) => {
           {
             "--move-x": `${xOffset}px`,
             "--move-y": `${yOffset}px`,
-            left: `${Math.random() * 100}%`, // Распределяем монеты по экрану
-            top: `${Math.random() * 100}%`,
           } as React.CSSProperties
         }
+        onAnimationEnd={index === 0 ? onComplete : undefined} // Вызываем onComplete один раз
       />
     );
   });

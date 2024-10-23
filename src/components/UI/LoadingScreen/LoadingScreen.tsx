@@ -2,7 +2,7 @@
 
 import React from "react";
 import styles from "./LoadingScreen.module.scss";
-import photoUrl from "../../../assets/images/loading.png";
+import photoUrl from "../../../assets/images/loading.webp";
 
 interface LoadingScreenProps {
   title?: string;

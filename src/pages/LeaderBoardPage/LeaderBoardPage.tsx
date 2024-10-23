@@ -4,9 +4,9 @@ import axios from "axios";
 import styles from "./LeaderBoardPage.module.scss";
 
 // Импортируем PNG как обычные изображения
-import firstPlaceIcon from "../../assets/icons/first-place.png";
-import secondPlaceIcon from "../../assets/icons/second-place.png";
-import thirdPlaceIcon from "../../assets/icons/third-place.png";
+import firstPlaceIcon from "../../assets/icons/first-place.webp";
+import secondPlaceIcon from "../../assets/icons/second-place.webp";
+import thirdPlaceIcon from "../../assets/icons/third-place.webp";
 
 // Импортируем SVG иконку рубля
 import { ReactComponent as RubleIcon } from "../../assets/icons/ruble.svg";
@@ -155,7 +155,7 @@ const LeaderBoardPage: React.FC = () => {
             Занимай первые места в рейтинге за неделю и получай денежное
             вознаграждение
           </p>
-          <div className={styles.error}>{error}</div>
+          <p className={styles.error}>{error}</p>
         </main>
       </div>
     );
@@ -235,7 +235,7 @@ const LeaderBoardPage: React.FC = () => {
                     />
                   )}
                   <span className={styles.score}>
-                    {user.coins.toLocaleString()}
+                    {Math.floor(user.coins).toLocaleString()}
                   </span>
                 </div>
               </div>
@@ -248,9 +248,9 @@ const LeaderBoardPage: React.FC = () => {
               <span className={styles.rank}>#{currentUser.rank}</span>
               <span className={styles.name}>{currentUser.username}</span>
               <div className={styles.rewardAmount}>
-                <RubleIcon className={styles.rubleIcon} />
+                {/*<RubleIcon className={styles.rubleIcon} />*/}
                 <span className={styles.score}>
-                  {currentUser.coins.toLocaleString()}
+                  {Math.floor(currentUser.coins).toLocaleString()}
                 </span>
               </div>
             </div>

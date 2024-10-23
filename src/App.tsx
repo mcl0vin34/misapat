@@ -1,18 +1,25 @@
 // src/App.tsx
-
-import React, { useEffect, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import AppRouter from "./router/AppRouter";
 import "./index.css";
 import "./App.scss";
 import { useUserStore } from "./store/useUserStore";
 import useCoinStore from "./store/useCoinStore";
-import tg from "./utils/tg"; // Импортируем tg
-import LoadingScreen from "./components/UI/LoadingScreen/LoadingScreen"; // Импортируем LoadingScreen
+import tg from "./utils/tg";
+import LoadingScreen from "./components/UI/LoadingScreen/LoadingScreen";
+import axios from "axios";
+import CoinEffect from "./components/UI/CoinEffect/CoinEffect";
+
+// Создаем контекст для управления эффектом монет
+export const CoinEffectContext = createContext({
+  triggerCoinEffect: () => {},
+});
 
 const App: React.FC = () => {
   const [isInitialized, setIsInitialized] = useState(false);
-  const { initializeUser, user, isLoading: isUserLoading } = useUserStore();
+  const [showCoinEffect, setShowCoinEffect] = useState(false);
+  const { initializeUser, user } = useUserStore();
   const { initializeStore, storeInitialized } = useCoinStore();
 
   useEffect(() => {
@@ -22,6 +29,9 @@ const App: React.FC = () => {
       if (user && !storeInitialized) {
         initializeStore(user);
       }
+
+      // Ваш код для работы с Telegram Web App
+
       setIsInitialized(true);
     };
     initUserAndStore();
@@ -37,22 +47,32 @@ const App: React.FC = () => {
     // Настройка поведения свайпа
     if (tg?.web_app_setup_swipe_behavior) {
       tg.web_app_setup_swipe_behavior({
-        allow_vertical_swipe: false, // Отключаем все вертикальные свайпы для закрытия
+        allow_vertical_swipe: false,
       });
     }
 
-    // Проверяем значение process.env.NODE_ENV
     console.log("process.env.NODE_ENV:", process.env.NODE_ENV);
   }, [initializeUser, initializeStore, storeInitialized]);
+
+  const triggerCoinEffect = () => {
+    setShowCoinEffect(true);
+  };
+
+  const handleCoinEffectComplete = () => {
+    setShowCoinEffect(false);
+  };
 
   if (!isInitialized) {
     return <LoadingScreen />;
   }
 
   return (
-    <Router basename="/misapat">
-      <AppRouter />
-    </Router>
+    <CoinEffectContext.Provider value={{ triggerCoinEffect }}>
+      {showCoinEffect && <CoinEffect onComplete={handleCoinEffectComplete} />}
+      <Router basename="/misapat">
+        <AppRouter />
+      </Router>
+    </CoinEffectContext.Provider>
   );
 };
 

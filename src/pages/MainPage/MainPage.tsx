@@ -1,7 +1,7 @@
 // src/pages/MainPage/MainPage.tsx
 
 import React from "react";
-import lionImage from "../../assets/images/lion.png";
+import lionImage from "../../assets/images/lion.webp";
 import coinIcon from "../../assets/icons/coin.svg";
 import "./MainPage.scss";
 import TapButton from "../../components/TapButton/TapButton";

@@ -1,5 +1,4 @@
 /* src/components/QuestModalContent/QuestModalContent.module.scss */
-
 .questModalContent {
   color: #fff;
   height: 100%;
@@ -51,17 +50,61 @@
       #edc871 45.29%,
       #ffffa8 109.99%
     );
-    color: #000;
+    color: #2d3236;
     border: none;
     border-radius: 10px;
     padding: 10px 20px;
     font-weight: bold;
     height: 60px;
     box-sizing: border-box;
-    color: #2d3236;
     cursor: pointer;
     margin-top: auto;
     margin-right: 10px;
+    transition: background 0.3s ease;
+
+    &:hover {
+      background: linear-gradient(
+        140.39deg,
+        #c8a451 10.72%,
+        #d8b36c 45.29%,
+        #e5c48f 109.99%
+      );
+    }
+
+    &:disabled {
+      background: #555;
+      cursor: not-allowed;
+    }
+  }
+
+  .collectButton {
+    width: 100%;
+    background: linear-gradient(
+      140.39deg,
+      #deb565 10.72%,
+      #edc871 45.29%,
+      #ffffa8 109.99%
+    );
+    color: #2d3236;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-weight: bold;
+    height: 60px;
+    box-sizing: border-box;
+    cursor: pointer;
+    margin-top: auto;
+    margin-right: 10px;
+    transition: background 0.3s ease;
+
+    &:hover {
+      background: linear-gradient(
+        140.39deg,
+        #c8a451 10.72%,
+        #d8b36c 45.29%,
+        #e5c48f 109.99%
+      );
+    }
   }
 
   .successMessage {
@@ -78,6 +121,7 @@
 
     p {
       font-size: 18px;
+      color: #f1f1f1;
     }
   }
 }
