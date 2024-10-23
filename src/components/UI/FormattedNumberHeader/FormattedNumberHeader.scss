@@ -1,0 +1,18 @@
+.formatted-number {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.number {
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 21px;
+  text-align: right;
+  color: #f1f1f1;
+}
+
+.coin_icon {
+  width: 20px;
+  height: 20px;
+}

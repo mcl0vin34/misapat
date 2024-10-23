@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import styles from "./DailyRewardModal.module.scss";
-import useModalStore from "../../../store/useModalStore";
+import useModalStore from "../../../store/useModalStore"; // Исправленный путь
 import RewardCollectModal from "./RewardCollectionModal/RewardCollectionModal";
 import { ReactComponent as RewardCardIcon } from "../../../assets/icons/reward-card.svg";
 import dailyCardsImg from "../../../assets/icons/daily-cards.png";

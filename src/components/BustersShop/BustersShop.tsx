@@ -4,28 +4,33 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useUserStore } from "../../store/useUserStore";
 import styles from "./BustersShop.module.scss";
-import { boosters, Booster } from "../../constants/boosters";
+import { boosters } from "../../constants/boosters";
 import BusterModalContent from "./BusterModalContent/BusterModalContent";
 import { ReactComponent as CoinIcon } from "../../assets/icons/coin.svg";
 import useModalStore from "../../store/useModalStore";
 import { Upgrade } from "../../types/Upgrade";
+import CoinEffect from "../UI/CoinEffect/CoinEffect";
+import vibrate from "../../utils/vibrate"; // Импортируем утилиту вибрации
 
 const BustersShop = () => {
-  const { user, setUser } = useUserStore(); // Теперь setUser доступен
-  const { openModal } = useModalStore();
+  const { user, setUser } = useUserStore();
+  const { openModal, closeModal } = useModalStore();
 
   const [upgrades, setUpgrades] = useState<Upgrade[]>(() => {
     return boosters.map((booster) => ({
       id: booster.upgrade_id,
       name: booster.name,
       imageUrl: booster.imageUrl,
-      level: 1, // Начальный уровень
+      level: 1,
       maxLevel: booster.max_level,
-      cost: booster.upgrade_costs[0], // Начальная стоимость
+      cost: booster.upgrade_costs[0],
       rateIncreasePerLevel: booster.income_increase_per_level,
-      totalRateIncrease: booster.income_increase_per_level, // Начальное увеличение
+      totalRateIncrease: booster.income_increase_per_level,
     }));
   });
+
+  const [isPurchasing, setIsPurchasing] = useState<number | null>(null);
+  const [showCoinEffect, setShowCoinEffect] = useState(false);
 
   useEffect(() => {
     if (user && user.upgrades) {
@@ -38,11 +43,11 @@ const BustersShop = () => {
           id: booster.upgrade_id,
           name: booster.name,
           imageUrl: booster.imageUrl,
-          level: level, // Уровень из данных пользователя
+          level: level,
           maxLevel: booster.max_level,
-          cost: booster.upgrade_costs[level - 1], // Стоимость на текущем уровне
+          cost: booster.upgrade_costs[level - 1],
           rateIncreasePerLevel: booster.income_increase_per_level,
-          totalRateIncrease: booster.income_increase_per_level * level, // Общий прирост дохода
+          totalRateIncrease: booster.income_increase_per_level * level,
         };
       });
       setUpgrades(updatedUpgrades);
@@ -50,10 +55,9 @@ const BustersShop = () => {
   }, [user]);
 
   // Функция для отправки POST-запроса на покупку
-  // src/components/BustersShop/BustersShop.tsx
-
   const purchaseUpgrade = async (upgradeId: number) => {
     try {
+      setIsPurchasing(upgradeId);
       const response = await axios.post(
         `https://dev.simatap.ru/api/upgrades/purchase`,
         {},
@@ -68,22 +72,41 @@ const BustersShop = () => {
       const updatedUpgrades = response.data.upgrades;
 
       if (user) {
-        // Обновляем состояние пользователя только если он определен
         setUser({
           ...user,
           upgrades: updatedUpgrades,
+          coins: response.data.coins, // Обновляем количество монет, если API возвращает их
         });
       }
+
+      // Запускаем эффект рассыпающихся монеток
+      setShowCoinEffect(true);
+
+      // Запускаем вибрацию при успешной покупке
+      vibrate(100); // Вибрация длительностью 100 мс
     } catch (error) {
       console.error("Ошибка при покупке апгрейда:", error);
+      // Можно добавить здесь другие способы информирования пользователя об ошибке, если нужно
+    } finally {
+      setIsPurchasing(null);
     }
   };
 
   const handleUpgradeClick = (upgrade: Upgrade) => {
+    // Проверяем, хватает ли монет для покупки
+    const isAffordable = user ? user.coins >= upgrade.cost : false;
+    const isMaxed = upgrade.level >= upgrade.maxLevel;
+
     openModal(
       <BusterModalContent
         upgrade={upgrade}
-        onPurchase={() => purchaseUpgrade(upgrade.id)} // Передаем функцию покупки
+        onPurchase={async () => {
+          await purchaseUpgrade(upgrade.id);
+          closeModal();
+        }}
+        isPurchasing={isPurchasing === upgrade.id}
+        isAffordable={isAffordable}
+        isMaxed={isMaxed}
       />,
       "linear-gradient(180deg, #2D3236 0%, #000000 100%)"
     );
@@ -134,6 +157,10 @@ const BustersShop = () => {
           </div>
         ))}
       </div>
+      {/* Рендерим CoinEffect, если нужно */}
+      {showCoinEffect && (
+        <CoinEffect onComplete={() => setShowCoinEffect(false)} />
+      )}
     </div>
   );
 };

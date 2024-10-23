@@ -1,7 +1,4 @@
-// src/components/FormattedNumber/FormattedNumber.tsx
-
 import React from "react";
-import { motion } from "framer-motion";
 import "./FormattedNumber.scss";
 
 interface FormattedNumberProps {
@@ -14,22 +11,17 @@ const FormattedNumber: React.FC<FormattedNumberProps> = ({ number }) => {
     .toLocaleString("ru-RU")
     .replace(/\u00A0/g, " "); // Заменяем неразрывный пробел на обычный
 
+  // Разбиваем на группы по три цифры
+  const numberGroups = formattedNumber.split(" ");
+
   return (
     <div className="formatted-number">
-      {formattedNumber.split("").map((char, index) => {
-        if (char === " ") {
-          return (
-            <span key={index} className="space">
-              {" "}
-            </span>
-          );
-        }
-        return (
-          <span key={index} className="digit">
-            {char}
-          </span>
-        );
-      })}
+      {numberGroups.map((group, index) => (
+        <React.Fragment key={index}>
+          <span className="number-group">{group}</span>
+          {index < numberGroups.length - 1 && <span className="space" />}
+        </React.Fragment>
+      ))}
     </div>
   );
 };

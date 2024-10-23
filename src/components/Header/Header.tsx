@@ -1,23 +1,36 @@
-// src/components/Header/Header.tsx
 import React from "react";
 import "./Header.scss";
+import { useLocation } from "react-router-dom";
 import useModalStore from "../../store/useModalStore";
-import { useUserStore } from "../../store/useUserStore"; // Импортируем стор пользователя
+import { useUserStore } from "../../store/useUserStore";
+import useCoinStore from "../../store/useCoinStore";
 import photoUrl from "../../assets/images/avatar.png";
-import HeaderModalContent from "./HeaderModalContent/HeaderModalContent"; // Убедитесь, что путь правильный
+import HeaderModalContent from "./HeaderModalContent/HeaderModalContent";
+import FormattedNumberHeader from "../UI/FormattedNumberHeader/FormattedNumberHeader";
 
 const Header: React.FC = () => {
   const { openModal } = useModalStore();
-  const { user } = useUserStore(); // Получаем данные пользователя из стора
+  const { user } = useUserStore();
+  const { coins } = useCoinStore();
+  const location = useLocation();
 
   const handleClick = () => {
     openModal(<HeaderModalContent user={user} />);
   };
 
+  // Определяем, является ли текущая страница главной
+  const isHomePage = location.pathname === "/";
+
   return (
-    <header className="header" onClick={handleClick}>
-      <span className="header__nickname">{user?.username || "Гость"}</span>
-      <img src={photoUrl} alt="Avatar" className="header__avatar" />
+    <header
+      className={`header ${isHomePage ? "header--home" : "header--default"}`}
+      onClick={handleClick}
+    >
+      {!isHomePage && <FormattedNumberHeader number={Math.floor(coins || 0)} />}
+      <div className="header__wrapper">
+        <span className="header__nickname">{user?.username || "Гость"}</span>
+        <img src={photoUrl} alt="Avatar" className="header__avatar" />
+      </div>
     </header>
   );
 };

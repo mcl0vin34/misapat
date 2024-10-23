@@ -8,9 +8,7 @@ interface LoadingScreenProps {
   title?: string;
 }
 
-const LoadingScreen: React.FC<LoadingScreenProps> = ({
-  title = "Добро пожаловать",
-}) => {
+const LoadingScreen: React.FC<LoadingScreenProps> = ({ title = "SimaTap" }) => {
   return (
     <div className={styles.loadingScreen}>
       <h1 className={styles.loadingScreenTitle}>{title}</h1>
@@ -19,7 +17,8 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
         alt="Loading Background"
         className={styles.loadingScreenBackground}
       />
-      <div className={styles.loadingScreenProgressBar}></div>
+      <p className="text">Загрузка...</p>
+      {/*<div className={styles.loadingScreenProgressBar}></div>*/}
     </div>
   );
 };
