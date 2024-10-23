@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/misapat/static/css/main.eb7a84a0.css",
-    "main.js": "/misapat/static/js/main.4f1d53bc.js",
+    "main.css": "/misapat/static/css/main.6dde2b14.css",
+    "main.js": "/misapat/static/js/main.e86fa6a2.js",
     "static/media/13.png": "/misapat/static/media/13.8b71a7d8de7ebca16ef9.png",
     "static/media/gold-lion.png": "/misapat/static/media/gold-lion.00707ebba5ec5e604285.png",
     "static/media/loading.png": "/misapat/static/media/loading.978cb740ce0268193c60.png",
@@ -55,11 +55,11 @@
     "static/media/heart.svg": "/misapat/static/media/heart.c794475b2afa94d38723ed73be7e7b2f.svg",
     "static/media/right-arrow.svg": "/misapat/static/media/right-arrow.c385b476904d7f485d982c97b912903f.svg",
     "static/media/done-icon.svg": "/misapat/static/media/done-icon.a4642a646d89cb40e675f41b281ae763.svg",
-    "main.eb7a84a0.css.map": "/misapat/static/css/main.eb7a84a0.css.map",
-    "main.4f1d53bc.js.map": "/misapat/static/js/main.4f1d53bc.js.map"
+    "main.6dde2b14.css.map": "/misapat/static/css/main.6dde2b14.css.map",
+    "main.e86fa6a2.js.map": "/misapat/static/js/main.e86fa6a2.js.map"
   },
   "entrypoints": [
-    "static/css/main.eb7a84a0.css",
-    "static/js/main.4f1d53bc.js"
+    "static/css/main.6dde2b14.css",
+    "static/js/main.e86fa6a2.js"
   ]
 }
