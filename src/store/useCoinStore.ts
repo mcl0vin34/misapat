@@ -1,5 +1,4 @@
 // src/store/useCoinStore.ts
-
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { io, Socket } from "socket.io-client";
@@ -11,14 +10,6 @@ import { nanoid } from "nanoid"; // Для генерации уникальны
 interface PendingRequest {
   resolve: () => void;
   reject: (error: string) => void;
-}
-
-interface PurchaseUpgradeResponse {
-  requestId: string;
-  success: boolean;
-  message: string;
-  upgrades: Upgrade[];
-  coins: number;
 }
 
 interface CoinStoreState {
@@ -71,7 +62,6 @@ const useCoinStore = create<CoinStoreState>()(
         initializeStore: (user: AppUser) => {
           set((state) => {
             if (state.storeInitialized) {
-              console.log("Store уже инициализирован.");
               return {};
             }
 
@@ -81,24 +71,16 @@ const useCoinStore = create<CoinStoreState>()(
               availableBoosters:
                 user.boosts_left !== undefined ? user.boosts_left : 6,
               userId: user.id,
-              upgrades: user.upgrades.map((u) => ({
-                id: u.upgrade_id,
-                name: "", // Заполните при получении данных бустеров
-                imageUrl: "", // Заполните при получении данных бустеров
-                level: u.level,
-                maxLevel: 10, // Укажите реальный maxLevel
-                cost: 0, // Заполните при получении данных бустеров
-                rateIncreasePerLevel: 0, // Заполните при получении данных бустеров
-                totalRateIncrease: 0, // Вычисляется при обновлении
-              })),
               storeInitialized: true,
             };
 
-            console.log("Store инициализирован:", updatedState);
+            console.log("Store initialized with user:", updatedState);
+
             return updatedState;
           });
 
           const currentState = get();
+
           currentState.initializeSocket();
         },
 
@@ -121,73 +103,61 @@ const useCoinStore = create<CoinStoreState>()(
           });
 
           socket.on("connect", () => {
-            console.log("Сокет подключен.");
             socket.emit("register", { userId });
           });
 
           // Обработчик ответа на покупку бустера
-          socket.on(
-            "purchaseUpgradeResponse",
-            (data: PurchaseUpgradeResponse) => {
-              console.log("Получен purchaseUpgradeResponse:", data);
+          socket.on("purchaseUpgradeResponse", (data) => {
+            const { requestId, success, message, upgrades, coins } = data;
 
-              const { requestId, success, message, upgrades, coins } = data;
-
-              const pending = pendingPurchaseUpgradeRequests.get(requestId);
-              if (pending) {
-                if (success) {
-                  console.log("Покупка бустера успешна:", requestId);
-                  // Обновляем состояние монет и бустеров
-                  set({
-                    upgrades: upgrades.map((u) => ({
-                      ...u,
-                      totalRateIncrease: u.rateIncreasePerLevel * u.level,
-                    })),
-                    coins: coins,
-                  });
-                  pending.resolve();
-                  // Мы не отображаем toast уведомление при успехе
-                } else {
-                  console.log("Ошибка покупки бустера:", message);
-                  // Отображаем toast уведомление только при неудаче
-                  if (message === "Улучшение достигло максимального уровня.") {
-                    toast("Улучшение достигло максимального уровня.", {
-                      type: "info",
-                      style: {
-                        backgroundColor: "green",
-                        color: "#fff",
-                      },
-                    });
-                  } else if (
-                    message === "Недостаточно монет для покупки улучшения."
-                  ) {
-                    toast("Недостаточно монет для покупки улучшения.", {
-                      type: "error",
-                      style: {
-                        backgroundColor: "red",
-                        color: "#fff",
-                      },
-                    });
-                  } else {
-                    // Для других типов ошибок используем стандартный error toast
-                    toast.error(message);
-                  }
-
-                  pending.reject(message);
-                }
-                pendingPurchaseUpgradeRequests.delete(requestId);
+            const pending = pendingPurchaseUpgradeRequests.get(requestId);
+            if (pending) {
+              if (success) {
+                // Обновляем состояние монет и бустеров
+                set({
+                  upgrades: upgrades, // Обновленные апгрейды от сервера
+                  coins: coins, // Обновленное количество монет от сервера
+                });
+                pending.resolve();
+                // Toast уведомление не требуется при успехе
               } else {
-                console.warn(
-                  "Не найдено ожидающих запросов для requestId:",
-                  requestId
-                );
-              }
-            }
-          );
+                // Определяем тип ошибки и отображаем соответствующий toast
+                if (message === "Улучшение достигло максимального уровня.") {
+                  toast("Улучшение достигло максимального уровня.", {
+                    type: "info",
+                    style: {
+                      backgroundColor: "green",
+                      color: "#fff",
+                    },
+                  });
+                } else if (
+                  message === "Недостаточно монет для покупки улучшения."
+                ) {
+                  toast("Недостаточно монет для покупки улучшения.", {
+                    type: "error",
+                    style: {
+                      backgroundColor: "red",
+                      color: "#fff",
+                    },
+                  });
+                } else {
+                  // Для других типов ошибок используем стандартный error toast
+                  toast.error(message);
+                }
 
-          // Логирование других событий сокета
+                pending.reject(message);
+              }
+              pendingPurchaseUpgradeRequests.delete(requestId);
+            } else {
+              console.warn(
+                "Не найдено ожидающих запросов для requestId:",
+                requestId
+              );
+            }
+          });
+
+          // Другие обработчики событий сокета
           socket.on("energyUpdated", (data) => {
-            console.log("Получены данные energyUpdated:", data);
             if (data.energy_left !== undefined) {
               set({ energy: data.energy_left });
             } else {
@@ -196,13 +166,8 @@ const useCoinStore = create<CoinStoreState>()(
           });
 
           socket.on("passiveIncomePerHour", (data) => {
-            console.log("Получены данные passiveIncomePerHour:", data);
             if (data.passive_income_per_hour !== undefined) {
               set({ passiveIncomeRate: data.passive_income_per_hour });
-              console.log(
-                "passiveIncomeRate обновлен:",
-                data.passive_income_per_hour
-              );
             } else {
               console.warn(
                 "Обновление пассивного дохода не содержит данных:",
@@ -212,7 +177,6 @@ const useCoinStore = create<CoinStoreState>()(
           });
 
           socket.on("boostsUpdated", (data) => {
-            console.log("Получены данные boostsUpdated:", data);
             if (data.boosts_left !== undefined) {
               set({ availableBoosters: data.boosts_left });
             } else {
@@ -221,7 +185,6 @@ const useCoinStore = create<CoinStoreState>()(
           });
 
           socket.on("coinsUpdated", (data) => {
-            console.log("Получены данные coinsUpdated:", data);
             if (data.coins !== undefined) {
               set({ coins: data.coins });
             } else {
@@ -237,22 +200,17 @@ const useCoinStore = create<CoinStoreState>()(
           });
 
           socket.on("disconnect", () => {
-            console.log(`Пользователь ${userId} отключен от WebSocket`);
             state.reconnectSocket();
           });
 
           set({ socket });
-
-          console.log("Сокет инициализирован:", socket);
         },
 
         reconnectSocket: () => {
           const state = get();
           if (state.socket) {
-            console.log("Попытка переподключения сокета...");
             state.socket.connect();
           } else {
-            console.log("Сокет не инициализирован, инициализируем заново.");
             state.initializeSocket();
           }
         },
@@ -263,7 +221,6 @@ const useCoinStore = create<CoinStoreState>()(
           const { socket, userId } = state;
 
           if (socket && userId) {
-            console.log(`Пользователь ${userId} использует буст.`);
             socket.emit("useBoost", { userId });
           } else {
             console.error(
@@ -278,7 +235,6 @@ const useCoinStore = create<CoinStoreState>()(
           const { socket, userId, coinsPerClick, energy } = state;
 
           if (socket && userId && energy >= coinsPerClick) {
-            console.log(`Пользователь ${userId} совершает тап.`);
             socket.emit("tap", { userId });
           } else {
             console.error("Недостаточно энергии или сокет не инициализирован.");
@@ -293,7 +249,6 @@ const useCoinStore = create<CoinStoreState>()(
           const state = get();
           const { socket } = state;
           if (socket) {
-            console.log("Отключаем сокет...");
             socket.disconnect();
             set({ socket: null });
           }
@@ -332,9 +287,6 @@ const useCoinStore = create<CoinStoreState>()(
             }
 
             const requestId = nanoid();
-            console.log(
-              `Отправка запроса на покупку бустера с requestId: ${requestId}`
-            );
 
             pendingPurchaseUpgradeRequests.set(requestId, { resolve, reject });
 

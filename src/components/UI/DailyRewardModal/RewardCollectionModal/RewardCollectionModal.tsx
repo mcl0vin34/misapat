@@ -1,4 +1,4 @@
-// src/components/RewardCollectModal/RewardCollectionModal.tsx
+// src/components/UI/DailyRewardModal/RewardCollectionModal/RewardCollectionModal.tsx
 
 import React, { useState } from "react";
 import styles from "./RewardCollectionModal.module.scss";
@@ -68,6 +68,11 @@ const RewardCollectModal: React.FC<RewardCollectModalProps> = ({
           )}
         </div>
       </div>
+      {isFlipped && (
+        <button className={styles.collectButton} onClick={handleCollect}>
+          Забрать
+        </button>
+      )}
     </div>
   );
 };
