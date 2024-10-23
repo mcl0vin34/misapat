@@ -1,5 +1,3 @@
-// src/components/TapButton/TapButton.tsx
-
 import React, { useState, useRef, useEffect } from "react";
 import TapIcons from "../TapIcons/TapIcons";
 import { nanoid } from "nanoid";
@@ -19,9 +17,16 @@ interface IconEffect {
   type: "coin" | "heart";
 }
 
+interface FloatingTextEffect {
+  key: string;
+  style: React.CSSProperties;
+  text: string;
+}
+
 const TapButton: React.FC<TapButtonProps> = ({ lionImage }) => {
   const { coinsPerClick, energy, addCoins } = useCoinStore();
   const [tapIcons, setTapIcons] = useState<IconEffect[]>([]);
+  const [floatingTexts, setFloatingTexts] = useState<FloatingTextEffect[]>([]);
   const [isPressed, setIsPressed] = useState(false);
   const [pressTransform, setPressTransform] = useState<{
     x: number;
@@ -72,6 +77,20 @@ const TapButton: React.FC<TapButtonProps> = ({ lionImage }) => {
         });
       }
 
+      // Добавляем эффект "+13"
+      const textId = nanoid();
+      setFloatingTexts((prevTexts) => [
+        ...prevTexts,
+        {
+          key: textId,
+          style: {
+            left: `${x}px`,
+            top: `${y}px`,
+          },
+          text: "+13",
+        },
+      ]);
+
       setTapIcons((prevIcons) => {
         const updatedIcons = [...prevIcons, ...newIcons];
         return updatedIcons.slice(-MAX_ICONS);
@@ -101,10 +120,11 @@ const TapButton: React.FC<TapButtonProps> = ({ lionImage }) => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setTapIcons([]);
+      setFloatingTexts([]);
     }, 700);
 
     return () => clearTimeout(timeout);
-  }, [tapIcons]);
+  }, [tapIcons, floatingTexts]);
 
   return (
     <div
@@ -126,6 +146,11 @@ const TapButton: React.FC<TapButtonProps> = ({ lionImage }) => {
       >
         <img src={lionImage} alt="Lion" className="lion-image" />
         <TapIcons tapIcons={tapIcons} />
+        {floatingTexts.map(({ key, style, text }) => (
+          <div key={key} className="floating-text" style={style}>
+            {text}
+          </div>
+        ))}
       </button>
     </div>
   );

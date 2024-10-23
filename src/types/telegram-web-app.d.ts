@@ -17,7 +17,8 @@ declare global {
     isVerticalSwipesEnabled: boolean;
     web_app_setup_swipe_behavior?: (options: {
       allow_vertical_swipe: boolean;
-    }) => void; // Добавляем метод
+    }) => void;
+    bg_color?: string; // Add this line to include the bg_color property
   }
 
   interface Telegram {

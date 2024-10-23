@@ -1,3 +1,5 @@
+// src/Layout/Layout.tsx
+
 import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import FooterNav from "../components/FooterNav/FooterNav";
@@ -7,7 +9,7 @@ import Modal from "../components/UI/Modal/Modal";
 import useCoinStore from "../store/useCoinStore";
 import SharedContainer from "../components/UI/SharedContainer/SharedContainer";
 import { useUserStore } from "../store/useUserStore";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Импорт стилей toast
 import "./Layout.scss";
 
@@ -56,6 +58,19 @@ const Layout = () => {
     }
   }, [offlineIncome, setOfflineIncome]);
 
+  // Функция для тестирования toast уведомлений (опционально)
+  const handleTestToast = () => {
+    toast.success("Это тестовое успешное уведомление!", {
+      style: { backgroundColor: "green", color: "#fff" },
+    });
+    toast.error("Это тестовое ошибочное уведомление!", {
+      style: { backgroundColor: "red", color: "#fff" },
+    });
+    toast.info("Это тестовое информационное уведомление!", {
+      style: { backgroundColor: "blue", color: "#fff" },
+    });
+  };
+
   return (
     <div className="layout">
       <Header />
@@ -76,8 +91,8 @@ const Layout = () => {
           {content}
         </Modal>
       ))}
-
-      <ToastContainer />
+      <ToastContainer /> {/* Контейнер для toast уведомлений */}
+      {/* Кнопка для тестирования toast уведомлений (опционально) */}
     </div>
   );
 };

@@ -6,13 +6,14 @@
   width: 100%;
   height: 80px; /* Высота футера */
   background-color: #2d3236;
+  z-index: 1500;
   /* Остальные стили */
 }
 
 .footer_menu {
   display: flex;
   justify-content: space-around;
-  align-items: center;
+  align-items: flex-start;
   list-style: none;
   width: 100%;
   height: 100%;
@@ -25,6 +26,8 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    width: 100%;
+    height: 74px;
   }
 
   a {
@@ -32,8 +35,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 60px;
-    height: 60px;
+    width: 74px;
+    height: 74px;
     border-radius: 12px;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -97,12 +100,12 @@
 @media (max-width: 600px) {
   .footer {
     padding: 8px 10px;
-    height: 80px; /* Убедитесь, что высота футера остается постоянной */
+    height: 118px; /* Убедитесь, что высота футера остается постоянной */
   }
 
   .footer_menu__item a {
-    width: 60px;
-    height: 60px;
+    width: 74px;
+    height: 74px;
   }
 
   .footer_menu__item a .nav-label {
@@ -110,7 +113,7 @@
   }
 
   .footer_menu__item a svg {
-    width: 28px;
-    height: 28px;
+    width: 35px;
+    height: 35px;
   }
 }

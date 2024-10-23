@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  touch-action: none; /* Отключаем реакцию на свайпы и другие тач-события */
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Source Sans Pro", "Segoe UI",

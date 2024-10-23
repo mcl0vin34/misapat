@@ -1,6 +1,10 @@
 /* src/layout/Layout.scss */
 
 .layout {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  touch-action: none;
   display: flex;
   flex-direction: column;
   min-height: 100vh; /* Занимаем всю высоту окна */

@@ -1,11 +1,17 @@
-/* src/components/AnimatedDigit/AnimatedDigit.scss */
+.formatted-number {
+  display: flex;
+  align-items: center;
+}
 
-.digit {
-  display: inline-block;
+.number-group {
   font-size: 40px;
   color: #d9d9d9;
   font-weight: 600;
   line-height: 1;
   margin: 0;
   padding: 0;
+}
+
+.space {
+  width: 5px; /* Отступ между группами цифр */
 }

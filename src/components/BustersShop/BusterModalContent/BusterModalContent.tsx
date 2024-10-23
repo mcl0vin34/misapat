@@ -7,12 +7,18 @@ import { ReactComponent as CoinIcon } from "../../../assets/icons/coin.svg";
 
 interface BusterModalContentProps {
   upgrade: Upgrade;
-  onPurchase: () => void; // Добавляем это поле
+  onPurchase: () => void;
+  isPurchasing: boolean;
+  isAffordable: boolean;
+  isMaxed: boolean;
 }
 
 const BusterModalContent: React.FC<BusterModalContentProps> = ({
   upgrade,
   onPurchase,
+  isPurchasing,
+  isAffordable,
+  isMaxed,
 }) => {
   return (
     <div className={styles.busterModalContent}>
@@ -32,10 +38,34 @@ const BusterModalContent: React.FC<BusterModalContentProps> = ({
           +{upgrade.rateIncreasePerLevel}{" "}
         </p>
       </div>
-      <button className={styles.buy_btn} onClick={onPurchase}>
-        Купить бустер
-      </button>{" "}
-      {/* Добавляем обработчик клика */}
+
+      {/*{isMaxed && (
+        <div className={styles.maxLevelMessage}>
+          <p>Этот бустер достиг максимального уровня!</p>
+        </div>
+      )}
+
+      {!isAffordable && !isMaxed && (
+        <div className={styles.insufficientFundsMessage}>
+          <p>Недостаточно монет для покупки этого бустера.</p>
+        </div>
+      )}*/}
+
+      <button
+        className={`${styles.buy_btn} ${
+          isMaxed || !isAffordable ? styles.disabled : ""
+        }`}
+        onClick={onPurchase}
+        disabled={isPurchasing || isMaxed || !isAffordable} // Отключаем кнопку при загрузке, максимальном уровне или недостатке монет
+      >
+        {isPurchasing
+          ? "Покупка..."
+          : isMaxed
+          ? "Максимальный уровень"
+          : !isAffordable
+          ? "Недостаточно монет"
+          : "Купить бустер"}
+      </button>
     </div>
   );
 };
