@@ -34,6 +34,7 @@ const initialQuests: Quest[] = [
     completed: false,
     icon: SimaLogo, // Общая иконка
   },
+  // Добавьте больше квестов при необходимости
 ];
 
 const QuestsPage: React.FC = () => {
