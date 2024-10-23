@@ -1,31 +1,33 @@
 /* src/components/UI/CoinEffect/CoinEffect.module.scss */
-
 .coinEffect {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw; /* Занимает всю ширину окна */
-  height: 100vh; /* Занимает всю высоту окна */
-  pointer-events: none; /* Не блокирует клики по другим элементам */
-  z-index: 2000; /* Поверх других элементов */
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 2000;
 }
 
 .coin {
   position: absolute;
   width: 40px;
   height: 40px;
-  animation: scatter 2s forwards;
-  transform: translate(var(--move-x, 0), var(--move-y, 0)) rotate(720deg);
-  opacity: 1;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  animation: flyIcon 0.7s forwards ease-out;
+  will-change: transform, opacity;
 }
 
-@keyframes scatter {
+@keyframes flyIcon {
   from {
     opacity: 1;
-    transform: translate(var(--move-x, 0), var(--move-y, 0)) rotate(0deg);
+    transform: translate(-50%, -50%) translate(0, 0) scale(1) rotate(0deg);
   }
   to {
     opacity: 0;
-    transform: translate(var(--move-x, 0), var(--move-y, 0)) rotate(720deg);
+    transform: translate(-50%, -50%) translate(var(--move-x), var(--move-y))
+      scale(0.5) rotate(720deg);
   }
 }

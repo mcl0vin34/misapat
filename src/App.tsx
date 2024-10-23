@@ -8,11 +8,12 @@ import "./App.scss";
 import { useUserStore } from "./store/useUserStore";
 import useCoinStore from "./store/useCoinStore";
 import tg from "./utils/tg"; // Импортируем tg
-import LoadingScreen from "./components/UI/LoadingScreen/LoadingScreen"; // Импортируем LoadingScreen
+import LoadingScreen from "./components/UI/LoadingScreen/LoadingScreen";
+import axios from "axios"; // Импортируем axios
 
 const App: React.FC = () => {
   const [isInitialized, setIsInitialized] = useState(false);
-  const { initializeUser, user, isLoading: isUserLoading } = useUserStore();
+  const { initializeUser, user } = useUserStore();
   const { initializeStore, storeInitialized } = useCoinStore();
 
   useEffect(() => {
@@ -22,6 +23,36 @@ const App: React.FC = () => {
       if (user && !storeInitialized) {
         initializeStore(user);
       }
+
+      // Получаем start_param из контекста Telegram Web App
+      const tg = (window as any).Telegram?.WebApp;
+      if (tg && tg.initDataUnsafe) {
+        const startParam = tg.initDataUnsafe.start_param;
+        if (startParam && startParam.startsWith("refId") && user) {
+          const referrerId = startParam.substring(5); // Извлекаем referrer_id
+          const referralId = user.id; // ID текущего пользователя
+          // Отправляем POST запрос на ваш сервер
+          try {
+            const response = await axios.post(
+              `https://dev.simatap.ru/api/referrals`,
+              {},
+              {
+                params: {
+                  referrer_id: referrerId,
+                  referral_id: referralId,
+                },
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+            console.log("Referral data sent successfully:", response.data);
+          } catch (error) {
+            console.error("Error sending referral data:", error);
+          }
+        }
+      }
+
       setIsInitialized(true);
     };
     initUserAndStore();
@@ -41,7 +72,6 @@ const App: React.FC = () => {
       });
     }
 
-    // Проверяем значение process.env.NODE_ENV
     console.log("process.env.NODE_ENV:", process.env.NODE_ENV);
   }, [initializeUser, initializeStore, storeInitialized]);
 

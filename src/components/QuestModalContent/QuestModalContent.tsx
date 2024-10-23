@@ -1,11 +1,13 @@
 // src/components/QuestModalContent/QuestModalContent.tsx
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styles from "./QuestModalContent.module.scss";
 import { Quest } from "../../types/Quest";
+import { useUserStore } from "../../store/useUserStore"; // Используем Named Export
 import useModalStore from "../../store/useModalStore"; // Импорт хука для модальных окон
 import { ReactComponent as CoinIcon } from "../../assets/icons/coin.svg";
 import { ReactComponent as PartyIcon } from "../../assets/icons/party-icon.svg";
+import CoinEffect from "../UI/CoinEffect/CoinEffect"; // Импорт CoinEffect
 
 interface QuestModalContentProps {
   quest: Quest;
@@ -21,13 +23,14 @@ const QuestModalContent: React.FC<QuestModalContentProps> = ({
     "initial"
   ); // Состояние модалки
   const [remainingTime, setRemainingTime] = useState<number>(0); // Остаток времени в секундах
+  const [showCoinEffect, setShowCoinEffect] = useState<boolean>(false); // Состояние для CoinEffect
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
 
     if (status === "checking") {
       // Устанавливаем общий таймер на 1 час (3600 секунд)
-      // Для тестирования можно использовать меньшее время, например, 60 секунд
+      // Для тестирования используем меньшее время, например, 3 секунды
       const totalTime = 3; // 3600 секунд = 1 час
       setRemainingTime(totalTime);
 
@@ -49,10 +52,10 @@ const QuestModalContent: React.FC<QuestModalContentProps> = ({
     };
   }, [status, onComplete]);
 
-  const handleCheck = () => {
+  const handleCheck = useCallback(() => {
     setStatus("checking"); // Переходим в состояние проверки
     // Здесь можно добавить реальную логику проверки выполнения задания
-  };
+  }, []);
 
   // Форматирование времени в формат ЧЧ:ММ:СС
   const formatTime = (seconds: number) => {
@@ -92,6 +95,9 @@ const QuestModalContent: React.FC<QuestModalContentProps> = ({
             <CoinIcon />
             <p className={styles.reward_amount}>{quest.reward}</p>
           </div>
+          <button className={styles.collectButton} onClick={handleCollect}>
+            Забрать
+          </button>
         </>
       );
     }
@@ -112,17 +118,26 @@ const QuestModalContent: React.FC<QuestModalContentProps> = ({
             Осталось времени: {formatTime(remainingTime)}
           </button>
         )}
-        {/*{status === "checking" && (
-          <p className={styles.checkingText}>Задание проверяется...</p>
-        )}*/}
       </>
     );
   };
 
+  // Функция для обработки клика на кнопку "Забрать"
+  const handleCollect = useCallback(() => {
+    setShowCoinEffect(true);
+  }, []);
+
+  // Функция для обработки завершения анимации CoinEffect
+  const handleCoinEffectComplete = useCallback(() => {
+    setShowCoinEffect(false);
+    closeModal(); // Закрываем модалку после завершения анимации
+  }, [closeModal]);
+
   return (
     <div className={`${styles.questModalContent} ${styles.doneModalContent}`}>
-      {renderIcon()} {/* Отображаем иконку в зависимости от состояния */}
-      {renderContent()} {/* Отображаем контент в зависимости от состояния */}
+      {renderIcon()}
+      {renderContent()}
+      {showCoinEffect && <CoinEffect onComplete={handleCoinEffectComplete} />}
     </div>
   );
 };
