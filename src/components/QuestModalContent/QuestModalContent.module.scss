@@ -1,5 +1,4 @@
 /* src/components/QuestModalContent/QuestModalContent.module.scss */
-
 .questModalContent {
   color: #fff;
   height: 100%;
@@ -71,6 +70,11 @@
         #e5c48f 109.99%
       );
     }
+
+    &:disabled {
+      background: #555;
+      cursor: not-allowed;
+    }
   }
 
   .collectButton {
@@ -92,6 +96,15 @@
     margin-top: auto;
     margin-right: 10px;
     transition: background 0.3s ease;
+
+    &:hover {
+      background: linear-gradient(
+        140.39deg,
+        #c8a451 10.72%,
+        #d8b36c 45.29%,
+        #e5c48f 109.99%
+      );
+    }
   }
 
   .successMessage {

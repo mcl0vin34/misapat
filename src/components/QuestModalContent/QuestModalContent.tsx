@@ -1,13 +1,12 @@
 // src/components/QuestModalContent/QuestModalContent.tsx
-
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import styles from "./QuestModalContent.module.scss";
 import { Quest } from "../../types/Quest";
-import { useUserStore } from "../../store/useUserStore"; // Используем Named Export
-import useModalStore from "../../store/useModalStore"; // Импорт хука для модальных окон
+import { useUserStore } from "../../store/useUserStore";
+import useModalStore from "../../store/useModalStore";
 import { ReactComponent as CoinIcon } from "../../assets/icons/coin.svg";
 import { ReactComponent as PartyIcon } from "../../assets/icons/party-icon.svg";
-import CoinEffect from "../UI/CoinEffect/CoinEffect"; // Импорт CoinEffect
+import { CoinEffectContext } from "../../App"; // Импортируем контекст
 
 interface QuestModalContentProps {
   quest: Quest;
@@ -18,12 +17,12 @@ const QuestModalContent: React.FC<QuestModalContentProps> = ({
   quest,
   onComplete,
 }) => {
-  const { closeModal } = useModalStore(); // Получаем функцию закрытия модалки
+  const { closeModal } = useModalStore();
   const [status, setStatus] = useState<"initial" | "checking" | "success">(
     "initial"
-  ); // Состояние модалки
-  const [remainingTime, setRemainingTime] = useState<number>(0); // Остаток времени в секундах
-  const [showCoinEffect, setShowCoinEffect] = useState<boolean>(false); // Состояние для CoinEffect
+  );
+  const [remainingTime, setRemainingTime] = useState<number>(0);
+  const { triggerCoinEffect } = useContext(CoinEffectContext); // Используем контекст
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -124,20 +123,14 @@ const QuestModalContent: React.FC<QuestModalContentProps> = ({
 
   // Функция для обработки клика на кнопку "Забрать"
   const handleCollect = useCallback(() => {
-    setShowCoinEffect(true);
-  }, []);
-
-  // Функция для обработки завершения анимации CoinEffect
-  const handleCoinEffectComplete = useCallback(() => {
-    setShowCoinEffect(false);
-    closeModal(); // Закрываем модалку после завершения анимации
-  }, [closeModal]);
+    triggerCoinEffect(); // Вызываем глобальный эффект монет
+    closeModal(); // Закрываем модальное окно сразу же
+  }, [triggerCoinEffect, closeModal]);
 
   return (
     <div className={`${styles.questModalContent} ${styles.doneModalContent}`}>
       {renderIcon()}
       {renderContent()}
-      {showCoinEffect && <CoinEffect onComplete={handleCoinEffectComplete} />}
     </div>
   );
 };

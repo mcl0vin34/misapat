@@ -3,10 +3,10 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 2000;
+  width: 100vw; /* Занимает всю ширину окна */
+  height: 100vh; /* Занимает всю высоту окна */
+  pointer-events: none; /* Не блокирует клики по другим элементам */
+  z-index: 2000; /* Поверх других элементов */
 }
 
 .coin {

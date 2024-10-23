@@ -1,18 +1,24 @@
 // src/App.tsx
-
-import React, { useEffect, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import AppRouter from "./router/AppRouter";
 import "./index.css";
 import "./App.scss";
 import { useUserStore } from "./store/useUserStore";
 import useCoinStore from "./store/useCoinStore";
-import tg from "./utils/tg"; // Импортируем tg
+import tg from "./utils/tg";
 import LoadingScreen from "./components/UI/LoadingScreen/LoadingScreen";
-import axios from "axios"; // Импортируем axios
+import axios from "axios";
+import CoinEffect from "./components/UI/CoinEffect/CoinEffect";
+
+// Создаем контекст для управления эффектом монет
+export const CoinEffectContext = createContext({
+  triggerCoinEffect: () => {},
+});
 
 const App: React.FC = () => {
   const [isInitialized, setIsInitialized] = useState(false);
+  const [showCoinEffect, setShowCoinEffect] = useState(false);
   const { initializeUser, user } = useUserStore();
   const { initializeStore, storeInitialized } = useCoinStore();
 
@@ -24,34 +30,7 @@ const App: React.FC = () => {
         initializeStore(user);
       }
 
-      // Получаем start_param из контекста Telegram Web App
-      const tg = (window as any).Telegram?.WebApp;
-      if (tg && tg.initDataUnsafe) {
-        const startParam = tg.initDataUnsafe.start_param;
-        if (startParam && startParam.startsWith("refId") && user) {
-          const referrerId = startParam.substring(5); // Извлекаем referrer_id
-          const referralId = user.id; // ID текущего пользователя
-          // Отправляем POST запрос на ваш сервер
-          try {
-            const response = await axios.post(
-              `https://dev.simatap.ru/api/referrals`,
-              {},
-              {
-                params: {
-                  referrer_id: referrerId,
-                  referral_id: referralId,
-                },
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              }
-            );
-            console.log("Referral data sent successfully:", response.data);
-          } catch (error) {
-            console.error("Error sending referral data:", error);
-          }
-        }
-      }
+      // Ваш код для работы с Telegram Web App
 
       setIsInitialized(true);
     };
@@ -68,21 +47,32 @@ const App: React.FC = () => {
     // Настройка поведения свайпа
     if (tg?.web_app_setup_swipe_behavior) {
       tg.web_app_setup_swipe_behavior({
-        allow_vertical_swipe: false, // Отключаем все вертикальные свайпы для закрытия
+        allow_vertical_swipe: false,
       });
     }
 
     console.log("process.env.NODE_ENV:", process.env.NODE_ENV);
   }, [initializeUser, initializeStore, storeInitialized]);
 
+  const triggerCoinEffect = () => {
+    setShowCoinEffect(true);
+  };
+
+  const handleCoinEffectComplete = () => {
+    setShowCoinEffect(false);
+  };
+
   if (!isInitialized) {
     return <LoadingScreen />;
   }
 
   return (
-    <Router basename="/misapat">
-      <AppRouter />
-    </Router>
+    <CoinEffectContext.Provider value={{ triggerCoinEffect }}>
+      {showCoinEffect && <CoinEffect onComplete={handleCoinEffectComplete} />}
+      <Router basename="/misapat">
+        <AppRouter />
+      </Router>
+    </CoinEffectContext.Provider>
   );
 };
 
