@@ -1,8 +1,8 @@
-// src/components/BusterModalContent/BusterModalContent.tsx
+// src/components/BustersShop/BusterModalContent/BusterModalContent.tsx
 
 import React from "react";
 import styles from "./BusterModalContent.module.scss";
-import { Upgrade } from "../../../types/Upgrade"; // Корректный путь к типу
+import { Upgrade } from "../../../types/Upgrade";
 import { ReactComponent as CoinIcon } from "../../../assets/icons/coin.svg";
 
 interface BusterModalContentProps {
@@ -22,41 +22,51 @@ const BusterModalContent: React.FC<BusterModalContentProps> = ({
 }) => {
   return (
     <div className={styles.busterModalContent}>
-      <div className={styles.booster_price_wrapper}>
-        <CoinIcon className={styles.coinIcon} />
-        <p className={styles.booster_price_title}> {upgrade.cost} </p>
-      </div>
-      <img src={upgrade.imageUrl} alt={upgrade.name} className={styles.image} />
+      {upgrade.next_level_cost !== null && (
+        <div className={styles.booster_price_wrapper}>
+          <CoinIcon className={styles.coinIcon} />
+          <p className={styles.booster_price_title}>
+            {upgrade.next_level_cost}
+          </p>
+        </div>
+      )}
+
       <h2 className={styles.title}>{upgrade.name}</h2>
-      <p className={styles.level}>Уровень: {upgrade.level}</p>
+
+      {upgrade.url && (
+        <picture className={styles.image_wrapper}>
+          <source
+            srcSet={require(`../../../assets/images/${upgrade.url.replace(
+              /\.(png|jpg|jpeg|gif)$/,
+              ".webp"
+            )}`)}
+            type="image/webp"
+          />
+          <img
+            src={require(`../../../assets/images/${upgrade.url}`)}
+            alt={upgrade.name}
+            className={styles.image}
+          />
+        </picture>
+      )}
+
+      <p className={styles.level}>Уровень: {upgrade.current_level}</p>
       <p className={styles.income_info}>
         Ваш пассивный доход <br /> в час увеличится на:
       </p>
       <div className={styles.passive_income_wrapper}>
         <CoinIcon className={styles.coinIcon} />
         <p className={styles.passive_income_value}>
-          +{upgrade.rateIncreasePerLevel}{" "}
+          +{upgrade.income_increase_per_level}
         </p>
       </div>
-
-      {/*{isMaxed && (
-        <div className={styles.maxLevelMessage}>
-          <p>Этот бустер достиг максимального уровня!</p>
-        </div>
-      )}
-
-      {!isAffordable && !isMaxed && (
-        <div className={styles.insufficientFundsMessage}>
-          <p>Недостаточно монет для покупки этого бустера.</p>
-        </div>
-      )}*/}
 
       <button
         className={`${styles.buy_btn} ${
           isMaxed || !isAffordable ? styles.disabled : ""
         }`}
         onClick={onPurchase}
-        disabled={isPurchasing || isMaxed || !isAffordable} // Отключаем кнопку при загрузке, максимальном уровне или недостатке монет
+        disabled={isPurchasing || isMaxed || !isAffordable}
       >
         {isPurchasing
           ? "Покупка..."

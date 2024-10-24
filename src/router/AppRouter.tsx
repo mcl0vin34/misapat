@@ -4,7 +4,6 @@ import Layout from "../Layout/Layout";
 import Main from "../pages/MainPage/MainPage";
 import FriendsList from "../pages/FriendsInvitePage/FriendsInvitePage";
 import Quests from "../pages/QuestsPage/QuestsPage";
-import Leveling from "../pages/LevelingPage/LevelingPage";
 import Shop from "../pages/ShopPage/ShopPage";
 import LeaderBoard from "../pages/LeaderBoardPage/LeaderBoardPage";
 
@@ -15,7 +14,6 @@ function AppRouter() {
         <Route index element={<Main />} />
         <Route path="friendslist" element={<FriendsList />} />
         <Route path="quests" element={<Quests />} />
-        <Route path="leveling" element={<Leveling />} />
         <Route path="shop" element={<Shop />} />
         <Route path="leaderboard" element={<LeaderBoard />} />
       </Route>
