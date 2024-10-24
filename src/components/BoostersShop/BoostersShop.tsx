@@ -1,39 +1,32 @@
-// src/components/BustersShop/BustersShop.tsx
+// src/components/BoostersShop/BoostersShop.tsx
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useUserStore } from "../../store/useUserStore";
-import styles from "./BustersShop.module.scss";
-import BusterModalContent from "./BusterModalContent/BusterModalContent";
+import useCoinStore from "../../store/useCoinStore"; // Импортируем useCoinStore
+import styles from "./BoostersShop.module.scss";
+import BoosterModalContent from "./BoosterModalContent/BoosterModalContent";
 import { ReactComponent as CoinIcon } from "../../assets/icons/coin.svg";
 import useModalStore from "../../store/useModalStore";
 import { Upgrade } from "../../types/Upgrade";
 import CoinEffect from "../UI/CoinEffect/CoinEffect";
 import vibrate from "../../utils/vibrate";
 
-const BustersShop = () => {
-  const { user, setUser } = useUserStore();
+const BoostersShop = () => {
   const { openModal, closeModal } = useModalStore();
 
-  const [upgrades, setUpgrades] = useState<Upgrade[]>([]);
+  const { coins, upgrades, purchaseUpgrade, isPurchasing, setUpgrades } =
+    useCoinStore();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isPurchasing, setIsPurchasing] = useState<number | null>(null);
   const [showCoinEffect, setShowCoinEffect] = useState(false);
 
   // Функция для получения списка бустеров с бэкенда
   useEffect(() => {
     const fetchUpgrades = async () => {
-      if (!user?.id) {
-        console.warn("User ID is not available.");
-        setIsLoading(false);
-        return;
-      }
-
-      console.log("Fetching upgrades for user ID:", user.id);
-
       try {
         const response = await axios.get<Upgrade[]>(
-          `${process.env.REACT_APP_API_URL}api/upgrades?userId=${user.id}`
+          `${process.env.REACT_APP_API_URL}api/upgrades?userId=${
+            useCoinStore.getState().userId
+          }`
         );
 
         console.log("Received upgrades:", response.data);
@@ -47,65 +40,27 @@ const BustersShop = () => {
     };
 
     fetchUpgrades();
-  }, [user]);
-
-  // Функция для отправки POST-запроса на покупку
-  const purchaseUpgrade = async (upgradeId: number) => {
-    try {
-      setIsPurchasing(upgradeId);
-      const response = await axios.post(
-        `${process.env.REACT_APP_API_URL}/upgrades/purchase`,
-        {},
-        {
-          params: {
-            userId: user?.id,
-            upgradeId: upgradeId,
-          },
-        }
-      );
-
-      console.log("Purchase response:", response.data);
-
-      const updatedUpgrades = response.data.upgrades;
-
-      if (user) {
-        setUser({
-          ...user,
-          upgrades: updatedUpgrades,
-          coins: response.data.coins, // Обновляем количество монет, если API возвращает их
-        });
-      }
-
-      // Обновляем список апгрейдов в состоянии компонента
-      setUpgrades(updatedUpgrades);
-
-      // Запускаем эффект рассыпающихся монеток
-      setShowCoinEffect(true);
-
-      // Запускаем вибрацию при успешной покупке
-      vibrate(100);
-    } catch (error) {
-      console.error("Ошибка при покупке апгрейда:", error);
-      // Здесь можно добавить уведомление для пользователя об ошибке
-    } finally {
-      setIsPurchasing(null);
-    }
-  };
+  }, [setUpgrades]);
 
   const handleUpgradeClick = (upgrade: Upgrade) => {
     console.log("Opening modal for upgrade:", upgrade);
     // Проверяем, хватает ли монет для покупки
-    const isAffordable = user
-      ? user.coins >= (upgrade.next_level_cost || 0)
-      : false;
+    const isAffordable = coins >= (upgrade.next_level_cost || 0);
     const isMaxed = upgrade.next_level === null;
 
     openModal(
-      <BusterModalContent
+      <BoosterModalContent
         upgrade={upgrade}
         onPurchase={async () => {
-          await purchaseUpgrade(upgrade.upgrade_id);
-          closeModal();
+          try {
+            await purchaseUpgrade(upgrade.upgrade_id);
+            setShowCoinEffect(true);
+            vibrate(100);
+            closeModal();
+          } catch (error) {
+            console.error("Ошибка при покупке апгрейда:", error);
+            // Отображение уведомления об ошибке
+          }
         }}
         isPurchasing={isPurchasing === upgrade.upgrade_id}
         isAffordable={isAffordable}
@@ -120,7 +75,7 @@ const BustersShop = () => {
   }
 
   return (
-    <div className={styles.bustersShop}>
+    <div className={styles.boostersShop}>
       <div className={styles.upgrades}>
         {upgrades.length === 0 ? (
           <div>Бустеры не найдены.</div>
@@ -189,4 +144,4 @@ const BustersShop = () => {
   );
 };
 
-export default BustersShop;
+export default BoostersShop;

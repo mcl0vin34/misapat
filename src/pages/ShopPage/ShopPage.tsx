@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import styles from "./ShopPage.module.scss";
 import ItemsShop from "../../components/ItemsShop/ItemsShop";
-import LevelingShop from "../../components/BustersShop/BustersShop";
+import LevelingShop from "../../components/BoostersShop/BoostersShop";
 
 const ShopPage = () => {
   const [activeTab, setActiveTab] = useState<"items" | "leveling">("items");

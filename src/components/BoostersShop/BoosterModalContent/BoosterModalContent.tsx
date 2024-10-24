@@ -1,11 +1,11 @@
-// src/components/BustersShop/BusterModalContent/BusterModalContent.tsx
+// src/components/BustersShop/BoosterModalContent/BoosterModalContent.tsx
 
 import React from "react";
-import styles from "./BusterModalContent.module.scss";
+import styles from "./BoosterModalContent.module.scss";
 import { Upgrade } from "../../../types/Upgrade";
 import { ReactComponent as CoinIcon } from "../../../assets/icons/coin.svg";
 
-interface BusterModalContentProps {
+interface BoosterModalContentProps {
   upgrade: Upgrade;
   onPurchase: () => void;
   isPurchasing: boolean;
@@ -13,7 +13,7 @@ interface BusterModalContentProps {
   isMaxed: boolean;
 }
 
-const BusterModalContent: React.FC<BusterModalContentProps> = ({
+const BoosterModalContent: React.FC<BoosterModalContentProps> = ({
   upgrade,
   onPurchase,
   isPurchasing,
@@ -21,7 +21,7 @@ const BusterModalContent: React.FC<BusterModalContentProps> = ({
   isMaxed,
 }) => {
   return (
-    <div className={styles.busterModalContent}>
+    <div className={styles.boosterModalContent}>
       {upgrade.next_level_cost !== null && (
         <div className={styles.booster_price_wrapper}>
           <CoinIcon className={styles.coinIcon} />
@@ -80,4 +80,4 @@ const BusterModalContent: React.FC<BusterModalContentProps> = ({
   );
 };
 
-export default BusterModalContent;
+export default BoosterModalContent;

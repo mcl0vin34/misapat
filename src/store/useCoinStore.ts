@@ -1,11 +1,12 @@
 // src/store/useCoinStore.ts
+
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { io, Socket } from "socket.io-client";
-import { toast } from "react-toastify"; // Импортируем toast
+import { toast } from "react-toastify";
 import { AppUser } from "../types/User";
 import { Upgrade } from "../types/Upgrade";
-import { nanoid } from "nanoid"; // Для генерации уникальных ID
+import { nanoid } from "nanoid";
 
 interface PendingRequest {
   resolve: () => void;
@@ -25,6 +26,8 @@ interface CoinStoreState {
   offlineIncome: number;
   upgrades: Upgrade[];
   socket: Socket | null;
+  isPurchasing: number | null; // Новое свойство для отслеживания процесса покупки
+  setUpgrades: (upgrades: Upgrade[]) => void; // Новая функция для установки апгрейдов
   initializeStore: (user: AppUser) => void;
   initializeSocket: () => void;
   sendTap: () => void;
@@ -48,7 +51,7 @@ const useCoinStore = create<CoinStoreState>()(
         coins: 0,
         coinsPerClick: 13,
         passiveIncomeRate: 0,
-        energy: 0,
+        energy: 2000,
         maxEnergy: 2000,
         availableBoosters: 6,
         totalBoosters: 6,
@@ -57,6 +60,8 @@ const useCoinStore = create<CoinStoreState>()(
         offlineIncome: 0,
         upgrades: [],
         socket: null,
+        isPurchasing: null, // Инициализация isPurchasing
+        setUpgrades: (upgrades: Upgrade[]) => set({ upgrades }), // Реализация setUpgrades
 
         // Инициализация Store
         initializeStore: (user: AppUser) => {
@@ -117,9 +122,9 @@ const useCoinStore = create<CoinStoreState>()(
                 set({
                   upgrades: upgrades, // Обновленные апгрейды от сервера
                   coins: coins, // Обновленное количество монет от сервера
+                  isPurchasing: null, // Сбрасываем isPurchasing
                 });
                 pending.resolve();
-                // Toast уведомление не требуется при успехе
               } else {
                 // Определяем тип ошибки и отображаем соответствующий toast
                 if (message === "Улучшение достигло максимального уровня.") {
@@ -145,6 +150,7 @@ const useCoinStore = create<CoinStoreState>()(
                   toast.error(message);
                 }
 
+                set({ isPurchasing: null }); // Сбрасываем isPurchasing
                 pending.reject(message);
               }
               pendingPurchaseUpgradeRequests.delete(requestId);
@@ -242,7 +248,8 @@ const useCoinStore = create<CoinStoreState>()(
         },
 
         decrementEnergy: (amount: number) => {
-          // Удаляем локальное обновление энергии
+          // Локальное обновление энергии (если требуется)
+          set((state) => ({ energy: state.energy - amount }));
         },
 
         disconnectSocket: () => {
@@ -287,6 +294,9 @@ const useCoinStore = create<CoinStoreState>()(
             }
 
             const requestId = nanoid();
+
+            // Устанавливаем isPurchasing
+            set({ isPurchasing: id });
 
             pendingPurchaseUpgradeRequests.set(requestId, { resolve, reject });
 
