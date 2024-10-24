@@ -1,12 +1,11 @@
-// src/types/Upgrade.ts
-
 export interface Upgrade {
-  id: number; // ID бустера
-  name: string; // Название бустера
-  imageUrl: string; // URL изображения
-  level: number; // Текущий уровень бустера
-  maxLevel: number; // Максимальный уровень бустера
-  cost: number; // Текущая стоимость
-  rateIncreasePerLevel: number; // Увеличение дохода на уровень
-  totalRateIncrease: number; // Полный прирост дохода
+  upgrade_id: number;
+  name: string;
+  description: string;
+  url: string;
+  current_level: number;
+  next_level: number | null;
+  next_level_cost: number | null;
+  income_increase_per_level: number;
+  cumulative_income: number;
 }
